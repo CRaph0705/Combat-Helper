@@ -10,6 +10,7 @@ install: ## Install the project
 	make rebuild
 
 rebuild: ## Rebuild the project
+	rm -rf var/cache/*
 	symfony console doctrine:database:drop -f
 	symfony console doctrine:database:create
 	symfony console doctrine:schema:update -f
