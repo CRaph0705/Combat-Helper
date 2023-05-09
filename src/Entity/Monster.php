@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\NonPlayerCharacterRepository;
+use App\Repository\MonsterRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: NonPlayerCharacterRepository::class)]
-class NonPlayerCharacter
+#[ORM\Entity(repositoryClass: Monster::class)]
+class Monster
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -24,6 +26,17 @@ class NonPlayerCharacter
 
     #[ORM\Column(nullable: true)]
     private ?int $initiative = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $hpMax = null;
+
+    #[ORM\ManyToMany(targetEntity: Condition::class, inversedBy: 'monsters')]
+    private Collection $conditions;
+
+    public function __construct()
+    {
+        $this->conditions = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -74,6 +87,42 @@ class NonPlayerCharacter
     public function setInitiative(?int $initiative): self
     {
         $this->initiative = $initiative;
+
+        return $this;
+    }
+
+    public function getHpMax(): ?int
+    {
+        return $this->hpMax;
+    }
+
+    public function setHpMax(?int $hpMax): self
+    {
+        $this->hpMax = $hpMax;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Condition>
+     */
+    public function getConditions(): Collection
+    {
+        return $this->conditions;
+    }
+
+    public function addCondition(Condition $condition): self
+    {
+        if (!$this->conditions->contains($condition)) {
+            $this->conditions->add($condition);
+        }
+
+        return $this;
+    }
+
+    public function removeCondition(Condition $condition): self
+    {
+        $this->conditions->removeElement($condition);
 
         return $this;
     }
