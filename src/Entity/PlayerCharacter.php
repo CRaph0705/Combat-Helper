@@ -19,10 +19,10 @@ class PlayerCharacter
     private ?string $name = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $HP = null;
+    private ?int $hp = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $AC = null;
+    private ?int $ac = null;
 
     #[ORM\Column(nullable: true)]
     private ?int $initiative = null;
@@ -59,26 +59,26 @@ class PlayerCharacter
         return $this;
     }
 
-    public function getHP(): ?int
+    public function getHp(): ?int
     {
-        return $this->HP;
+        return $this->hp;
     }
 
-    public function setHP(?int $HP): self
+    public function setHp(?int $hp): self
     {
-        $this->HP = $HP;
+        $this->hp = $hp;
 
         return $this;
     }
 
-    public function getAC(): ?int
+    public function getAc(): ?int
     {
-        return $this->AC;
+        return $this->ac;
     }
 
-    public function setAC(?int $AC): self
+    public function setAc(?int $ac): self
     {
-        $this->AC = $AC;
+        $this->ac = $ac;
 
         return $this;
     }

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New PlayerCharacter{% endblock %}
+
+{% block body %}
+    <h1>Create new PlayerCharacter</h1>
+
+    {{ include('player_character/_form.html.twig') }}
+
+    <a href="{{ path('app_player_character_index') }}">back to list</a>
+{% endblock %}

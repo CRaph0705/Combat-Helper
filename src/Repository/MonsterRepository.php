@@ -7,12 +7,12 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<NonPlayerCharacter>
+ * @extends ServiceEntityRepository<Monster>
  *
- * @method NonPlayerCharacter|null find($id, $lockMode = null, $lockVersion = null)
- * @method NonPlayerCharacter|null findOneBy(array $criteria, array $orderBy = null)
- * @method NonPlayerCharacter[]    findAll()
- * @method NonPlayerCharacter[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Monster|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Monster|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Monster[]    findAll()
+ * @method Monster[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class MonsterRepository extends ServiceEntityRepository
 {
