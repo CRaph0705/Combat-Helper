@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\PlayerCharacter;
 use App\Form\PlayerCharacterType;
 use App\Repository\PlayerCharacterRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,6 +15,11 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/player-character')]
 class PlayerCharacterController extends AbstractController
 {
+
+    public function __construct(
+        private EntityManagerInterface $em
+    ){}
+
     #[Route('/', name: 'app_player_character_index', methods: ['GET'])]
     public function index(PlayerCharacterRepository $playerCharacterRepository): Response
     {
@@ -74,5 +81,27 @@ class PlayerCharacterController extends AbstractController
         }
 
         return $this->redirectToRoute('app_player_character_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+
+//save route :
+#[Route('/save', name: 'app_player_character_save', methods: ['POST'])]
+//save function :
+    public function save(
+        PlayerCharacter $playerCharacter,
+        bool $flush = false,
+    ){
+        $this->em->persist($playerCharacter);
+        if ($flush) {
+            $this->em->flush();
+        }
+    }
+//load route :
+#[Route('/load', name: 'app_player_character_load', methods: ['GET'])]
+//load function :
+    public function load(
+        int $id
+    ){
+        return $this->em->getRepository(PlayerCharacter::class)->find($id);
     }
 }
