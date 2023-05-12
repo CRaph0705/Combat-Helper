@@ -27,3 +27,9 @@ test : ## Run the tests
 
 open : ## Open the project in the browser
 	symfony open:local
+
+build : ## Build the project
+	npm run build
+
+watch : ## Watch the project
+	npm run watch
