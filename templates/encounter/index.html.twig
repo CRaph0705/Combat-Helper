@@ -1,8 +1,17 @@
 {% extends 'navbar.html.twig' %}
 
-{% block title %}Hello EncounterController!{% endblock %}
+{% block title %}Hello EncounterController!
+{% endblock %}
 
 {% block body %}
-    <div data-controller="encounter">
+	<div data-controller="encounter">
+		{# <div id="parchment"></div>
+		<div id="contain"></div> #}
     </div>
+	{# <svg>
+		<filter id="wavy2">
+			<feTurbulence x="0" y="0" basefrequency="0.02" numoctaves="5" seed="1"/>
+			<feDisplacementMap in="SourceGraphic" scale="20"/>
+		</filter>
+	</svg> #}
 {% endblock %}
