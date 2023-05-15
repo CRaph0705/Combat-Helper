@@ -58,6 +58,8 @@ class PlayerCharacterController extends AbstractController
         $playerCharacter = new PlayerCharacter();
 
         $form = $this->createForm(PlayerCharacterType::class, $playerCharacter);
+        $form->remove('conditions');
+        $form->remove('encounterLists');
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -66,11 +68,6 @@ class PlayerCharacterController extends AbstractController
             return $this->redirectToRoute('app_player_character_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        // Supprimez les champs "conditions" et "encounterLists" si l'action est "new"
-        if ($form->isSubmitted() && !$form->isValid()) {
-            $form->remove('conditions');
-            $form->remove('encounterLists');
-        }
 
         return $this->renderForm('player_character/new.html.twig', [
             'player_character' => $playerCharacter,
