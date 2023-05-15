@@ -28,10 +28,35 @@ class PlayerCharacterController extends AbstractController
         ]);
     }
 
+    // #[Route('/new', name: 'app_player_character_new', methods: ['GET', 'POST'])]
+    // public function new(Request $request, PlayerCharacterRepository $playerCharacterRepository): Response
+    // {
+    //     $playerCharacter = new PlayerCharacter();
+
+    //     $form = $this->createForm(PlayerCharacterType::class, $playerCharacter);
+    //     $form->handleRequest($request);
+
+        
+
+
+
+    //     if ($form->isSubmitted() && $form->isValid()) {
+    //         $playerCharacterRepository->save($playerCharacter, true);
+
+    //         return $this->redirectToRoute('app_player_character_index', [], Response::HTTP_SEE_OTHER);
+    //     }
+
+    //     return $this->renderForm('player_character/new.html.twig', [
+    //         'player_character' => $playerCharacter,
+    //         'form' => $form,
+    //     ]);
+    // }
+
     #[Route('/new', name: 'app_player_character_new', methods: ['GET', 'POST'])]
     public function new(Request $request, PlayerCharacterRepository $playerCharacterRepository): Response
     {
         $playerCharacter = new PlayerCharacter();
+
         $form = $this->createForm(PlayerCharacterType::class, $playerCharacter);
         $form->handleRequest($request);
 
@@ -41,11 +66,18 @@ class PlayerCharacterController extends AbstractController
             return $this->redirectToRoute('app_player_character_index', [], Response::HTTP_SEE_OTHER);
         }
 
+        // Supprimez les champs "conditions" et "encounterLists" si l'action est "new"
+        if ($form->isSubmitted() && !$form->isValid()) {
+            $form->remove('conditions');
+            $form->remove('encounterLists');
+        }
+
         return $this->renderForm('player_character/new.html.twig', [
             'player_character' => $playerCharacter,
             'form' => $form,
         ]);
     }
+
 
     #[Route('/{id}', name: 'app_player_character_show', methods: ['GET'])]
     public function show(PlayerCharacter $playerCharacter): Response

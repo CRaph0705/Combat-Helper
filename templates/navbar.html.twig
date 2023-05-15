@@ -1,12 +1,14 @@
 {% extends "base.html.twig" %}
 {% block navbar %}
     <nav>
+        {# Home #}
+        <a href="{{ path('app_hello') }}">Home</a>
         {# New PC or NPC #}
-        <a href="{{ path('app_player_character_new') }}">New Character</a>
+        {# <a href="{{ path('app_player_character_new') }}">New Character</a> #}
         {# List of NPC #}
-        <a href="{{ path('app_player_character_index') }}">List of Characters</a>
+        <a href="{{ path('app_player_character_index') }}">Characters</a>
         {# Load PC or NPC #}
-        <a href="{{ path('app_player_character_load') }}">Load Character</a>
+        {# <a href="{{ path('app_player_character_load') }}">Load Character</a> #}
         {# if !encounter :
         {# Start encounter #}
         {# <a href="{{ path('start_encounter') }}">Start Encounter</a> #}
