@@ -2,30 +2,27 @@
 
 namespace App\Form;
 
-use App\Entity\PlayerCharacter;
+use App\Entity\EncounterList;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PlayerCharacterType extends AbstractType
+class EncounterListType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('name')
-            ->add('hp')
-            ->add('ac')
-            ->add('initiative')
-            ->add('hpMax')
-            ->add('conditions')
-            ->add('encounterLists')
+            ->add('isPcList')
+            ->add('monsters')
+            ->add('playerCharacters')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => PlayerCharacter::class,
+            'data_class' => EncounterList::class,
         ]);
     }
 }
