@@ -19,6 +19,24 @@
                 <th>IsPcList</th>
                 <td>{{ encounter_list.isPcList ? 'Yes' : 'No' }}</td>
             </tr>
+
+            <tr>
+                <th>{{ encounter_list.isPcList ? 'Players' : 'Monsters' }}</th>
+                {# boucle pour afficher les joueurs ou les monstres dans la liste selon le isPcList #}
+                {% if listCategory == 'Players' %}
+                    {% for playerCharacter in listContent %}
+                        <td>{{ playerCharacter.name }}</td>
+                        {# button remove from this list #}
+                        <td>
+                            <a href="{{ path('app_encounter_list_remove', {'id': encounter_list.id, 'playerId': playerCharacter.id}) }}">X</a>
+                        </td>
+                    {% endfor %}
+                {% else %}
+                    {% for monster in listContent %}
+                        <td>{{ monster.name }}</td>
+                    {% endfor %}
+                {% endif %}
+            <tr>
         </tbody>
     </table>
 
