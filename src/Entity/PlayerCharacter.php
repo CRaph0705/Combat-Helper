@@ -36,10 +36,14 @@ class PlayerCharacter
     #[ORM\ManyToMany(targetEntity: EncounterList::class, inversedBy: 'playerCharacters')]
     private Collection $encounterLists;
 
+    #[ORM\ManyToMany(targetEntity: Encounter::class, mappedBy: 'players')]
+    private Collection $encounters;
+
     public function __construct()
     {
         $this->conditions = new ArrayCollection();
         $this->encounterLists = new ArrayCollection();
+        $this->encounters = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -156,6 +160,33 @@ class PlayerCharacter
     public function removeEncounterList(EncounterList $encounterList): self
     {
         $this->encounterLists->removeElement($encounterList);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Encounter>
+     */
+    public function getEncounters(): Collection
+    {
+        return $this->encounters;
+    }
+
+    public function addEncounter(Encounter $encounter): self
+    {
+        if (!$this->encounters->contains($encounter)) {
+            $this->encounters->add($encounter);
+            $encounter->addPlayer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEncounter(Encounter $encounter): self
+    {
+        if ($this->encounters->removeElement($encounter)) {
+            $encounter->removePlayer($this);
+        }
 
         return $this;
     }
