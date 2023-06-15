@@ -36,10 +36,14 @@ class Monster
     #[ORM\ManyToMany(targetEntity: EncounterList::class, inversedBy: 'monsters')]
     private Collection $encounterLists;
 
+    #[ORM\ManyToMany(targetEntity: Encounter::class, mappedBy: 'monsters')]
+    private Collection $encounters;
+
     public function __construct()
     {
         $this->conditions = new ArrayCollection();
         $this->encounterLists = new ArrayCollection();
+        $this->encounters = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -151,6 +155,33 @@ class Monster
     public function removeEncounterList(EncounterList $encounterList): self
     {
         $this->encounterLists->removeElement($encounterList);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Encounter>
+     */
+    public function getEncounters(): Collection
+    {
+        return $this->encounters;
+    }
+
+    public function addEncounter(Encounter $encounter): self
+    {
+        if (!$this->encounters->contains($encounter)) {
+            $this->encounters->add($encounter);
+            $encounter->addMonster($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEncounter(Encounter $encounter): self
+    {
+        if ($this->encounters->removeElement($encounter)) {
+            $encounter->removeMonster($this);
+        }
 
         return $this;
     }
