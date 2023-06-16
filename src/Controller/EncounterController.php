@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Encounter;
+use App\Entity\Monster;
 use App\Repository\EncounterListRepository;
 use App\Repository\MonsterRepository;
 use App\Repository\PlayerCharacterRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -15,8 +17,8 @@ class EncounterController extends AbstractController
     #[Route('/encounter', name: 'app_encounter')]
     public function index(PlayerCharacterRepository $playerCharacterRepository, MonsterRepository $monsterRepository, EncounterListRepository $encounterListRepository): Response
     {
-        //d'abord on créé une instance de encounter
         $encounter = new Encounter();
+        $round = $encounter->getRound();
         // on récupère les personnages et les monstres de l'encounter
         $characters = $encounter->getPlayers();
         $monsters = $encounter->getMonsters();
@@ -34,29 +36,32 @@ class EncounterController extends AbstractController
             'characters' => $characters,
             'monsters' => $monsters,
             'units' => $units,
+            'round' => $round,
         ]);
     }
 
-        // start encounter only if initiative is set and monsters and characters are added (message if not correctly set)
-        // end encounter
-        // reset encounter
 
+        public function loadMonsters(Request $request, MonsterRepository $monsterRepository)
+    {
+        // Logique pour charger les entités Monster depuis la base de données
+        $monsters = $monsterRepository->findAll();
 
+        // Renvoyer les entités chargées à la vue pour les afficher
+        return $this->render('encounter/load_unit.html.twig', [
+            'units' => $monsters,
+        ]);
+    }
 
+    public function loadPlayers(Request $request, PlayerCharacterRepository $playerCharacterRepository)
+    {
+        // Logique pour charger les entités Player depuis la base de données
+        $players = $playerCharacterRepository->findAll();
 
+        // Renvoyer les entités chargées à la vue pour les afficher
+        return $this->render('encounter/load_unit.html.twig', [
+            'units' => $players,
+        ]);
+    }
 
-
-
-
-
-    // add new unit > character or monster
-    // load single unit > character or monster
-    // load saved list (options : load and add, load and replace, load and merge)
-    // clear list
-    // save as new list
-
-    // roll initiative for all monsters
-    // roll initiative for all characters
-    // order by initiative
 
 }

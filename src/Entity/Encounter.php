@@ -108,7 +108,9 @@ class Encounter
 
         return $this;
     }
-
+############################################################################################################
+    // ENCOUNTER INITIALIZATION FUNCTIONS
+    // UNITS FUNCTIONS
     public function getUnits(): array
     {
         return $this->units;
@@ -155,7 +157,8 @@ class Encounter
         //TODO
         return $this;
     }
-
+############################################################################################################
+    //ENCOUNTER FUNCTIONS
     public function startEncounter(): self
     {
         //TODO
