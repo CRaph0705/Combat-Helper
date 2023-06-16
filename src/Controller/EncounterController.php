@@ -23,32 +23,32 @@ class EncounterController extends AbstractController
         ]);
     }
 
-    // #[Route('/', name: 'app_encounter')]
-    // public function index(PlayerCharacterRepository $playerCharacterRepository, MonsterRepository $monsterRepository, EncounterListRepository $encounterListRepository): Response
-    // {
-    //     $allMonsters = $monsterRepository->findAll();
-    //     $encounter = new Encounter();
-    //     $round = $encounter->getRound();
-    //     // on récupère les personnages et les monstres de l'encounter
-    //     $characters = $encounter->getPlayers();
-    //     $monsters = $encounter->getMonsters();
-    //     // on les convertit en tableau
-    //     $characters = $characters->toArray();
-    //     $monsters = $monsters->toArray();
-    //     // on les met dans un tableau
-    //     $units = array_merge($characters, $monsters);
+    #[Route('/init', name: 'app_encounter_init')]
+    public function init(PlayerCharacterRepository $playerCharacterRepository, MonsterRepository $monsterRepository): Response
+    {
+        $allMonsters = $monsterRepository->findAll();
+        $encounter = new Encounter();
+        $round = $encounter->getRound();
+        // on récupère les personnages et les monstres de l'encounter
+        $characters = $encounter->getPlayers();
+        $monsters = $encounter->getMonsters();
+        // on les convertit en tableau
+        $characters = $characters->toArray();
+        $monsters = $monsters->toArray();
+        // on les met dans un tableau
+        $units = array_merge($characters, $monsters);
 
-    //     // on trie les unités par initiative
-    //     $encounter->sortUnitsByInitiative($units);
+        // on trie les unités par initiative
+        $encounter->sortUnitsByInitiative($units);
 
-    //     return $this->render('encounter/init.html.twig', [
-    //         'controller_name' => 'EncounterController',
-    //         'characters' => $characters,
-    //         'monsters' => $monsters,
-    //         'units' => $units,
-    //         'round' => $round,
-    //     ]);
-    // }
+        return $this->render('encounter/init.html.twig', [
+            'controller_name' => 'EncounterController',
+            'characters' => $characters,
+            'monsters' => $monsters,
+            'units' => $units,
+            'round' => $round,
+        ]);
+    }
 
 
     //     public function loadMonsters(Request $request, MonsterRepository $monsterRepository)
