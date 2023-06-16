@@ -21,6 +21,13 @@ class Encounter
     #[ORM\ManyToMany(targetEntity: Monster::class, inversedBy: 'encounters')]
     private Collection $monsters;
 
+
+    private int $round = 0;
+    
+    //array of units
+    private array $units = [];
+
+
     public function __construct()
     {
         $this->players = new ArrayCollection();
@@ -79,4 +86,146 @@ class Encounter
 
         return $this;
     }
+
+
+
+
+    //on créé une fonction pour trier les unités par initiative
+    public function sortUnitsByInitiative($units){
+        usort($units, function ($a, $b) {
+            return $b->getInitiative() <=> $a->getInitiative();
+        });
+    }
+
+    public function getRound(): int
+    {
+        return $this->round;
+    }
+
+    public function setRound(int $round): self
+    {
+        $this->round = $round;
+
+        return $this;
+    }
+
+    public function getUnits(): array
+    {
+        return $this->units;
+    }
+
+    public function setUnits(array $units): self
+    {
+        $this->units = $units;
+
+        return $this;
+    }
+
+    public function addUnit($unit): self
+    {
+        if (!in_array($unit, $this->units)) {
+            $this->units[] = $unit;
+        }
+
+        return $this;
+    }
+
+    public function removeUnit($unit): self
+    {
+        $this->units = array_diff($this->units, [$unit]);
+
+        return $this;
+    }
+
+    public function clearUnits(): self
+    {
+        $this->units = [];
+
+        return $this;
+    }
+
+    public function saveUnits(): self
+    {
+        //TODO
+        return $this;
+    }
+
+    public function loadUnits(): self
+    {
+        //TODO
+        return $this;
+    }
+
+    public function startEncounter(): self
+    {
+        //TODO
+        return $this;
+    }
+
+    public function endEncounter(): self
+    {
+        //TODO
+        return $this;
+    }
+
+    public function resetEncounter(): self
+    {
+        //TODO
+        return $this;
+    }
+
+    public function saveEncounterToDatabase(): self
+    {
+        //TODO
+        return $this;
+    }
+
+    public function loadEncounter(): self
+    {
+        //TODO
+        return $this;
+    }
+
+    public function nextRound(): self
+    {
+        //TODO
+        return $this;
+    }
+
+    public function nextTurn(): self
+    {
+        //TODO
+        return $this;
+    }
+
+    public function previousRound(): self
+    {
+        //TODO
+        return $this;
+    }
+
+    public function previousTurn(): self
+    {
+        //TODO
+        return $this;
+    }
+
+    public function addUnitToEncounter($unit): self
+    {
+        //TODO
+        return $this;
+    }
+
+    public function removeUnitFromEncounter($unit): self
+    {
+        //TODO
+        return $this;
+    }
+
+    public function clearEncounter(): self
+    {
+        //TODO
+        return $this;
+    }
+
 }
