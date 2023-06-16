@@ -11,7 +11,7 @@ class MonsterFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $rat = new Monster();
-        $rat->setName('rat');
+        $rat->setName('Rat');
         $manager->persist($rat);
 
         $manager->flush();

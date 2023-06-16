@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'navbar.html.twig' %}
 
 {% block title %}Encounter{% endblock %}
 
@@ -6,11 +6,23 @@
     <h1>Encounter</h1>
 
     <table class="table">
-        <tbody>
+        <thead>
             <tr>
-                <th>Id</th>
-                <td>{{ encounter.id }}</td>
+                <th>Units</th>
+                <th>Hp</th>
+                <th>AC</th>
+                <th>Initiative</th>
             </tr>
+        <tbody>
+                {% for unit in units %}
+                <tr>
+                    <td>{{ unit.name }}</td>
+                    <td>{{ unit.hp }}</td>
+                    <td>{{ unit.ac }}</td>
+                    <td>{{ unit.initiative }}</td>
+                </tr>
+                {% endfor %}
+
         </tbody>
     </table>
 

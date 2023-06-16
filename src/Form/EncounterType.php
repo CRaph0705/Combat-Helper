@@ -20,12 +20,14 @@ class EncounterType extends AbstractType
                 'choice_label' => 'name',
                 'multiple' => true,
                 'expanded' => false,
+                'required' => false,
             ])
             ->add('monsters', EntityType::class, [
                 'class' => Monster::class,
                 'choice_label' => 'name',
                 'multiple' => true,
                 'expanded' => false,
+                'required' => false,
             ])
         ;
     }
