@@ -22,13 +22,13 @@
             <tr>
                 <td>{{ monster.id }}</td>
                 <td>{{ monster.name }}</td>
-                <td>{{ monster.HP }}</td>
-                <td>{{ monster.AC }}</td>
+                <td>{{ monster.hp }}</td>
+                <td>{{ monster.ac }}</td>
                 <td>{{ monster.initiative }}</td>
                 <td>{{ monster.hpMax }}</td>
                 <td>
-                    <a href="{{ path('app_monster_show', {'id': monster.id}) }}">show</a>
-                    <a href="{{ path('app_monster_edit', {'id': monster.id}) }}">edit</a>
+                    {# <a href="{{ path('app_monster_show', {'id': monster.id}) }}">show</a>
+                    <a href="{{ path('app_monster_edit', {'id': monster.id}) }}">edit</a> #}
                 </td>
             </tr>
         {% else %}
@@ -39,5 +39,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_monster_new') }}">Create new</a>
+    {# <a href="{{ path('app_monster_new') }}">Create new</a> #}
 {% endblock %}
