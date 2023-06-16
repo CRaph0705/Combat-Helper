@@ -6,7 +6,7 @@
 {% block body %}
 	<div data-controller="encounter">
 		<div class="container encounter-menu">
-			<div class="row">
+			{# <div class="row">
 				<div class="col-md-12">
 					<div class="btn-group btn-group-justified" role="group" aria-label="...">
 						<div class="btn-group" role="group">
@@ -20,17 +20,19 @@
 						</div>
 					</div>
 				</div>
-			</div>
-
+			</div> #}
+		</div>
+		<div class="container encounter-content">
+			{# timer #}
 			<div class="row">
 				<div class="col-md-12 encounter-timer">
-					<h1 class="text-center" data-target="encounter.turn">Turn count : /
+					<h1 class="text-center" data-target="encounter.turn">Round : {{ round }}
 						{# turnCount #}
 					</h1>
 				</div>
 			</div>
-
-
+		</div>
+		<div class="container encounter-bottom-menu"
 			{# tableau listant les character et monsters #}
 			<div class="container encounter-list">
 				<table class="table table-striped">
@@ -44,55 +46,48 @@
 						{% for unit in units %}
 							<tr>
 								<td>{{ unit.name }}</td>
-                                <td><input type="number" name="hp" id="hp" min="0" max="100" value="{{ unit.hp }}"></td>
-								<td>{{ unit.ac }}</td>
+                                <td><input type="number" name="hp_{{ unit.id }}" id="hp_{{ unit.id }}" min="0" max="100" value="{{ unit.hp }}"></td>								<td>{{ unit.ac }}</td>
 								{% if unit.initiative == null %}
-									<td><input type="number" name="initiative" id="initiative" min="0" max="100" value="0"></td>
+									<td><input type="number" name="initiative_{{ unit.id }}" id="initiative_{{ unit.id }}" min="0" max="100" value="0"></td>
 								{% else %}
-									<td><input type="number" name="initiative" id="initiative" min="0" max="100" value="{{ unit.initiative }}"></td>
+									<td><input type="number" name="initiative_{{ unit.id }}" id="initiative_{{ unit.id }}" min="0" max="100" value="{{ unit.initiative }}"></td>
 								{% endif %}
-
 							</tr>
 						{% endfor %}
 					</tbody>
 				</table>
 			</div>
-
 			{# ---------------------------------------------------- #}
 			{# tableau listant les character et monsters #}
-
-
 			{# ---------------------------------------------------- #}
 			{# actions pour init l'encounter #}
 				<div class="container encounter-footer-menu"> <div class="row">
 					<div class="col-md-12">
 						<div class="btn-group" role="group">
 							<div class="btn-group" role="group">
-								<button type="button" class="btn btn-default" data-action="encounter#add">Add new unit</button>
-                                <button type="button" class="btn btn-default" data-action="">Load unit</button>
+								<button type="button" class="btn btn-default" data-action="encounter#createNewUnit">Add new unit</button>
+                                <button type="button" class="btn btn-default" data-action="encounter#loadUnit">Load unit</button>
                             </div>
                         </div>
-
-
 						<div class="btn-group" role="group">
 							<div class="btn-group" role="group">
-								<button type="button" class="btn btn-default" data-action="encounter#clear">Clear List</button>
+								<button type="button" class="btn btn-default" data-action="encounter#clearList">Clear List</button>
 							</div>
                         </div>
                         <div class="btn-group" role="group">
 							<div class="btn-group" role="group">
-                                <button type="button" class="btn btn-default" data-action="">Load List</button>
-								<button type="button" class="btn btn-default" data-action="">Save as new List</button>
+                                <button type="button" class="btn btn-default" data-action="encounter#loadEncounterList">Load List</button>
+								<button type="button" class="btn btn-default" data-action="encounter#saveAsNewList">Save as new List</button>
 							</div>
 							<div class="btn-group" role="group">
 							</div>
                         </div>
                         <div class="btn-group" role="group">
 							<div class="btn-group" role="group">
-								<button type="button" class="btn btn-default" data-action="">Roll for NPC initiative</button>
-								<button type="button" class="btn btn-default" data-action="">Roll for PC initiative</button>
+								<button type="button" class="btn btn-default" data-action="encounter#rollNpcInitiative">Roll for NPC initiative</button>
+								<button type="button" class="btn btn-default" data-action="encounter#rollPcInitiative">Roll for PC initiative</button>
 								{# button : order by initiative #}
-								<button type="button" class="btn btn-default" data-action="">Order by initiative</button>
+								<button type="button" class="btn btn-default" data-action="encounter#orderByInitiative">Order by initiative</button>
 							</div>
 						</div>
 					</div>

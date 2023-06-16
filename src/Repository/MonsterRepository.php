@@ -38,6 +38,4 @@ class MonsterRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-
-
 }

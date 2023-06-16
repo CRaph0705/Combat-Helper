@@ -31,3 +31,6 @@ function ScrollHeight() {
   // so for a better effect, absolute height is defined by his content.
   content.style.height = container.offsetHeight + 'px';
 }
+
+
+

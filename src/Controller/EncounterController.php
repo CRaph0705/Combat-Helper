@@ -3,60 +3,129 @@
 namespace App\Controller;
 
 use App\Entity\Encounter;
-use App\Repository\EncounterListRepository;
+use App\Form\EncounterType;
+use App\Repository\EncounterRepository;
 use App\Repository\MonsterRepository;
 use App\Repository\PlayerCharacterRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[Route('/encounter')]
 class EncounterController extends AbstractController
 {
-    #[Route('/encounter', name: 'app_encounter')]
-    public function index(PlayerCharacterRepository $playerCharacterRepository, MonsterRepository $monsterRepository, EncounterListRepository $encounterListRepository): Response
+    #[Route('/', name: 'app_encounter_index', methods: ['GET'])]
+    public function index(EncounterRepository $encounterRepository): Response
     {
-        //d'abord on créé une instance de encounter
-        $encounter = new Encounter();
-        // on récupère les personnages et les monstres de l'encounter
-        $characters = $encounter->getPlayers();
-        $monsters = $encounter->getMonsters();
-        // on les convertit en tableau
-        $characters = $characters->toArray();
-        $monsters = $monsters->toArray();
-        // on les met dans un tableau
-        $units = array_merge($characters, $monsters);
-
-        // on trie les unités par initiative
-        $encounter->sortUnitsByInitiative($units);
-
-        return $this->render('encounter/init.html.twig', [
-            'controller_name' => 'EncounterController',
-            'characters' => $characters,
-            'monsters' => $monsters,
-            'units' => $units,
+        return $this->render('encounter/index.html.twig', [
+            'encounters' => $encounterRepository->findAll(),
         ]);
     }
 
-        // start encounter only if initiative is set and monsters and characters are added (message if not correctly set)
-        // end encounter
-        // reset encounter
+    // #[Route('/', name: 'app_encounter')]
+    // public function index(PlayerCharacterRepository $playerCharacterRepository, MonsterRepository $monsterRepository, EncounterListRepository $encounterListRepository): Response
+    // {
+    //     $allMonsters = $monsterRepository->findAll();
+    //     $encounter = new Encounter();
+    //     $round = $encounter->getRound();
+    //     // on récupère les personnages et les monstres de l'encounter
+    //     $characters = $encounter->getPlayers();
+    //     $monsters = $encounter->getMonsters();
+    //     // on les convertit en tableau
+    //     $characters = $characters->toArray();
+    //     $monsters = $monsters->toArray();
+    //     // on les met dans un tableau
+    //     $units = array_merge($characters, $monsters);
+
+    //     // on trie les unités par initiative
+    //     $encounter->sortUnitsByInitiative($units);
+
+    //     return $this->render('encounter/init.html.twig', [
+    //         'controller_name' => 'EncounterController',
+    //         'characters' => $characters,
+    //         'monsters' => $monsters,
+    //         'units' => $units,
+    //         'round' => $round,
+    //     ]);
+    // }
 
 
+    //     public function loadMonsters(Request $request, MonsterRepository $monsterRepository)
+    // {
+    //     // Logique pour charger les entités Monster depuis la base de données
+    //     $monsters = $monsterRepository->findAll();
+
+    //     // Renvoyer les entités chargées à la vue pour les afficher
+    //     return $this->render('encounter/load_unit.html.twig', [
+    //         'units' => $monsters,
+    //     ]);
+    // }
+
+    // public function loadPlayers(Request $request, PlayerCharacterRepository $playerCharacterRepository)
+    // {
+    //     // Logique pour charger les entités Player depuis la base de données
+    //     $players = $playerCharacterRepository->findAll();
+
+    //     // Renvoyer les entités chargées à la vue pour les afficher
+    //     return $this->render('encounter/load_unit.html.twig', [
+    //         'units' => $players,
+    //     ]);
+    // }
 
 
+    #[Route('/new', name: 'app_encounter_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EncounterRepository $encounterRepository): Response
+    {
+        $encounter = new Encounter();
+        $form = $this->createForm(EncounterType::class, $encounter);
+        $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $encounterRepository->save($encounter, true);
 
+            return $this->redirectToRoute('app_encounter_index', [], Response::HTTP_SEE_OTHER);
+        }
 
+        return $this->render('encounter/new.html.twig', [
+            'encounter' => $encounter,
+            'form' => $form,
+        ]);
+    }
 
+    #[Route('/{id}', name: 'app_encounter_show', methods: ['GET'])]
+    public function show(Encounter $encounter): Response
+    {
+        return $this->render('encounter/show.html.twig', [
+            'encounter' => $encounter,
+        ]);
+    }
 
-    // add new unit > character or monster
-    // load single unit > character or monster
-    // load saved list (options : load and add, load and replace, load and merge)
-    // clear list
-    // save as new list
+    #[Route('/{id}/edit', name: 'app_encounter_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Encounter $encounter, EncounterRepository $encounterRepository): Response
+    {
+        $form = $this->createForm(EncounterType::class, $encounter);
+        $form->handleRequest($request);
 
-    // roll initiative for all monsters
-    // roll initiative for all characters
-    // order by initiative
+        if ($form->isSubmitted() && $form->isValid()) {
+            $encounterRepository->save($encounter, true);
 
+            return $this->redirectToRoute('app_encounter_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('encounter/edit.html.twig', [
+            'encounter' => $encounter,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id}', name: 'app_encounter_delete', methods: ['POST'])]
+    public function delete(Request $request, Encounter $encounter, EncounterRepository $encounterRepository): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$encounter->getId(), $request->request->get('_token'))) {
+            $encounterRepository->remove($encounter, true);
+        }
+
+        return $this->redirectToRoute('app_encounter_index', [], Response::HTTP_SEE_OTHER);
+    }
 }

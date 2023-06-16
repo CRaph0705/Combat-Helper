@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Monster;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -9,8 +10,9 @@ class MonsterFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        // $product = new Product();
-        // $manager->persist($product);
+        $rat = new Monster();
+        $rat->setName('rat');
+        $manager->persist($rat);
 
         $manager->flush();
     }
