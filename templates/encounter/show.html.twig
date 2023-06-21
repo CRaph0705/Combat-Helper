@@ -3,7 +3,7 @@
 {% block title %}Encounter{% endblock %}
 
 {% block body %}
-    <h1>Encounter</h1>
+    <h1>Encounter {{ encounter.name }}</h1>
 
     <table class="table">
         <thead>
@@ -19,7 +19,9 @@
                     <td>{{ unit.name }}</td>
                     <td>{{ unit.hp }}</td>
                     <td>{{ unit.ac }}</td>
-                    <td>{{ unit.initiative }}</td>
+                    <td class="align-items-center">
+                        <input type="unit-initiative" id="unit-initiative" name="unit-initiative" value="{{ unit.initiative }}">
+                    </td>
                 </tr>
                 {% endfor %}
 
@@ -30,5 +32,14 @@
 
     <a href="{{ path('app_encounter_edit', {'id': encounter.id}) }}">edit</a>
 
-    {{ include('encounter/_delete_form.html.twig') }}
+    {# {{ include('encounter/_delete_form.html.twig') }} #}
+    {# set initiative button #}
+    {# <a href="{{ path('app_encounter_set_initiative', {'id': encounter.id}) }}">set initiative</a> #}
+    <a href="">set initiative</a>
+
+    {# start encounter button #}
+    {# <a href="{{ path('app_encounter_start', {'id': encounter.id}) }}">start encounter</a> #}
+    <a href="">start encounter</a>
+
+    {# end encounter button #}
 {% endblock %}

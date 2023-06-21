@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/encounter/list')]
+#[Route('/encounter-list')]
 class EncounterListController extends AbstractController
 {
 

@@ -6,37 +6,35 @@
     <h1>EncounterList</h1>
 
     <table class="table">
-        <tbody>
+        <thead>
             <tr>
-                <th>Id</th>
-                <td>{{ encounter_list.id }}</td>
+                <th class="align-items-start">Id : {{ encounter_list.id }}</th>
+                <th class="align-items-start">List : {{ encounter_list.name }}</th>
+                <tr><th class="align-items-center">{{ encounter_list.isPcList ? 'Players' : 'Monsters' }}</th></tr>
             </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ encounter_list.name }}</td>
-            </tr>
-            <tr>
-                <th>IsPcList</th>
-                <td>{{ encounter_list.isPcList ? 'Yes' : 'No' }}</td>
-            </tr>
+        </thead>
 
-            <tr>
-                <th>{{ encounter_list.isPcList ? 'Players' : 'Monsters' }}</th>
-                {# boucle pour afficher les joueurs ou les monstres dans la liste selon le isPcList #}
-                {% if listCategory == 'Players' %}
-                    {% for playerCharacter in listContent %}
-                        <td>{{ playerCharacter.name }}</td>
-                        {# button remove from this list #}
-                        <td>
-                            <a href="{{ path('app_encounter_list_remove', {'id': encounter_list.id, 'playerId': playerCharacter.id}) }}">X</a>
-                        </td>
-                    {% endfor %}
-                {% else %}
-                    {% for monster in listContent %}
-                        <td>{{ monster.name }}</td>
-                    {% endfor %}
-                {% endif %}
-            <tr>
+
+    <tbody>
+                <td>
+                    {% if listCategory == 'Players' %}
+                        {% for playerCharacter in listContent %}
+                            <tr>
+                                <div class="d-flex flex-row align-items-start">
+                                    <td class="p-2">{{ playerCharacter.name }}</td>
+                                    <td class="p-2"><a href="{{ path('app_encounter_list_remove', {'id': encounter_list.id, 'playerId': playerCharacter.id}) }}">X</a></td>
+                                </div>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        {% for monster in listContent %}
+                            <div class="d-flex flex-row align-items-start">
+                                <div class="p-2">{{ monster.name }}</div>
+                                <div class="p-2"><a href="{{ path('app_encounter_list_remove', {'id': encounter_list.id, 'monsterId': monster.id}) }}">X</a></div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </td>
         </tbody>
     </table>
 

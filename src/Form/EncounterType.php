@@ -15,6 +15,13 @@ class EncounterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('name', null, [
+                'required' => true,
+                'label' => 'Nom de la rencontre : ',
+                'attr' => [
+                    'placeholder' => 'Nom de la rencontre',
+                ],
+            ])
             ->add('players', EntityType::class, [
                 'class' => PlayerCharacter::class,
                 'choice_label' => 'name',

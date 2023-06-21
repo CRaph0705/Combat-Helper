@@ -10,8 +10,9 @@ import './styles/app.scss';
 
 // start the Stimulus application
 import './bootstrap';
+// require('bootstrap');
 
-console.log('toto');
+console.log('bootsrap ok');
 
 
 // First call to define "parchment" height
@@ -32,5 +33,6 @@ function ScrollHeight() {
   content.style.height = container.offsetHeight + 'px';
 }
 
+console.log('toto2');
 
 
