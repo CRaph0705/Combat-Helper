@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Repository\EncounterListRepository;
 use App\Repository\EncounterRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -26,6 +27,9 @@ class Encounter
     
     //array of units
     private array $units = [];
+
+    #[ORM\Column(length: 255)]
+    private ?string $name = null;
 
 
     public function __construct()
@@ -152,9 +156,10 @@ class Encounter
         return $this;
     }
 
-    public function loadUnits(): self
+    public function loadUnits($id, EncounterListRepository $encounterListRepository): self
     {
-        //TODO
+        // on récupère les joueurs et monstres de l'EncounterList et on les ajoute à l'Encounter
+        // $this->addUnit($encounterListRepository->findBy($id)->getPlayers());
         return $this;
     }
 ############################################################################################################
@@ -228,6 +233,18 @@ class Encounter
     public function clearEncounter(): self
     {
         //TODO
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
         return $this;
     }
 
