@@ -1,97 +1,38 @@
-{% extends 'navbar.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}Hello EncounterController!
 {% endblock %}
 
 {% block body %}
+	<div class="container encounter-nav">
+		<nav>
+			<a href="{{ path('app_encounter_show', {'id': encounter.id}) }}">Back</a>
+			<a href="{{ path('app_encounter_index') }}">Encounter</a>
+		</nav>
+	</div>
+
 	<div data-controller="encounter">
 		<div class="container encounter-menu">
-			{# <div class="row">
-				<div class="col-md-12">
-					<div class="btn-group btn-group-justified" role="group" aria-label="...">
-						<div class="btn-group" role="group">
-							<button type="button" class="btn btn-default" data-action="encounter#start">Start</button>
-						</div>
-						<div class="btn-group" role="group">
-							<button type="button" class="btn btn-default" data-action="encounter#stop">Stop</button>
-						</div>
-						<div class="btn-group" role="group">
-							<button type="button" class="btn btn-default" data-action="encounter#reset">Reset</button>
-						</div>
-					</div>
-				</div>
-			</div> #}
-		</div>
-		<div class="container encounter-content">
-			{# timer #}
 			<div class="row">
-				<div class="col-md-12 encounter-timer">
-					<h1 class="text-center" data-target="encounter.turn">Round : {{ round }}
-						{# turnCount #}
-					</h1>
+				<div class="col-md-6">
+					<h1>Encounter {{ encounter.name }}</h1>
 				</div>
-			</div>
-		</div>
-		<div class="container encounter-bottom-menu"
-			{# tableau listant les character et monsters #}
-			<div class="container encounter-list">
-				<table class="table table-striped">
-					<thead>
-						<th>Name</th>
-						<th>HP</th>
-						<th>AC</th>
-						<th>Initiative</th>
-					</thead>
-					<tbody>
-						{% for unit in units %}
-							<tr>
-								<td>{{ unit.name }}</td>
-                                <td><input type="number" name="hp_{{ unit.id }}" id="hp_{{ unit.id }}" min="0" max="100" value="{{ unit.hp }}"></td>								<td>{{ unit.ac }}</td>
-								{% if unit.initiative == null %}
-									<td><input type="number" name="initiative_{{ unit.id }}" id="initiative_{{ unit.id }}" min="0" max="100" value="0"></td>
-								{% else %}
-									<td><input type="number" name="initiative_{{ unit.id }}" id="initiative_{{ unit.id }}" min="0" max="100" value="{{ unit.initiative }}"></td>
-								{% endif %}
-							</tr>
-						{% endfor %}
-					</tbody>
-				</table>
-			</div>
-			{# ---------------------------------------------------- #}
-			{# tableau listant les character et monsters #}
-			{# ---------------------------------------------------- #}
-			{# actions pour init l'encounter #}
-				<div class="container encounter-footer-menu"> <div class="row">
-					<div class="col-md-12">
-						<div class="btn-group" role="group">
-							<div class="btn-group" role="group">
-								<button type="button" class="btn btn-default" data-action="encounter#createNewUnit">Add new unit</button>
-                                <button type="button" class="btn btn-default" data-action="encounter#loadUnit">Load unit</button>
-                            </div>
-                        </div>
-						<div class="btn-group" role="group">
-							<div class="btn-group" role="group">
-								<button type="button" class="btn btn-default" data-action="encounter#clearList">Clear List</button>
-							</div>
-                        </div>
-                        <div class="btn-group" role="group">
-							<div class="btn-group" role="group">
-                                <button type="button" class="btn btn-default" data-action="encounter#loadEncounterList">Load List</button>
-								<button type="button" class="btn btn-default" data-action="encounter#saveAsNewList">Save as new List</button>
-							</div>
-							<div class="btn-group" role="group">
-							</div>
-                        </div>
-                        <div class="btn-group" role="group">
-							<div class="btn-group" role="group">
-								<button type="button" class="btn btn-default" data-action="encounter#rollNpcInitiative">Roll for NPC initiative</button>
-								<button type="button" class="btn btn-default" data-action="encounter#rollPcInitiative">Roll for PC initiative</button>
-								{# button : order by initiative #}
-								<button type="button" class="btn btn-default" data-action="encounter#orderByInitiative">Order by initiative</button>
-							</div>
-						</div>
+				<div class="col-md-6">
+					<div class="encounter-menu__buttons">
+						<button class="btn btn-primary" data-action="encounter#reset">Reset Initiatives</button>
+						{# ERASE INIT #}
 					</div>
+
+					{# SET INITIATIVE #}
+					<button class="btn btn-primary" data-action="encounter#setInitiatives">Set Initiatives</button>
+
+					{# ORDER UNITS BY INITIATIVE > JS #}
+					<button class="btn btn-primary" data-action="encounter#orderUnits">Order Units</button>
+
+					{# START ENCOUNTER #}
+					<button class="btn btn-primary" data-action="encounter#startEncounter">Start Encounter</button>
 				</div>
 			</div>
 		</div>
+	</div>
 	{% endblock %}
