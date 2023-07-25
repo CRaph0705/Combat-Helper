@@ -8,20 +8,18 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Units</th>
-                <th>Hp</th>
-                <th>AC</th>
-                <th>Initiative</th>
+                <th class="align-items-center">Units</th>
+                <th class="align-items-center">Hp</th>
+                <th class="align-items-center">AC</th>
+                <th class="align-items-center">Initiative</th>
             </tr>
         <tbody>
                 {% for unit in units %}
                 <tr>
-                    <td>{{ unit.name }}</td>
-                    <td>{{ unit.hp }}</td>
-                    <td>{{ unit.ac }}</td>
-                    <td class="align-items-center">
-                        <input type="unit-initiative" id="unit-initiative" name="unit-initiative" value="{{ unit.initiative }}">
-                    </td>
+                    <td class="align-items-center">{{ unit.name }}</td>
+                    <td class="align-items-center">{{ unit.hp }}</td>
+                    <td class="align-items-center">{{ unit.ac }}</td>
+                    <td class="align-items-center">{{ unit.initiative }}</td>
                 </tr>
                 {% endfor %}
 
@@ -32,14 +30,6 @@
 
     <a href="{{ path('app_encounter_edit', {'id': encounter.id}) }}">edit</a>
 
-    {# {{ include('encounter/_delete_form.html.twig') }} #}
-    {# set initiative button #}
-    {# <a href="{{ path('app_encounter_set_initiative', {'id': encounter.id}) }}">set initiative</a> #}
-    <a href="">set initiative</a>
+    <a href="{{ path('app_encounter_init', {'id': encounter.id}) }}">initialize encounter</a>
 
-    {# start encounter button #}
-    {# <a href="{{ path('app_encounter_start', {'id': encounter.id}) }}">start encounter</a> #}
-    <a href="">start encounter</a>
-
-    {# end encounter button #}
 {% endblock %}

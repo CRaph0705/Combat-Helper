@@ -11,14 +11,20 @@ class MonsterType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder
-            ->add('name')
-            ->add('HP')
-            ->add('AC')
-            ->add('initiative')
-            ->add('hpMax')
-            ->add('conditions')
-            ->add('encounterLists')
+    $showAc = $options['show_ac'];
+
+    $builder
+        ->add('name')
+        ->add('hp')
+        ->add('ac', null, [
+            'required' => false,
+            'label' => 'Classe d\'armure (AC)',
+            'attr' => [
+                'placeholder' => 'Classe d\'armure (AC)',
+            ],
+            'mapped' => $showAc, // Utiliser cette option pour afficher ou non le champ 'ac'
+        ])
+        ->add('initiative')
         ;
     }
 
@@ -26,6 +32,8 @@ class MonsterType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Monster::class,
+            'show_ac' => false, // Valeur par défaut de l'option personnalisée 'show_ac'
+
         ]);
     }
 }
