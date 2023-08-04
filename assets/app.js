@@ -8,12 +8,24 @@
 // any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.scss';
 
-// start the Stimulus application
+// Importez le contrôleur Stimulus et les autres dépendances nécessaires
+import { Application } from 'stimulus';
+import { definitionsFromContext } from 'stimulus/webpack-helpers';
+// import { Controller } from 'stimulus';
+
+// Initialisez l'application Stimulus
+const application = Application.start();
+const context = require.context('./controllers', true, /\.js$/);
+application.load(definitionsFromContext(context));
+
+console.log('stimulus ok');
+console.log(definitionsFromContext);
+console.log(Application);
+// console.log(Controller);
+
 import './bootstrap';
-// require('bootstrap');
-
+// Démarrez le code JavaScript spécifique à votre application après avoir initialisé l'application Stimulus
 console.log('bootsrap ok');
-
 
 // First call to define "parchment" height
 document.onload = ScrollHeight();
@@ -22,7 +34,6 @@ document.onload = ScrollHeight();
 window.addEventListener('resize', function(event){
   ScrollHeight();
 });
-
 
 function ScrollHeight() {
   var content = document.querySelector('#parchment');
@@ -33,6 +44,5 @@ function ScrollHeight() {
   content.style.height = container.offsetHeight + 'px';
 }
 
-console.log('toto2');
 
 

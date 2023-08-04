@@ -85,11 +85,39 @@ class EncounterController extends AbstractController
     }
 
     #[Route('/init/{id}', name: 'app_encounter_init', methods: ['GET'])]
-    public function init(Encounter $encounter): Response
+    public function init(Encounter $encounter, EncounterRepository $encounterRepository): Response
     {
-        return $this->render('encounter/init.html.twig', [
-            'controller_name' => 'EncounterController',
-            'encounter' => $encounter,
-        ]);
+        //si l'encounter n'a pas d'units, on empêche l'init
+        if (count($encounter->getMonsters()) == 0 && count($encounter->getPlayers()) == 0) {
+            $this->addFlash('danger', 'L\'encounter n\'a pas d\'unités');
+            return $this->redirectToRoute('app_encounter_show', ['id' => $encounter->getId()]);
+        } else {
+            //on récupère les monstres et les joueurs
+            $monsters = $encounter->getMonsters()->toArray();
+            $players = $encounter->getPlayers()->toArray();
+            //on les fusionne
+            $units = array_merge($monsters, $players);
+            //on les ajoute à l'encounter
+            $encounter->setUnits($units);
+            // on les trie dynamiquement par initiative
+            usort($units, function ($a, $b) {
+                return $b->getInitiative() <=> $a->getInitiative();
+            });
+
+            //on initialise le compteur de tours
+            // $encounter->setTurn(1);
+            //on initialise le compteur d'initiative
+            // $encounter->setInitiative(0);
+            //on sauvegarde
+            $encounterRepository->save($encounter, true);
+            //on redirige vers la page de l'encounter
+            return $this->render('encounter/init.html.twig', [
+                'controller_name' => 'EncounterController',
+                'encounter' => $encounter,
+                'units' => $units,
+                'monsters' => $monsters,
+                'players' => $players,
+            ]);
+        }
     }
 }
