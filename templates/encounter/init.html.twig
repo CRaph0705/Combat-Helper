@@ -1,38 +1,56 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello EncounterController!
-{% endblock %}
+{% block title %}Initiatives !{% endblock %}
 
 {% block body %}
-	<div class="container encounter-nav">
-		<nav>
-			<a href="{{ path('app_encounter_show', {'id': encounter.id}) }}">Back</a>
-			<a href="{{ path('app_encounter_index') }}">Encounter</a>
-		</nav>
-	</div>
+<div class="container encounter-nav">
+    <nav>
+        <a href="{{ path('app_encounter_show', {'id': encounter.id}) }}">Back</a>
+        <a href="{{ path('app_encounter_index') }}">Encounter</a>
+    </nav>
+</div>
 
-	<div data-controller="encounter">
-		<div class="container encounter-menu">
-			<div class="row">
-				<div class="col-md-6">
-					<h1>Encounter {{ encounter.name }}</h1>
-				</div>
-				<div class="col-md-6">
-					<div class="encounter-menu__buttons">
-						<button class="btn btn-primary" data-action="encounter#reset">Reset Initiatives</button>
-						{# ERASE INIT #}
-					</div>
+<div data-controller="encounter">
+    <div class="container encounter-menu">
+        <div class="row">
+            <div class="col-md-6">
+                <h1>Encounter {{ encounter.name }}</h1>
+            </div>
+            <div class="col-md-6">
+                <div class="encounter-menu__buttons">
+                    <a href="{{ path('app_encounter_init', {'id': encounter.id}) }}"><button class="btn btn-primary">Reset Initiatives</button></a>
+                    {# ERASE INIT #}
+                </div>
 
-					{# SET INITIATIVE #}
-					<button class="btn btn-primary" data-action="encounter#setInitiatives">Set Initiatives</button>
+                {# SET MONSTERS INITIATIVE #}
+				{# <button class="btn btn-primary" data-action="click->encounter#rollMonstersInitiatives" data-target="encounter.monsters" data-monsters="{{ monsters|json_encode }}">Roll Monsters Initiatives</button> #}
 
-					{# ORDER UNITS BY INITIATIVE > JS #}
-					<button class="btn btn-primary" data-action="encounter#orderUnits">Order Units</button>
+				{# ORDER UNITS BY INITIATIVE > JS #}
+				<button class="btn btn-primary" data-action="click->encounter#sortUnitsByInitiative">Order Units</button>
 
-					{# START ENCOUNTER #}
-					<button class="btn btn-primary" data-action="encounter#startEncounter">Start Encounter</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	{% endblock %}
+                {# START ENCOUNTER #}
+                <button class="btn btn-primary" data-action="encounter#startEncounter">Start Encounter</button>
+            </div>
+        </div>
+    </div>
+    <div class="container encounter-content" id="unitContainer">
+        {# on affiche les unités de l'encounter #}
+        {% for unit in units %}
+            <div class="unit d-flex">
+                <div class="unit__name">
+                    {{ unit.name }}
+                </div>
+                <div class="unit__initiative">
+                    {% if unit in monsters %}
+                        <input value="{{ unit.initiative }}" placeholder="initiative" type="number" class="initiative" id="initiative_{{ unit.id }}">
+                    {% else %}
+                        <input value="{{ unit.initiative }}" placeholder="initiative" type="number">
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{# <script src="{{ asset('assets/app.js') }}" defer></script> #}
+
+{% endblock %}
