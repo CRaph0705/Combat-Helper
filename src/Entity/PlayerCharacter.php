@@ -30,20 +30,12 @@ class PlayerCharacter
     #[ORM\Column(nullable: true)]
     private ?int $hpMax = null;
 
-    #[ORM\ManyToMany(targetEntity: Condition::class, inversedBy: 'playerCharacters')]
-    private Collection $conditions;
-
-    #[ORM\ManyToMany(targetEntity: EncounterList::class, inversedBy: 'playerCharacters')]
-    private Collection $encounterLists;
-
-    #[ORM\ManyToMany(targetEntity: Encounter::class, mappedBy: 'players')]
-    private Collection $encounters;
+    #[ORM\OneToMany(mappedBy: 'playerCharacter', targetEntity: EncounterPlayerCharacter::class, orphanRemoval: true)]
+    private Collection $encounterPlayerCharacters;
 
     public function __construct()
     {
-        $this->conditions = new ArrayCollection();
-        $this->encounterLists = new ArrayCollection();
-        $this->encounters = new ArrayCollection();
+        $this->encounterPlayerCharacters = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -117,77 +109,33 @@ class PlayerCharacter
     }
 
     /**
-     * @return Collection<int, Condition>
+     * @return Collection<int, EncounterPlayerCharacter>
      */
-    public function getConditions(): Collection
+    public function getEncounterPlayerCharacters(): Collection
     {
-        return $this->conditions;
+        return $this->encounterPlayerCharacters;
     }
 
-    public function addCondition(Condition $condition): self
+    public function addEncounterPlayerCharacter(EncounterPlayerCharacter $encounterPlayerCharacter): self
     {
-        if (!$this->conditions->contains($condition)) {
-            $this->conditions->add($condition);
+        if (!$this->encounterPlayerCharacters->contains($encounterPlayerCharacter)) {
+            $this->encounterPlayerCharacters->add($encounterPlayerCharacter);
+            $encounterPlayerCharacter->setPlayerCharacter($this);
         }
 
         return $this;
     }
 
-    public function removeCondition(Condition $condition): self
+    public function removeEncounterPlayerCharacter(EncounterPlayerCharacter $encounterPlayerCharacter): self
     {
-        $this->conditions->removeElement($condition);
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, EncounterList>
-     */
-    public function getEncounterLists(): Collection
-    {
-        return $this->encounterLists;
-    }
-
-    public function addEncounterList(EncounterList $encounterList): self
-    {
-        if (!$this->encounterLists->contains($encounterList)) {
-            $this->encounterLists->add($encounterList);
+        if ($this->encounterPlayerCharacters->removeElement($encounterPlayerCharacter)) {
+            // set the owning side to null (unless already changed)
+            if ($encounterPlayerCharacter->getPlayerCharacter() === $this) {
+                $encounterPlayerCharacter->setPlayerCharacter(null);
+            }
         }
 
         return $this;
     }
 
-    public function removeEncounterList(EncounterList $encounterList): self
-    {
-        $this->encounterLists->removeElement($encounterList);
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Encounter>
-     */
-    public function getEncounters(): Collection
-    {
-        return $this->encounters;
-    }
-
-    public function addEncounter(Encounter $encounter): self
-    {
-        if (!$this->encounters->contains($encounter)) {
-            $this->encounters->add($encounter);
-            $encounter->addPlayer($this);
-        }
-
-        return $this;
-    }
-
-    public function removeEncounter(Encounter $encounter): self
-    {
-        if ($this->encounters->removeElement($encounter)) {
-            $encounter->removePlayer($this);
-        }
-
-        return $this;
-    }
 }

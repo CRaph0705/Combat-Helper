@@ -24,8 +24,8 @@
 		<div class="monster-title">
 			<h3>Monsters</h3>
 		</div>
-		<div class="monsters-content" data-index="{{ form.encounterMonsters|length > 0 ? form.encounterMonsters|last.vars.name + 1 : 0 }}" data-prototype="{{ form_widget(form.encounterMonsters.vars.prototype)|e('html_attr') }}">
-			{% for monster in form.encounterMonsters %}
+		<div class="monsters-content" data-index="{{ form.monsters|length > 0 ? form.monsters|last.vars.name + 1 : 0 }}" data-prototype="{{ form_widget(form.monsters.vars.prototype)|e('html_attr') }}">
+			{% for monster in form.monsters %}
 				<div class="monster-card mb-4 row">
 					{{ form_row(monster.name) }}
 				</div>

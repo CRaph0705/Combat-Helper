@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Monster;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -18,22 +19,26 @@ class MonsterType extends AbstractType
         ->add('hp')
         ->add('ac', null, [
             'required' => false,
-            'label' => 'Classe d\'armure (AC)',
+            'label' => 'Armor Class (AC)',
             'attr' => [
-                'placeholder' => 'Classe d\'armure (AC)',
+                'placeholder' => 'Armor Class (AC)',
             ],
             'mapped' => $showAc, // Utiliser cette option pour afficher ou non le champ 'ac'
         ])
         ->add('initiative')
-        ;
+        ->add('quantity', IntegerType::class, [
+            'label' => 'Quantity',
+            'required' => false,
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Monster::class,
-            'show_ac' => false, // Valeur par défaut de l'option personnalisée 'show_ac'
-
+            'show_ac' => false,
+            'monstersAvailable' => null,
+            'monstersAdded' => null,
         ]);
     }
 }

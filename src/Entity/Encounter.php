@@ -16,13 +16,6 @@ class Encounter
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToMany(targetEntity: PlayerCharacter::class, inversedBy: 'encounters')]
-    private Collection $players;
-
-    #[ORM\ManyToMany(targetEntity: Monster::class, inversedBy: 'encounters')]
-    private Collection $monsters;
-
-
     private int $round = 0;
     
     //array of units
@@ -31,67 +24,28 @@ class Encounter
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[ORM\OneToMany(mappedBy: 'encounter', targetEntity: EncounterMonster::class, orphanRemoval: true, cascade: ['persist'])]
+    private Collection $encounterMonsters;
+
+    #[ORM\OneToMany(mappedBy: 'encounter', targetEntity: EncounterPlayerCharacter::class, orphanRemoval: true, cascade: ['persist'])]
+    private Collection $encounterPlayerCharacters;
+
 
     public function __construct()
     {
-        $this->players = new ArrayCollection();
-        $this->monsters = new ArrayCollection();
+        $this->encounterMonsters = new ArrayCollection();
+        $this->encounterPlayerCharacters = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->getName() ?? 'Encounter';
     }
 
     public function getId(): ?int
     {
         return $this->id;
     }
-
-    /**
-     * @return Collection<int, PlayerCharacter>
-     */
-    public function getPlayers(): Collection
-    {
-        return $this->players;
-    }
-
-    public function addPlayer(PlayerCharacter $player): self
-    {
-        if (!$this->players->contains($player)) {
-            $this->players->add($player);
-        }
-
-        return $this;
-    }
-
-    public function removePlayer(PlayerCharacter $player): self
-    {
-        $this->players->removeElement($player);
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Monster>
-     */
-    public function getMonsters(): Collection
-    {
-        return $this->monsters;
-    }
-
-    public function addMonster(Monster $monster): self
-    {
-        if (!$this->monsters->contains($monster)) {
-            $this->monsters->add($monster);
-        }
-
-        return $this;
-    }
-
-    public function removeMonster(Monster $monster): self
-    {
-        $this->monsters->removeElement($monster);
-
-        return $this;
-    }
-
-
 
 
     //on créé une fonction pour trier les unités par initiative
@@ -150,18 +104,6 @@ class Encounter
         return $this;
     }
 
-    public function saveUnits(): self
-    {
-        //TODO
-        return $this;
-    }
-
-    public function loadUnits($id, EncounterListRepository $encounterListRepository): self
-    {
-        // on récupère les joueurs et monstres de l'EncounterList et on les ajoute à l'Encounter
-        // $this->addUnit($encounterListRepository->findBy($id)->getPlayers());
-        return $this;
-    }
 ############################################################################################################
     //ENCOUNTER FUNCTIONS
     public function startEncounter(): self
@@ -244,6 +186,66 @@ class Encounter
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EncounterMonster>
+     */
+    public function getEncounterMonsters(): Collection
+    {
+        return $this->encounterMonsters;
+    }
+
+    public function addEncounterMonster(EncounterMonster $encounterMonster): self
+    {
+        if (!$this->encounterMonsters->contains($encounterMonster)) {
+            $this->encounterMonsters->add($encounterMonster);
+            $encounterMonster->setEncounter($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEncounterMonster(EncounterMonster $encounterMonster): self
+    {
+        if ($this->encounterMonsters->removeElement($encounterMonster)) {
+            // set the owning side to null (unless already changed)
+            if ($encounterMonster->getEncounter() === $this) {
+                $encounterMonster->setEncounter(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EncounterPlayerCharacter>
+     */
+    public function getEncounterPlayerCharacters(): Collection
+    {
+        return $this->encounterPlayerCharacters;
+    }
+
+    public function addEncounterPlayerCharacter(EncounterPlayerCharacter $encounterPlayerCharacter): self
+    {
+        if (!$this->encounterPlayerCharacters->contains($encounterPlayerCharacter)) {
+            $this->encounterPlayerCharacters->add($encounterPlayerCharacter);
+            $encounterPlayerCharacter->setEncounter($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEncounterPlayerCharacter(EncounterPlayerCharacter $encounterPlayerCharacter): self
+    {
+        if ($this->encounterPlayerCharacters->removeElement($encounterPlayerCharacter)) {
+            // set the owning side to null (unless already changed)
+            if ($encounterPlayerCharacter->getEncounter() === $this) {
+                $encounterPlayerCharacter->setEncounter(null);
+            }
+        }
 
         return $this;
     }
