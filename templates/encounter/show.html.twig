@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'navbar.html.twig' %}
 
 {% block title %}Encounter{% endblock %}
 
@@ -14,6 +14,22 @@
             <tr>
                 <th>Name</th>
                 <td>{{ encounter.name }}</td>
+            </tr>
+            <tr>
+                <th>Players</th>
+                <td>
+                    {% for player in players %}
+                        {{ player.name }}
+                    {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <th>Monsters</th>
+                <td>
+                    {% for monster in monsters %}
+                        {{ monster.name }}
+                    {% endfor %}
+                </td>
             </tr>
         </tbody>
     </table>

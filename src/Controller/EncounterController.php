@@ -43,8 +43,23 @@ class EncounterController extends AbstractController
     #[Route('/{id}', name: 'app_encounter_show', methods: ['GET'])]
     public function show(Encounter $encounter): Response
     {
+        $playerEncounter=$encounter->getEncounterPlayerCharacters();
+        $players=[];
+        foreach($playerEncounter as $player){
+            $players[]=$player->getPlayerCharacter();
+        }
+
+        $monsterEncounter=$encounter->getEncounterMonsters();
+        $monsters=[];
+        foreach($monsterEncounter as $monster){
+            $monsters[]=$monster->getMonster();
+        }
+
+
         return $this->render('encounter/show.html.twig', [
             'encounter' => $encounter,
+            'players' => $players,
+            'monsters' => $monsters,
         ]);
     }
 
