@@ -6,6 +6,7 @@ use App\Entity\Encounter;
 use App\Form\EncounterType;
 use App\Repository\EncounterRepository;
 use App\Repository\MonsterRepository;
+use Doctrine\ORM\Mapping\Id;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -127,7 +128,8 @@ class EncounterController extends AbstractController
 
             }
 
-            return $this->redirectToRoute('app_encounter_index', [], Response::HTTP_SEE_OTHER);
+            //redirect to encounter show of this encounter
+            return $this->redirectToRoute('app_encounter_show', ['id' => $encounter->getId()], Response::HTTP_SEE_OTHER);
         }
 
 
