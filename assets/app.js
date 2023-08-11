@@ -34,7 +34,7 @@ window.addEventListener('resize', function(event){
   ScrollHeight();
 });
 
-function ScrollHeight() {
+export function ScrollHeight() {
   var content = document.querySelector('#parchment');
   var container = document.querySelector('#contain');
 

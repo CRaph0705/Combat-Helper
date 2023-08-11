@@ -1,9 +1,10 @@
 import { Controller } from '@hotwired/stimulus';
-
+import { ScrollHeight } from '../app.js';
 export default class extends Controller {
     connect() {
         onload = () => {
             console.log('monsters-form controller connected');
+
 
 
             const addTagFormDeleteLink = (item) => {
@@ -16,22 +17,14 @@ export default class extends Controller {
                 removeFormButton.addEventListener('click', (e) => {
                     e.preventDefault();
                     item.remove();
+
+                    ScrollHeight();
                 });
             }
 
             const monsters = document.querySelectorAll('div.monster-card');
             monsters.forEach((monster) => {
                 addTagFormDeleteLink(monster);
-                // const selectQuantity = document.createElement('select');
-                // selectQuantity.name = `encounter[encounterMonsters][${monster.dataset.index}][quantity]`;
-                // selectQuantity.classList.add('form-control');
-                // for (let i = 1; i <= 10; i++) {
-                //     const option = document.createElement('option');
-                //     option.value = i;
-                //     option.text = i;
-                //     selectQuantity.appendChild(option);
-                // }
-                // monster.appendChild(selectQuantity);
             });
 
             const addMonsterTagLink = document.createElement('a');
@@ -56,27 +49,14 @@ export default class extends Controller {
                     );
                 collectionHolder.appendChild(item);
                 collectionHolder.dataset.index++;
-            
-            
-                // Ajouter le sélecteur de quantité à la carte de monstre
-                // const selectQuantity = document.createElement('select');
-                // selectQuantity.name = `encounter[encounterMonsters][${collectionHolder.dataset.index - 1}][quantity]`;
-                // selectQuantity.classList.add('form-control');
-                // for (let i = 1; i <= 10; i++) {
-                //     const option = document.createElement('option');
-                //     option.value = i;
-                //     option.text = i;
-                //     selectQuantity.appendChild(option);
-                // }
-                // item.appendChild(selectQuantity);
-
 
 
                 addTagFormDeleteLink(item);
 
+                ScrollHeight();
             };
-            
-            
+
+
             addMonsterTagLink.addEventListener("click", addFormToCollection)
         }
     }
