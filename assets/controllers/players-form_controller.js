@@ -1,4 +1,5 @@
 import { Controller } from '@hotwired/stimulus';
+import { ScrollHeight } from '../app.js';
 
 export default class extends Controller {
     connect() {
@@ -16,6 +17,8 @@ export default class extends Controller {
                 removeFormButton.addEventListener('click', (e) => {
                     e.preventDefault();
                     item.remove();
+
+                    ScrollHeight();
                 });
             }
 
@@ -44,7 +47,9 @@ export default class extends Controller {
                     );
                 collectionHolder.appendChild(item);
                 collectionHolder.dataset.index++;
-                addTagFormDeleteLink(item)
+                addTagFormDeleteLink(item);
+
+                ScrollHeight();
             }
             addPlayerTagLink.addEventListener("click", addFormToCollection)
         }
