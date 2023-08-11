@@ -111,13 +111,8 @@ class EncounterController extends AbstractController
         foreach($encounterMonsters as $monster) {
             $monsters[]=$monster->getMonster();
         }
-        //on récupère les entités monster liées à l'encounter et on set leur quantité en fonction de l'input
-        // foreach($monsters as $monster){
-        //     $monster->setQuantity($encounter->getEncounterMonsters()->getQuantity());
-        // }
 
 
-        // dd($request->request->get('encounter')['encounterMonsters']);
         if ($form->isSubmitted() && $form->isValid()) {
             // Save the encounter
             $encounterRepository->save($encounter, true);
