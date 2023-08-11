@@ -17,7 +17,7 @@
         {% for encounter in encounters %}
             <tr>
                 <td>{{ encounter.id }}</td>
-                <td>{{ encounter.name }}</td>
+                <td>{{ encounter.shortName }}</td>
                 <td>
                     <a href="{{ path('app_encounter_show', {'id': encounter.id}) }}">show</a>
                     <a href="{{ path('app_encounter_edit', {'id': encounter.id}) }}">edit</a>

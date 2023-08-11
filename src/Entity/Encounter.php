@@ -30,6 +30,9 @@ class Encounter
     #[ORM\OneToMany(mappedBy: 'encounter', targetEntity: EncounterPlayerCharacter::class, orphanRemoval: true, cascade: ['persist'])]
     private Collection $encounterPlayerCharacters;
 
+    #[ORM\Column(length: 255)]
+    private ?string $shortName = null;
+
 
     public function __construct()
     {
@@ -246,6 +249,18 @@ class Encounter
                 $encounterPlayerCharacter->setEncounter(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getShortName(): ?string
+    {
+        return $this->shortName;
+    }
+
+    public function setShortName(string $shortName): self
+    {
+        $this->shortName = $shortName;
 
         return $this;
     }

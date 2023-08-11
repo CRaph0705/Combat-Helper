@@ -14,13 +14,12 @@ import { definitionsFromContext } from 'stimulus/webpack-helpers';
 // import { Controller } from 'stimulus';
 
 // Initialisez l'application Stimulus
-const application = Application.start();
-const context = require.context('./controllers', true, /\.js$/);
-application.load(definitionsFromContext(context));
+// import stimulusApplication from './controllers/stimulusSingleton';
+// console.log('stimulus ok');
 
-console.log('stimulus ok');
-console.log(definitionsFromContext);
-console.log(Application);
+
+// console.log(definitionsFromContext);
+// console.log(Application);
 // console.log(Controller);
 
 import './bootstrap';
@@ -43,6 +42,6 @@ function ScrollHeight() {
   // so for a better effect, absolute height is defined by his content.
   content.style.height = container.offsetHeight + 'px';
 }
-
+console.log('scroll ok');
 
 

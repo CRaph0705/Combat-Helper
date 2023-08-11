@@ -5,35 +5,28 @@
 {% block body %}
     <h1>Encounter</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ encounter.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ encounter.name }}</td>
-            </tr>
-            <tr>
-                <th>Players</th>
-                <td>
+    <div class="encounter-show">
+        <div class="encounter-infos"> ID : {{ encounter.id }} - Name : {{ encounter.shortName }}</div>
+        <div class="encounter-units">
+            <div class="left-column">
+                <div>Players</div>
+                <div>
                     {% for player in players %}
-                        {{ player.name }}
+                        <div>{{ player.name }}</div>
                     {% endfor %}
-                </td>
-            </tr>
-            <tr>
-                <th>Monsters</th>
-                <td>
-                    {% for monster in monsters %}
-                        {{ monster.name }}
-                    {% endfor %}
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                </div>
+            </div>
 
+            <div class="right-column">
+                <div>Monsters</div>
+                <div>
+                    {% for monster in monsters %}
+                        <div>{{ monster.name }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
     <a href="{{ path('app_encounter_index') }}">back to list</a>
 
     <a href="{{ path('app_encounter_edit', {'id': encounter.id}) }}">edit</a>
