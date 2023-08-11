@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\EncounterMonster;
 use App\Entity\Monster;
 use Doctrine\ORM\Mapping\Entity;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -21,14 +22,10 @@ class EncounterMonsterType extends AbstractType
                 'label' => false,
                 'required' => true,
             ])
-            // ->add('encounter')
-            //hide id even though it's not on the form
-            // ->add('id', null, [
-            //     'label' => false,
-            //     'attr' => [
-            //         'hidden' => true,
-            //     ],
-            // ])
+            ->add('quantity', IntegerType::class, [ // Add the quantity field
+                'label' => 'Quantity',
+                'required' => false,
+            ]);
         ;
     }
 

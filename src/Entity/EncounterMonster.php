@@ -21,6 +21,9 @@ class EncounterMonster
     #[ORM\JoinColumn(nullable: false)]
     private ?Encounter $encounter = null;
 
+    #[ORM\Column]
+    private ?int $quantity = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -46,6 +49,18 @@ class EncounterMonster
     public function setEncounter(?Encounter $encounter): self
     {
         $this->encounter = $encounter;
+
+        return $this;
+    }
+
+    public function getQuantity(): ?int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(int $quantity): self
+    {
+        $this->quantity = $quantity;
 
         return $this;
     }
