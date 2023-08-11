@@ -14,6 +14,22 @@ class MonsterFixtures extends Fixture
         $rat->setName('Rat');
         $manager->persist($rat);
 
+        $goblin = new Monster();
+        $goblin->setName('Goblin');
+        $manager->persist($goblin);
+
+        $wolf = new Monster();
+        $wolf->setName('Wolf');
+        $manager->persist($wolf);
+
+        $giantSpider = new Monster();
+        $giantSpider->setName('Giant Spider');
+        $manager->persist($giantSpider);
+
+        $chicken = new Monster();
+        $chicken->setName('Chicken');
+        $manager->persist($chicken);
+        
         $manager->flush();
     }
 }
