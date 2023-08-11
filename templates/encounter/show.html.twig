@@ -1,35 +1,42 @@
 {% extends 'navbar.html.twig' %}
 
-{% block title %}Encounter{% endblock %}
+{% block title %}Encounter
+{% endblock %}
 
 {% block body %}
-    <h1>Encounter</h1>
+	<h1>Encounter</h1>
 
-    <div class="encounter-show">
-        <div class="encounter-infos"> ID : {{ encounter.id }} - Name : {{ encounter.shortName }}</div>
-        <div class="encounter-units">
-            <div class="left-column">
-                <div>Players</div>
-                <div>
-                    {% for player in players %}
-                        <div>{{ player.name }}</div>
-                    {% endfor %}
-                </div>
-            </div>
+	<div class="encounter-show">
+		<div class="encounter-infos">
+			ID :
+			{{ encounter.id }}
+			- Name :
+			{{ encounter.shortName }}</div>
+		<div class="encounter-units">
+			<div class="left-column">
+				<div>Players</div>
+				<div class="players-list">
+					{% for player in players %}
+						<div>{{ player.name }}</div>
+					{% endfor %}
+				</div>
+			</div>
 
-            <div class="right-column">
-                <div>Monsters</div>
-                <div>
-                    {% for monster in monsters %}
-                        <div>{{ monster.name }}</div>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-    </div>
-    <a href="{{ path('app_encounter_index') }}">back to list</a>
+			<div class="right-column">
+				<div>Monsters</div>
+				<div class="monsters-list">
+					{% for key, monster in monstersArray.monsters %}
+						<div>{{ monster.name }}
+							({{ monstersArray.quantities[key] }})</div>
+					{% endfor %}
 
-    <a href="{{ path('app_encounter_edit', {'id': encounter.id}) }}">edit</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<a href="{{ path('app_encounter_index') }}">back to list</a>
 
-    {{ include('encounter/_delete_form.html.twig') }}
+	<a href="{{ path('app_encounter_edit', {'id': encounter.id}) }}">edit</a>
+
+	{{ include('encounter/_delete_form.html.twig') }}
 {% endblock %}

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Encounter;
 use App\Form\EncounterType;
 use App\Repository\EncounterRepository;
+use App\Repository\MonsterRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,6 +21,9 @@ class EncounterController extends AbstractController
             'encounters' => $encounterRepository->findAll(),
         ]);
     }
+
+
+    ############################################################################################################
 
     #[Route('/new', name: 'app_encounter_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EncounterRepository $encounterRepository): Response
@@ -54,54 +58,83 @@ class EncounterController extends AbstractController
         ]);
     }
 
+
+    ############################################################################################################
+
     #[Route('/{id}', name: 'app_encounter_show', methods: ['GET'])]
     public function show(Encounter $encounter): Response
     {
         $playerEncounter=$encounter->getEncounterPlayerCharacters();
         $players=[];
-        foreach($playerEncounter as $player){
-            $players[]=$player->getPlayerCharacter();
+        foreach($playerEncounter as $encounterPlayer) {
+            $players[]=$encounterPlayer->getPlayerCharacter();
         }
 
-        $monsterEncounter=$encounter->getEncounterMonsters();
-        $monsters=[];
-        foreach($monsterEncounter as $monster){
-            $monsters[]=$monster->getMonster();
-        }
-
+        $encounterMonsters=$encounter->getEncounterMonsters();
+        $monstersArray=[
+            'monsters' => [],
+            'quantities' => [],
+        ];
+        foreach($encounterMonsters as $encounterMonster) {
+            $monstersArray[
+                'monsters'
+            ][]=$encounterMonster->getMonster();
+            $monstersArray[
+                'quantities'
+            ][]=$encounterMonster->getQuantity();        }
 
         return $this->render('encounter/show.html.twig', [
             'encounter' => $encounter,
             'players' => $players,
-            'monsters' => $monsters,
+            'monstersArray' => $monstersArray,
+            'encounterMonsters' => $encounterMonsters,
         ]);
     }
 
+    ############################################################################################################
+
+
     #[Route('/{id}/edit', name: 'app_encounter_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Encounter $encounter, EncounterRepository $encounterRepository): Response
+    public function edit(Request $request, Encounter $encounter, EncounterRepository $encounterRepository, MonsterRepository $monsterRepository): Response
     {
         $form = $this->createForm(EncounterType::class, $encounter);
         $form->handleRequest($request);
 
         $encounterPlayerCharacters=$encounter->getEncounterPlayerCharacters();
         $players=[];
-        foreach($encounterPlayerCharacters as $player){
+        foreach($encounterPlayerCharacters as $player) {
             $players[]=$player->getPlayerCharacter();
         }
 
         $encounterMonsters=$encounter->getEncounterMonsters();
         $monsters=[];
-        foreach($encounterMonsters as $monster){
+        foreach($encounterMonsters as $monster) {
             $monsters[]=$monster->getMonster();
         }
-        
+        //on récupère les entités monster liées à l'encounter et on set leur quantité en fonction de l'input
+        // foreach($monsters as $monster){
+        //     $monster->setQuantity($encounter->getEncounterMonsters()->getQuantity());
+        // }
 
 
+        // dd($request->request->get('encounter')['encounterMonsters']);
         if ($form->isSubmitted() && $form->isValid()) {
+            // Save the encounter
             $encounterRepository->save($encounter, true);
+
+            // Get the submitted form data
+            $formData = $form->getData();
+            // Loop through submitted monsters and update quantities
+            foreach ($formData->getEncounterMonsters() as $encounterMonster) {
+                $quantity = $encounterMonster->getQuantity();  // Nouvelle façon d'obtenir la quantité
+                // Set the quantity to the EncounterMonster
+                $encounterMonster->setQuantity($quantity);
+
+            }
 
             return $this->redirectToRoute('app_encounter_index', [], Response::HTTP_SEE_OTHER);
         }
+
 
         return $this->render('encounter/edit.html.twig', [
             'encounter' => $encounter,
@@ -112,6 +145,10 @@ class EncounterController extends AbstractController
             'players' => $players,
         ]);
     }
+
+
+    ############################################################################################################
+
 
     #[Route('/{id}', name: 'app_encounter_delete', methods: ['POST'])]
     public function delete(Request $request, Encounter $encounter, EncounterRepository $encounterRepository): Response

@@ -26,10 +26,7 @@ class MonsterType extends AbstractType
             'mapped' => $showAc, // Utiliser cette option pour afficher ou non le champ 'ac'
         ])
         ->add('initiative')
-        ->add('quantity', IntegerType::class, [
-            'label' => 'Quantity',
-            'required' => false,
-        ]);
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

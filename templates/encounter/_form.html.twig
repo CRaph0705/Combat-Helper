@@ -1,44 +1,50 @@
 {{ form_start(form) }}
 
 
-	<div>
-		<h2>
-			Current Encounter: {{ encounter.shortName }} <br>
-		</h2>
-	</div>
+<div>
+	<h2>
+		Current Encounter:
+		{{ encounter.shortName }}
+		<br>
+	</h2>
+</div>
 
-	<div class="card border-light mb-3" data-controller="players-form">
-		<div class="player-title">
-			<h3>Players</h3>
-		</div>
-			<div class="players-content" data-index="{{ form.encounterPlayerCharacters|length > 0 ? form.encounterPlayerCharacters|last.vars.name + 1 : 0 }}" data-prototype="{{ form_widget(form.encounterPlayerCharacters.vars.prototype)|e('html_attr') }}">
-				
-				{% for player in form.encounterPlayerCharacters %}
-					<div class="player-card mb-4 row">
-						{{ form_row(player) }}
-					</div>
-				{% endfor %}
+<div class="card border-light mb-3" data-controller="players-form">
+	<div class="player-title">
+		<h3>Players</h3>
+	</div>
+	<div class="players-content" data-index="{{ form.encounterPlayerCharacters|length > 0 ? form.encounterPlayerCharacters|last.vars.name + 1 : 0 }}" data-prototype="{{ form_widget(form.encounterPlayerCharacters.vars.prototype)|e('html_attr') }}">
+
+		{% for player in form.encounterPlayerCharacters %}
+			<div class="player-card mb-4 row">
+				{{ form_row(player) }}
 			</div>
+		{% endfor %}
 	</div>
+</div>
 
 
+<div class="card border-light mb-3" data-controller="monsters-form">
+	<div class="monster-title">
+		<h3>Monsters</h3>
+	</div>
+	<div class="monsters-content" data-index="{{ form.encounterMonsters|length > 0 ? form.encounterMonsters|last.vars.name + 1 : 0 }}" data-prototype="{{ form_widget(form.encounterMonsters.vars.prototype)|e('html_attr') }}">
 
-	<div class="card border-light mb-3" data-controller="monsters-form">
-		<div class="monster-title">
-			<h3>Monsters</h3>
-		</div>
-		<div class="monsters-content" data-index="{{ form.encounterMonsters|length > 0 ? form.encounterMonsters|last.vars.name + 1 : 0 }}" data-prototype="{{ form_widget(form.encounterMonsters.vars.prototype)|e('html_attr') }}">
-			
-			
-			{% for monster in form.encounterMonsters %}
-				<div class="monster-card mb-4 row">
-					{{ form_row(monster) }}
+
+		{% for encounterMonster in form.encounterMonsters %}
+			<div class="monster-card mb-4 row">
+				{{ form_row(encounterMonster) }}
+
+				{# Add quantity field for each monster #}
+				<div class="col">
+					{{ form_widget(encounterMonster.quantity, {'attr': {'id': 'encounter_monster_quantity_' ~ encounterMonster.monster.id}}) }}
 				</div>
-			{% endfor %}
-		</div>
+			</div>
+		{% endfor %}
 	</div>
+</div>
 
 
-	<button class="btn">{{ button_label|default('Save') }}</button>
+<button class="btn">{{ button_label|default('Save') }}</button>
 
 {{ form_end(form) }}
