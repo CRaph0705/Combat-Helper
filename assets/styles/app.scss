@@ -133,3 +133,53 @@ div p:not(:first-child)::first-letter {
 
 
 /* #################################################### PARCHMENT END #################################################### */
+
+
+.encounter-units {
+  display: flex;
+}
+
+.left-column, .right-column {
+  flex: 1; /* Répartir l'espace équitablement entre les deux colonnes */
+}
+
+
+.monster-card {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  padding: 1em;
+  border: 1px solid black;
+  border-radius: 1em;
+  background-color: #fffef0;
+
+  box-shadow: 0 0 0.2em 0.2em lightgray;
+}
+
+.monster-card:hover {
+  box-shadow: 0 0 0.2em 0.2em #7F3300;
+}
+
+.player-card {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  padding: 1em;
+  border: 1px solid black;
+  border-radius: 1em;
+  background-color: #fffef0;
+
+  box-shadow: 0 0 0.2em 0.2em lightgray;
+}
+
+.player-card:hover {
+  box-shadow: 0 0 0.2em 0.2em #7F3300;
+}

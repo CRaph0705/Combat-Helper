@@ -25,7 +25,19 @@ class EncounterController extends AbstractController
     public function new(Request $request, EncounterRepository $encounterRepository): Response
     {
         $encounter = new Encounter();
-        $form = $this->createForm(EncounterType::class, $encounter);
+
+        //new name = date + hash of random bytes and check if unique in db
+        $newname = date('Y-m-d H:i', time() + 7200) .'-'. hash('sha256', random_bytes(32));
+        while ($encounterRepository->findOneBy(['name' => $newname])) {
+            $newname = date('Y-m-d H:i', time() + 7200) .'-'. hash('sha256', random_bytes(32));
+        }
+        $shortName = substr($newname, 0, 20). '...';
+
+        $encounter->setName($newname);
+        $encounter->setShortName($shortName);
+        $form = $this->createForm(EncounterType::class, $encounter, [
+            'current_encounter' => $encounter, // Pass the current encounter as an option
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -34,9 +46,11 @@ class EncounterController extends AbstractController
             return $this->redirectToRoute('app_encounter_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('encounter/new.html.twig', [
+        return $this->render('encounter/new.html.twig', [
             'encounter' => $encounter,
             'form' => $form,
+            'current_encounter' => $encounter,
+            'shortName' => $shortName,
         ]);
     }
 
@@ -69,15 +83,33 @@ class EncounterController extends AbstractController
         $form = $this->createForm(EncounterType::class, $encounter);
         $form->handleRequest($request);
 
+        $encounterPlayerCharacters=$encounter->getEncounterPlayerCharacters();
+        $players=[];
+        foreach($encounterPlayerCharacters as $player){
+            $players[]=$player->getPlayerCharacter();
+        }
+
+        $encounterMonsters=$encounter->getEncounterMonsters();
+        $monsters=[];
+        foreach($encounterMonsters as $monster){
+            $monsters[]=$monster->getMonster();
+        }
+        
+
+
         if ($form->isSubmitted() && $form->isValid()) {
             $encounterRepository->save($encounter, true);
 
             return $this->redirectToRoute('app_encounter_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('encounter/edit.html.twig', [
+        return $this->render('encounter/edit.html.twig', [
             'encounter' => $encounter,
+            'encounterMonsters' => $encounterMonsters,
+            'encounterPlayers' => $encounterPlayerCharacters,
             'form' => $form,
+            'monsters' => $monsters,
+            'players' => $players,
         ]);
     }
 

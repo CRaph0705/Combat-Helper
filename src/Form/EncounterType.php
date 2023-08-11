@@ -18,25 +18,40 @@ class EncounterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
     $builder
-        ->add('name')
+
+        //hide name field on form
+        ->add('name', null, [
+            'label' => false,
+            'attr' => [
+                'hidden' => true,
+            ],
+        ])
+
 
         ->add('encounterPlayerCharacters', CollectionType::class, [
             'entry_type' => EncounterPlayerCharacterType::class,
-            'label' => 'Player Character',
+            // 'label' => 'Player Character',
             'allow_add' => true,
             'allow_delete' => true,
             'by_reference' => false,
+            'entry_options' => [
+                'label' => false,
+            ],
         ])
 
         ->add('encounterMonsters', CollectionType::class, [
             'entry_type' => EncounterMonsterType::class,
-            'label' => 'Monsters',
+            // 'label' => 'Monsters',
             'allow_add' => true,
             'allow_delete' => true,
             'by_reference' => false,
-        ])
-
-        ;
+            //id hidden
+            'entry_options' => [
+                'label' => false,
+            ],
+            //label hidden
+            'label' => false,
+        ]);
 }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -46,6 +61,7 @@ class EncounterType extends AbstractType
             'show_ac' => false,
             'monstersAvailable' => [],
             'added_monsters' => [],
+            'current_encounter' => null,
         ]);
     }
 }

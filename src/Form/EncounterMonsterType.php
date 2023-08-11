@@ -17,10 +17,18 @@ class EncounterMonsterType extends AbstractType
         $builder
             ->add('monster', EntityType::class, [
                 'class' => Monster::class,
-                'label' => 'Monster',
+                // 'label' => 'Monster',
+                'label' => false,
                 'required' => true,
             ])
-            ->add('encounter')
+            // ->add('encounter')
+            //hide id even though it's not on the form
+            // ->add('id', null, [
+            //     'label' => false,
+            //     'attr' => [
+            //         'hidden' => true,
+            //     ],
+            // ])
         ;
     }
 
