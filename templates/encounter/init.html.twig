@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+{% block title %}Initiatives !{% endblock %}
+{% block body %}
+	<h1>Roll initiative !</h1>
+	<div class="container encounter-nav">
+		<nav>
+			<a href="{{ path('app_encounter_show', {'id': encounter.id}) }}">Back</a>
+			<a href="{{ path('app_encounter_index') }}">Encounter</a>
+		</nav>
+	</div>
+
+
+
+<div data-controller="encounter">
+
+    <div class="container encounter-menu">
+        <div class="row">
+            <div class="col-md-6">
+                <h1>Encounter {{ encounter.shortName }}</h1>
+            </div>
+            <div class="col-md-6">
+                <div class="encounter-menu__buttons">
+                    <a href="{{ path('app_encounter_init', {'id': encounter.id}) }}"><button class="btn btn-primary">Reset Initiatives</button></a>
+                    {# ERASE INIT #}
+                </div>
+
+                {# SET MONSTERS INITIATIVE #}
+				{# <button class="btn btn-primary" data-action="click->encounter#rollMonstersInitiatives" data-target="encounter.monsters" data-monsters="{{ monsters|json_encode }}">Roll Monsters Initiatives</button> #}
+
+				{# ORDER UNITS BY INITIATIVE > JS #}
+				{# <button class="btn btn-primary" data-action="click->encounter#sortUnitsByInitiative">Order Units</button> #}
+
+                {# START ENCOUNTER #}
+                <button class="btn btn-primary" data-action="encounter#startEncounter">Start Encounter</button>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container encounter-content" id="unitContainer" data-encounter-target="unitContainer">
+        {% for unit in units %}
+            <div class="unit d-flex flex-row">
+                <div class="unit__name">
+                    {{ unit.name }}
+                </div>
+                <div class="unit__initiative">
+                    {% if unit in monsters %}
+                        <input value="{{ unit.initiative }}" placeholder="initiative" type="number" class="initiative" data-id="initiative_{{ unit.id }}">
+                    {% else %}
+                        <input value="{{ unit.initiative }}" placeholder="initiative" type="number">
+                    {% endif %}
+                    <button class="btn btn-secondary move-up" data-action="click->encounter#moveUnitUp" data-id="{{ unit.id }}" disabled>&uarr;</button>
+                    <button class="btn btn-secondary move-down" data-action="click->encounter#moveUnitDown" data-id="{{ unit.id }}" disabled>&darr;</button>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+
+</div>
+
+{% endblock %}
