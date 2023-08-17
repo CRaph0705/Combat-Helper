@@ -14,7 +14,8 @@ class PlayerCharacterFixtures extends Fixture
         $valriia->setName('Valriia');
         $valriia->setHpMax(37);
         $valriia->setAC(20);
-        $valriia->setInitiative(3);
+        // $valriia->setInitiative(3);
+        // $this->addReference('valriia', $valriia);
         $manager->persist($valriia);
 
         $zeke = new PlayerCharacter();

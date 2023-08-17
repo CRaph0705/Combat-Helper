@@ -1,14 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Initiatives !{% endblock %}
 
 {% block body %}
-<div class="container encounter-nav">
-    <nav>
-        <a href="{{ path('app_encounter_show', {'id': encounter.id}) }}">Back</a>
-        <a href="{{ path('app_encounter_index') }}">Encounter</a>
-    </nav>
-</div>
 
 <div data-controller="encounter">
     <div class="container encounter-menu">
@@ -36,18 +29,25 @@
     <div class="container encounter-content" id="unitContainer">
         {# on affiche les unités de l'encounter #}
         {% for unit in units %}
-            <div class="unit d-flex">
-                <div class="unit__name">
-                    {{ unit.name }}
+            {% if unit in monsters %}
+                <div class="unit d-flex">
+                    <div class="unit__name">
+                        {{ unit.name }}
+                    </div>
+                    <div class="unit__initiative">
+                            <input value="{{ unit.initiative }}" placeholder="initiative" type="number" class="initiative" id="initiative_{{ unit.id }}">
+                    </div>
                 </div>
-                <div class="unit__initiative">
-                    {% if unit in monsters %}
-                        <input value="{{ unit.initiative }}" placeholder="initiative" type="number" class="initiative" id="initiative_{{ unit.id }}">
-                    {% else %}
-                        <input value="{{ unit.initiative }}" placeholder="initiative" type="number">
-                    {% endif %}
+            {% else %}
+                <div class="unit d-flex">
+                    <div class="unit__name">
+                        {{ unit.name }}
+                    </div>
+                    <div class="unit__initiative">
+                            <input value="{{ unit.initiative }}" placeholder="initiative" type="number">
+                    </div>
                 </div>
-            </div>
+            {% endif %}
         {% endfor %}
     </div>
 </div>
