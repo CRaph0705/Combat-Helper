@@ -45,12 +45,12 @@
                 </div>
                 <div class="unit__initiative">
                     {% if unit in monsters %}
+                        <label for="initiative">Initiative :</label>
                         <input value="{{ unit.initiative }}" placeholder="initiative" type="number" class="initiative" data-id="initiative_{{ unit.id }}">
                     {% else %}
-                        <input value="{{ unit.initiative }}" placeholder="initiative" type="number">
+                        <label for="initiative">Initiative :</label>
+                        <input value="{{ unit.initiative }}" placeholder="initiative" type="number" class="initiative">
                     {% endif %}
-                    <button class="btn btn-secondary move-up" data-action="click->encounter#moveUnitUp" data-id="{{ unit.id }}" disabled>&uarr;</button>
-                    <button class="btn btn-secondary move-down" data-action="click->encounter#moveUnitDown" data-id="{{ unit.id }}" disabled>&darr;</button>
                 </div>
             </div>
         {% endfor %}
