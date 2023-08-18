@@ -6,7 +6,11 @@ export default class extends Controller {
     connect() {
         console.log('encounter_controller connected');
         this.unitContainer = document.getElementById('unitContainer');
-        this.unitContainerTarget.addEventListener('input', this.sortAndUpdate.bind(this));
+        // this.unitContainerTarget.addEventListener('input', this.sortAndUpdate.bind(this));
+        const inputs = this.unitContainer.querySelectorAll('.initiative');
+        inputs.forEach(input => {
+            input.addEventListener('focusout', this.sortAndUpdate.bind(this));
+        });
     }
 
     sortAndUpdate() {
