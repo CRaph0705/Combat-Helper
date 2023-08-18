@@ -6,6 +6,7 @@ use App\Entity\Encounter;
 use App\Form\EncounterType;
 use App\Repository\EncounterRepository;
 use App\Repository\MonsterRepository;
+
 use Doctrine\ORM\Mapping\Id;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -161,16 +162,79 @@ class EncounterController extends AbstractController
 
     ############################################################################################################
 
-    //encounter init
-    // after creating or editing an encounter, the DM can click on init to start the encounter
-    // this will redirect to the encounter/init page
-    // this page will display the encounter with the players and monsters
-    // the DM can then click the monsters to roll initiative
-    // the DM will have to enter the initiative of the players manually
-    // the monsters and players will be sorted by initiative
+    
+    //encounter/init
+    #[Route('/{id}/init', name: 'app_encounter_init', methods: ['GET', 'POST'])]
+    public function init(Encounter $encounter): Response
+    {
+        $playerEncounter = $encounter->getEncounterPlayerCharacters();
+        $monsterEncounter = $encounter->getEncounterMonsters();
 
-    //then the DM can click on start encounter
-    //no redirection, just js to hide the init button and display the next button and the stop button
+        $players = [];
+        foreach($playerEncounter as $encounterPlayer) {
+            $players[$encounterPlayer->getPlayerCharacter()->getName()] = $encounterPlayer->getPlayerCharacter();
+        }
+
+        $monsters = [];
+        foreach($monsterEncounter as $encounterMonster) {
+            $monsters[$encounterMonster->getMonster()->getName()] = [
+                'attributes' => $encounterMonster->getMonster(),
+                'quantity' => $encounterMonster->getQuantity(),
+            ];
+        }
+
+        $units = array_merge($players, $monsters);
+
+        return $this->render('encounter/init.html.twig', [
+            'encounter' => $encounter,
+            'players' => $players,
+            'monsters' => $monsters,
+            'units' => $units,
+        ]);
+    }
+
+    ############################################################################################################
+
+    //encounter/active
+    #[Route('/{id}/active', name: 'app_encounter_active', methods: ['GET', 'POST'], requirements: ['_accessRequirements' => 'checkEncounterRequirements'])]
+    public function active(Encounter $encounter, Request $request): Response
+    {
+        $units = json_decode($request->query->get('units'), true);
+
+
+        
+
+        return $this->render('encounter/active.html.twig', [
+            'encounter' => $encounter,
+            'units' => $units,
+        ]);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+    ############################################################################################################
+
+    ############################################################################################################
+
+//encounter error
+#[Route('/{id}/error', name: 'app_encounter_error', methods: ['GET', 'POST'])]
+public function error(Encounter $encounter): Response
+{
+    return $this->render('encounter/error.html.twig', [
+        'encounter' => $encounter,
+    ]);
+}
+
+    ############################################################################################################
 
     //the DM can then click on next to start the first round
     //the DM can click on stop to stop the encounter at any time
@@ -194,31 +258,7 @@ class EncounterController extends AbstractController
     //the DM can modify the HP of a player or monster by clicking on it and entering the new HP
     //the DM can modify the AC of a player or monster by clicking on it and entering the new AC
 
-
-    //encounter/init
-    #[Route('/{id}/init', name: 'app_encounter_init', methods: ['GET', 'POST'])]
-    public function init(Encounter $encounter): Response
-    {
-        $playerEncounter=$encounter->getEncounterPlayerCharacters();
-        $players=[];
-        foreach($playerEncounter as $encounterPlayer) {
-            $players[]=$encounterPlayer->getPlayerCharacter();
-        }
-        $monsterEncounter=$encounter->getEncounterMonsters();
-        $monsters=[];
-        foreach($monsterEncounter as $encounterMonster) {
-            $monsters[]=$encounterMonster->getMonster();
-        }
-        $units=array_merge($players, $monsters);
-
-        return $this->render('encounter/init.html.twig', [
-            'encounter' => $encounter,
-            'players' => $players,
-            'monsters' => $monsters,
-            'units' => $units,
-        ]);
-    }
-
     ############################################################################################################
+
 
 }

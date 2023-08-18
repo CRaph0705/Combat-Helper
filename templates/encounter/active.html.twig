@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+{% block title %}Fight !{% endblock %}
+{% block body %}
+    <h1>Active Encounter</h1>
+    <p>Encounter Name: {{ encounter.name }}</p>
+    <h2>Units:</h2>
+    <ul>
+        {% for unit in units %}
+            <li>
+                Name: {{ unit.name }} | Initiative: {{ unit.initiative }} | AC: {{ unit.ac }} | HP: {{ unit.hp }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
