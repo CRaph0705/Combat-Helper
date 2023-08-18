@@ -20,14 +20,12 @@
 						{{ encounter.shortName }}</h1>
 				</div>
 				<div class="col-md-6">
-					<div
-						class="encounter-menu__buttons">
+					<div class="encounter-menu__buttons">
 						{# ERASE INIT #}
 						{# <a href="{{ path('app_encounter_init', {'id': encounter.id}) }}">
-							<button class="btn btn-primary">Reset Initiatives</button>
-						</a> #}
-
-                        <button class="btn btn-danger" data-action="click->encounter#resetInitiatives">Reset Initiatives</button>
+																									<button class="btn btn-primary">Reset Initiatives</button>
+																								</a> #}
+							<button class="btn btn-danger" data-action="click->encounter#resetInitiatives"> Reset Initiatives</button>
 
 
 						{# ROLL MONSTERS INITIATIVES #}
@@ -54,20 +52,39 @@
 							<label for="initiative">Initiative :</label>
 							<input value="{{ unit.initiative }}" placeholder="initiative" type="number" class="initiative" data-id="initiative_{{ unit.id }}">
 						</div>
-                    </div>
-                {% else %}
-                    <div class="unit d-flex flex-row">
-                        <div class="unit__name">
-                            {{ unit.name }}
-                        </div>
-                        <div class="unit__initiative">
-                            <label for="initiative">Initiative :</label>
-                            <input value="{{ unit.initiative }}" placeholder="initiative" type="number" class="initiative">
-                        </div>
-                    </div>
-                {% endif %}
-            {% endfor %}
+						<div class="unit__AC">
+							<label for="ac">AC :</label>
+							<input value="{{ unit.ac }}" placeholder="ac" type="number" class="ac">
+						</div>
+						{# unit.current-hp #}
+						<div class="unit__currentHP">
+							<label for="hp">HP :</label>
+							<input value="{{ unit.hp }}" placeholder="hp" type="number" class="hp">
+						</div>
+					</div>
+				{% else %}
+					<div class="unit d-flex flex-row">
+						<div class="unit__name">
+							{{ unit.name }}
+						</div>
+						<div class="unit__initiative">
+							<label for="initiative">Initiative :</label>
+							<input value="{{ unit.initiative }}" placeholder="initiative" type="number" class="initiative">
+						</div>
+						<div class="unit__AC">
+							<label for="ac">AC :</label>
+							<input value="{{ unit.ac }}" placeholder="ac" type="number" class="ac">
+						</div>
+						{# unit.current-hp #}
+						<div class="unit__currentHP">
+							<label for="hp">HP :</label>
+							<input value="{{ unit.hp }}" placeholder="hp" type="number" class="hp">
+						</div>
+					</div>
+				{% endif %}
+
+			{% endfor %}
 		</div>
 
-    </div>
-	{% endblock %}
+	</div>
+{% endblock %}

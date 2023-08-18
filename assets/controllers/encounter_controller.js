@@ -12,7 +12,7 @@ export default class extends Controller {
     sortAndUpdate() {
         // Récupérer toutes les unités
         const units = Array.from(this.unitContainer.querySelectorAll('.unit'));
-
+        console.log(units);
         // Tri des unités par initiative
         units.sort((a, b) => {
             const initiativeA = parseInt(a.querySelector('.initiative').value);
