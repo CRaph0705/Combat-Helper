@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\PlayerCharacter;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -25,7 +26,6 @@ class PlayerCharacterType extends AbstractType
                     ],
                     'mapped' => $showAc, // Utiliser cette option pour afficher ou non le champ 'ac'
                 ])
-                ->add('initiative')
         ;
     }
 
