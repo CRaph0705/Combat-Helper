@@ -2,4 +2,4 @@
 Little tool for DM to organize dnd combats
 
 
-cd $DND_COMBAT
+cd Documents/Pro/MyProjects/DnDProject/CombatHelper
