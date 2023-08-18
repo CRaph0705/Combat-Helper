@@ -9,8 +9,6 @@
 			<a href="{{ path('app_encounter_index') }}">Encounter</a>
 		</nav>
 	</div>
-
-
 	<div data-controller="encounter">
 
 		<div class="container encounter-menu">
@@ -20,65 +18,73 @@
 						{{ encounter.shortName }}</h1>
 				</div>
 				<div class="col-md-6">
-					<div class="encounter-menu__buttons">
+					<div
+						class="encounter-menu__buttons">
 						{# ERASE INIT #}
-						{# <a href="{{ path('app_encounter_init', {'id': encounter.id}) }}">
-																									<button class="btn btn-primary">Reset Initiatives</button>
-																								</a> #}
-							<button class="btn btn-danger" data-action="click->encounter#resetInitiatives"> Reset Initiatives</button>
-
+						<button class="btn btn-danger" data-action="click->encounter#resetInitiatives">
+							Reset Initiatives</button>
 
 						{# ROLL MONSTERS INITIATIVES #}
 						<button class="btn btn-primary" data-action="click->encounter#rollMonstersInitiatives">Roll Monsters Initiatives</button>
 
-						{# <button class="btn btn-primary" data-action="click->encounter#rollMonstersInitiatives" data-target="encounter.monsters" data-monsters="{{ monsters|json_encode }}">Roll Monsters Initiatives</button> #}
+						{# START ENCOUNTER #}
 
-					{# START ENCOUNTER #}
-						{# <button class="btn btn-primary" data-action="encounter#startEncounter">Start Encounter</button> #}
+{# à modifier #}
+						{# <a href="{{ path('app_encounter_active', {'id': encounter.id, 'units': units}) }}">
+							<button class="btn btn-primary" id="startEncounterButton">Start Encounter</button>
+						</a> #}
+
+						<a href="#">
+							<button class="btn btn-primary" id="startEncounterButton" data-action="click->encounter#startEncounter">Start Encounter</button>
+						</a>
+
+
 					</div>
 				</div>
 			</div>
 		</div>
 
-
 		<div class="container encounter-content" id="unitContainer" data-encounter-target="unitContainer">
 			{% for unit in units %}
+		
 				{% if unit in monsters %}
-					<div class="unit d-flex flex-row" data-monster="true">
-						<div class="unit__name">
-							{{ unit.name }}
+					{% for i in 1..unit.quantity %}
+						<div class="unit d-flex flex-row" data-monster="true" data-unit-name="{{ unit.attributes.name }}_{{i}}">
+							<div class="unit__name">
+								{{ unit.attributes.name }}
+							</div>
+							<div class="unit__initiative">
+								<label for="initiative">Initiative :</label>
+								<input value="{{ unit.attributes.initiative }}" placeholder="initiative" type="number" class="initiative" data-id="initiative_{{ unit.attributes.id }}" required="required">
+							</div>
+							<div class="unit__AC">
+								<label for="ac">AC :</label>
+								<input value="{{ unit.attributes.ac }}" placeholder="ac" type="number" class="ac" required="required">
+							</div>
+							{# unit.current-hp #}
+							<div class="unit__currentHP">
+								<label for="hp">HP :</label>
+								<input value="{{ unit.attributes.hp }}" placeholder="hp" type="number" class="hp" required="required">
+							</div>
 						</div>
-						<div class="unit__initiative">
-							<label for="initiative">Initiative :</label>
-							<input value="{{ unit.initiative }}" placeholder="initiative" type="number" class="initiative" data-id="initiative_{{ unit.id }}">
-						</div>
-						<div class="unit__AC">
-							<label for="ac">AC :</label>
-							<input value="{{ unit.ac }}" placeholder="ac" type="number" class="ac">
-						</div>
-						{# unit.current-hp #}
-						<div class="unit__currentHP">
-							<label for="hp">HP :</label>
-							<input value="{{ unit.hp }}" placeholder="hp" type="number" class="hp">
-						</div>
-					</div>
+					{% endfor %}
 				{% else %}
-					<div class="unit d-flex flex-row">
+					<div class="unit d-flex flex-row" data-unit-name="{{ unit.name }}">
 						<div class="unit__name">
 							{{ unit.name }}
 						</div>
 						<div class="unit__initiative">
 							<label for="initiative">Initiative :</label>
-							<input value="{{ unit.initiative }}" placeholder="initiative" type="number" class="initiative">
+							<input value="{{ unit.initiative }}" placeholder="initiative" type="number" class="initiative" required="required">
 						</div>
 						<div class="unit__AC">
 							<label for="ac">AC :</label>
-							<input value="{{ unit.ac }}" placeholder="ac" type="number" class="ac">
+							<input value="{{ unit.ac }}" placeholder="ac" type="number" class="ac" required="required">
 						</div>
 						{# unit.current-hp #}
 						<div class="unit__currentHP">
 							<label for="hp">HP :</label>
-							<input value="{{ unit.hp }}" placeholder="hp" type="number" class="hp">
+							<input value="{{ unit.hp }}" placeholder="hp" type="number" class="hp" required="required">
 						</div>
 					</div>
 				{% endif %}

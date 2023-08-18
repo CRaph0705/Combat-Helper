@@ -16,7 +16,6 @@ export default class extends Controller {
     sortAndUpdate() {
         // Récupérer toutes les unités
         const units = Array.from(this.unitContainer.querySelectorAll('.unit'));
-        console.log(units);
         // Tri des unités par initiative
         units.sort((a, b) => {
             const initiativeA = parseInt(a.querySelector('.initiative').value);
@@ -40,7 +39,7 @@ export default class extends Controller {
         // console.log('rollMonstersInitiatives');
 
         const monsters = Array.from(this.unitContainer.querySelectorAll('.unit[data-monster="true"]'));
-        console.log(monsters);
+       // console.log(monsters);
 
         monsters.forEach(monster => {
             const initiativeElement = monster.querySelector('.initiative');
@@ -62,7 +61,34 @@ export default class extends Controller {
         });
         this.sortAndUpdate();
     }
+
+    startEncounter() {
+        const units = Array.from(this.unitContainer.querySelectorAll('.unit'));
+        const initiatives = Array.from(this.unitContainer.querySelectorAll('.initiative'));
+        const hps = Array.from(this.unitContainer.querySelectorAll('.hp'));
+        const acs = Array.from(this.unitContainer.querySelectorAll('.ac'));
+        //récupérer valeur de tous les inputs et les mettre en tableaux 
+        // les clefs sont les initiatives, ac et hp des unités
+        const unitsData = {};
+
+        units.forEach((unit, index) => {
+            const unitName = unit.dataset.unitName; // Supposons que le nom de l'unité soit stocké dans un attribut data-unit-name
+            
+            const initiative = parseInt(initiatives[index].value);
+            const hp = parseInt(hps[index].value);
+            const ac = parseInt(acs[index].value);
+            
+            unitsData[unitName] = {
+                initiative: initiative,
+                hp: hp,
+                ac: ac
+            };
+        });
+
+        console.log(unitsData);
+        
+    }
+
+
+
 }
-
-
-

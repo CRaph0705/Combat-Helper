@@ -1,0 +1,8 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <div class="error-message">
+        Please provide valid initiative, AC, and HP for all units.
+    </div>
+    <a href="{{ path('app_encounter_init', {'id': encounter.id}) }}">Back to the encounter settings page</a>
+{% endblock %}
