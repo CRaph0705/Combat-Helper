@@ -1,5 +1,6 @@
 {% extends 'base.html.twig' %}
-{% block title %}Initiatives !{% endblock %}
+{% block title %}Initiatives !
+{% endblock %}
 {% block body %}
 	<h1>Roll initiative !</h1>
 	<div class="container encounter-nav">
@@ -10,53 +11,60 @@
 	</div>
 
 
+	<div data-controller="encounter">
 
-<div data-controller="encounter">
+		<div class="container encounter-menu">
+			<div class="row">
+				<div class="col-md-6">
+					<h1>Encounter
+						{{ encounter.shortName }}</h1>
+				</div>
+				<div class="col-md-6">
+					<div
+						class="encounter-menu__buttons">
+						{# ERASE INIT #}
+						<a href="{{ path('app_encounter_init', {'id': encounter.id}) }}">
+							<button class="btn btn-primary">Reset Initiatives</button>
+						</a>
 
-    <div class="container encounter-menu">
-        <div class="row">
-            <div class="col-md-6">
-                <h1>Encounter {{ encounter.shortName }}</h1>
-            </div>
-            <div class="col-md-6">
-                <div class="encounter-menu__buttons">
-                    <a href="{{ path('app_encounter_init', {'id': encounter.id}) }}"><button class="btn btn-primary">Reset Initiatives</button></a>
-                    {# ERASE INIT #}
-                </div>
+						{# ROLL MONSTERS INITIATIVES #}
+						<button class="btn btn-primary" data-action="click->encounter#rollMonstersInitiatives">Roll Monsters Initiatives</button>
 
-                {# SET MONSTERS INITIATIVE #}
-				{# <button class="btn btn-primary" data-action="click->encounter#rollMonstersInitiatives" data-target="encounter.monsters" data-monsters="{{ monsters|json_encode }}">Roll Monsters Initiatives</button> #}
+						{# <button class="btn btn-primary" data-action="click->encounter#rollMonstersInitiatives" data-target="encounter.monsters" data-monsters="{{ monsters|json_encode }}">Roll Monsters Initiatives</button> #}
 
-				{# ORDER UNITS BY INITIATIVE > JS #}
-				{# <button class="btn btn-primary" data-action="click->encounter#sortUnitsByInitiative">Order Units</button> #}
+					{# START ENCOUNTER #}
+						{# <button class="btn btn-primary" data-action="encounter#startEncounter">Start Encounter</button> #}
+					</div>
+				</div>
+			</div>
+		</div>
 
-                {# START ENCOUNTER #}
-                <button class="btn btn-primary" data-action="encounter#startEncounter">Start Encounter</button>
-            </div>
-        </div>
+
+		<div class="container encounter-content" id="unitContainer" data-encounter-target="unitContainer">
+			{% for unit in units %}
+				{% if unit in monsters %}
+					<div class="unit d-flex flex-row" data-monster="true">
+						<div class="unit__name">
+							{{ unit.name }}
+						</div>
+						<div class="unit__initiative">
+							<label for="initiative">Initiative :</label>
+							<input value="{{ unit.initiative }}" placeholder="initiative" type="number" class="initiative" data-id="initiative_{{ unit.id }}">
+						</div>
+                    </div>
+                {% else %}
+                    <div class="unit d-flex flex-row">
+                        <div class="unit__name">
+                            {{ unit.name }}
+                        </div>
+                        <div class="unit__initiative">
+                            <label for="initiative">Initiative :</label>
+                            <input value="{{ unit.initiative }}" placeholder="initiative" type="number" class="initiative">
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+		</div>
+
     </div>
-
-
-    <div class="container encounter-content" id="unitContainer" data-encounter-target="unitContainer">
-        {% for unit in units %}
-            <div class="unit d-flex flex-row">
-                <div class="unit__name">
-                    {{ unit.name }}
-                </div>
-                <div class="unit__initiative">
-                    {% if unit in monsters %}
-                        <label for="initiative">Initiative :</label>
-                        <input value="{{ unit.initiative }}" placeholder="initiative" type="number" class="initiative" data-id="initiative_{{ unit.id }}">
-                    {% else %}
-                        <label for="initiative">Initiative :</label>
-                        <input value="{{ unit.initiative }}" placeholder="initiative" type="number" class="initiative">
-                    {% endif %}
-                </div>
-            </div>
-        {% endfor %}
-    </div>
-
-
-</div>
-
-{% endblock %}
+	{% endblock %}
