@@ -37,6 +37,7 @@ class EncounterType extends AbstractType
             'entry_options' => [
                 'label' => false,
             ],
+            'label' => false,
         ])
 
         ->add('encounterMonsters', CollectionType::class, [
