@@ -50,7 +50,14 @@ export default class extends Controller {
         this.sortAndUpdate();
     }
 
-
+    resetInitiatives() {
+        console.log('resetInitiatives');
+        const initiatives = Array.from(this.unitContainer.querySelectorAll('.initiative'));
+        initiatives.forEach(initiative => {
+            initiative.value = '';
+        });
+        this.sortAndUpdate();
+    }
 }
 
 
