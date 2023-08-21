@@ -183,3 +183,25 @@ div p:not(:first-child)::first-letter {
 .player-card:hover {
   box-shadow: 0 0 0.2em 0.2em #7F3300;
 }
+
+
+.unit.active {
+  box-shadow: 0 0 10px #FFD700; 
+}
+
+.unit {
+  border: 1px solid #ccc; 
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.controlPannel {
+  position: fixed;
+  top: 15%; 
+  right: 20%; 
+  transform: translateY(-50%); 
+  box-shadow: 0 0 10px grey; 
+  padding: 10px;
+  border-radius: 5px;
+  z-index: 1000; 
+}
