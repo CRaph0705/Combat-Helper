@@ -7,8 +7,17 @@
 		<h1>Encounter Active</h1>
 		<p>Encounter ID:
 			{{ encounter.getId() }}</p>
+		<p>Encounter Name:
+			{{ encounter.getName() }}</p>
 
+
+
+		<div class="controlPannel d-flex">
+			<div><button data-action="click->encounter-active#nextUnit">Next Unit</button></div>
+			<div><button data-action="click->encounter-active#previousUnit">Previous Unit</button></div>
+		</div>
 		<div class="encounterUnitsContainer" id="encounterUnitsContainer"></div>
+		
 
 
 

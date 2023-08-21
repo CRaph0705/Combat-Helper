@@ -183,3 +183,26 @@ div p:not(:first-child)::first-letter {
 .player-card:hover {
   box-shadow: 0 0 0.2em 0.2em #7F3300;
 }
+
+
+.unit.active {
+  box-shadow: 0 0 10px #FFD700; /* Utilisez la couleur de votre choix */
+}
+
+.unit {
+  border: 1px solid #ccc; /* Utilisez la couleur de votre choix */
+  padding: 10px; /* Ajoutez un peu d'espace autour du contenu */
+  margin-bottom: 10px; /* Ajoutez un espacement entre les unités */
+}
+
+.controlPannel {
+  position: fixed;
+  top: 15%; /* Ajustez la valeur pour définir la position verticale */
+  right: 20%; /* Ajustez la valeur pour définir la position horizontale */
+  transform: translateY(-50%); /* Centrer verticalement */
+  // background-color: rgba(255, 255, 255, 0.8); /* Ajoutez un fond semi-transparent */
+  box-shadow: 0 0 10px grey; /* Utilisez la couleur de votre choix */
+  padding: 10px;
+  border-radius: 5px;
+  z-index: 1000; /* Assurez-vous que le panneau est au-dessus du reste du contenu */
+}
