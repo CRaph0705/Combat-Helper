@@ -210,7 +210,7 @@ public function error(Encounter $encounter): Response
 
     ############################################################################################################
 
-    //encounter/combat
+    //encounter/active
     #[Route('/{id}/active', name: 'app_encounter_active', methods: ['GET', 'POST'])]
     public function active(Encounter $encounter, Request $request): Response
     {

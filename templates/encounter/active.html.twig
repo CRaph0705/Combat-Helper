@@ -1,10 +1,17 @@
 {% extends 'base.html.twig' %}
-{% block title %}Fight !{% endblock %}
+{% block title %}Fight !
+{% endblock %}
 {% block body %}
-    <h1>Encounter Active</h1>
-    <p>Encounter ID: {{ encounter.getId() }}</p>
-    <pre>
-        {{ dump(encounter) }}
-    </pre>
-    {# <p>Units Data: {{ dump(unitsData) }}</p> #}
+	<div data-controller="encounter-active">
+
+		<h1>Encounter Active</h1>
+		<p>Encounter ID:
+			{{ encounter.getId() }}</p>
+
+		<div class="encounterUnitsContainer" id="encounterUnitsContainer"></div>
+
+
+
+		{# <p>Units Data: {{ dump(unitsData) }}</p> #}
+	</div>
 {% endblock %}
