@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+{% block title %}Fight !{% endblock %}
+{% block body %}
+    <h1>Encounter Combat</h1>
+    <p>Encounter ID: {{ encounter.getId() }}</p>
+    <pre>
+        {{ dump(encounter) }}
+    </pre>
+    {# <p>Units Data: {{ dump(unitsData) }}</p> #}
+{% endblock %}

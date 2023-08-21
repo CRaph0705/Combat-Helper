@@ -39,7 +39,7 @@ export default class extends Controller {
         // console.log('rollMonstersInitiatives');
 
         const monsters = Array.from(this.unitContainer.querySelectorAll('.unit[data-monster="true"]'));
-       // console.log(monsters);
+        // console.log(monsters);
 
         monsters.forEach(monster => {
             const initiativeElement = monster.querySelector('.initiative');
@@ -62,33 +62,74 @@ export default class extends Controller {
         this.sortAndUpdate();
     }
 
-    startEncounter() {
+    collectUnitsData() {
         const units = Array.from(this.unitContainer.querySelectorAll('.unit'));
         const initiatives = Array.from(this.unitContainer.querySelectorAll('.initiative'));
         const hps = Array.from(this.unitContainer.querySelectorAll('.hp'));
         const acs = Array.from(this.unitContainer.querySelectorAll('.ac'));
+
+        // Récupérer les valeurs des HP et AC
+        const hpValues = hps.map(hpElement => parseInt(hpElement.value));
+        const acValues = acs.map(acElement => parseInt(acElement.value));
+        const initiativeValues = initiatives.map(initiativeElement => parseInt(initiativeElement.value));
+
+
         //récupérer valeur de tous les inputs et les mettre en tableaux 
         // les clefs sont les initiatives, ac et hp des unités
         const unitsData = {};
 
         units.forEach((unit, index) => {
             const unitName = unit.dataset.unitName; // Supposons que le nom de l'unité soit stocké dans un attribut data-unit-name
-            
-            const initiative = parseInt(initiatives[index].value);
-            const hp = parseInt(hps[index].value);
-            const ac = parseInt(acs[index].value);
-            
+
+            const initiative = parseInt(initiativeValues[index]);
+            const hp = parseInt(hpValues[index]);
+            const ac = parseInt(acValues[index]);
+
+
             unitsData[unitName] = {
                 initiative: initiative,
                 hp: hp,
                 ac: ac
             };
         });
-
+        //ICI ON A DES TABLEAUX D'UNITS AVEC LEURS INITIATIVES, AC ET HP DES UNITES RESPECTIVES
         console.log(unitsData);
-        
+        return unitsData;
     }
 
+    //store the data in local storage
+    saveEncounterData() {
+        const unitsData = this.collectUnitsData();
+        localStorage.setItem('encounterData', JSON.stringify(unitsData));
+    }
+    
 
+    //load the data from local storage
+    loadEncounterData() {
+        console.log('loadEncounterData');
+        const unitsData = JSON.parse(localStorage.getItem('encounterData'));
+        return unitsData;
+    }
 
+    //delete the data from local storage
+    deleteEncounterData() {
+        localStorage.removeItem('encounterData');
+    }
+
+    startEncounter() {
+        console.log('startEncounter');
+        
+        // d'abord on clean le local storage
+        this.deleteEncounterData();
+        
+        // ensuite on récupère les données des unités
+        const encounterUnitsData = this.collectUnitsData();
+        
+        // on les stocke dans le local storage
+        this.saveEncounterData(encounterUnitsData);
+
+        const encounterId = this.element.dataset.id;
+        window.location.href = `/encounter/${encounterId}/combat`;
+
+    }
 }
