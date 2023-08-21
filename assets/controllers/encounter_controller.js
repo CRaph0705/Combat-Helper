@@ -1,5 +1,6 @@
 import { Controller } from '@hotwired/stimulus';
 
+
 export default class extends Controller {
     static targets = ["unitContainer"];
 
@@ -132,4 +133,5 @@ export default class extends Controller {
         window.location.href = `/encounter/${encounterId}/active`;
 
     }
+    //export the function to be used in the encounter-active_controller.js
 }
