@@ -9,6 +9,7 @@ use App\Repository\MonsterRepository;
 
 use Doctrine\ORM\Mapping\Id;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -169,6 +170,8 @@ class EncounterController extends AbstractController
     {
         $playerEncounter = $encounter->getEncounterPlayerCharacters();
         $monsterEncounter = $encounter->getEncounterMonsters();
+        $encounterId = $encounter->getId();
+
 
         $players = [];
         foreach($playerEncounter as $encounterPlayer) {
@@ -186,42 +189,13 @@ class EncounterController extends AbstractController
         $units = array_merge($players, $monsters);
 
         return $this->render('encounter/init.html.twig', [
+            'encounterId' => $encounterId,
             'encounter' => $encounter,
             'players' => $players,
             'monsters' => $monsters,
             'units' => $units,
         ]);
     }
-
-    ############################################################################################################
-
-    //encounter/active
-    #[Route('/{id}/active', name: 'app_encounter_active', methods: ['GET', 'POST'], requirements: ['_accessRequirements' => 'checkEncounterRequirements'])]
-    public function active(Encounter $encounter, Request $request): Response
-    {
-        $units = json_decode($request->query->get('units'), true);
-
-
-        
-
-        return $this->render('encounter/active.html.twig', [
-            'encounter' => $encounter,
-            'units' => $units,
-        ]);
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-    ############################################################################################################
 
     ############################################################################################################
 
@@ -236,27 +210,14 @@ public function error(Encounter $encounter): Response
 
     ############################################################################################################
 
-    //the DM can then click on next to start the first round
-    //the DM can click on stop to stop the encounter at any time
-    // it will display the start button and hide the next button
-
-    //if the DM clicks on start, the encounter will start again but not from the beginning
-    //the DM can click on next to go to the next unit in the initiative order
-    //the next unit will be highlighted
-
-    //the DM can click on previous to go to the previous unit in the initiative order
-    //the current unit will be highlighted
-
-
-    //the DM can click on end to end the encounter
-    //the DM can click on restart to restart the encounter
-
-    //the DM can click on a monster to display its stats
-    //the DM can click on a player to display its stats
-
-    //the DM can modify the initiative of a player or monster by clicking on it and entering the new initiative
-    //the DM can modify the HP of a player or monster by clicking on it and entering the new HP
-    //the DM can modify the AC of a player or monster by clicking on it and entering the new AC
+    //encounter/combat
+    #[Route('/{id}/combat', name: 'app_encounter_combat', methods: ['GET', 'POST'])]
+    public function active(Encounter $encounter, Request $request): Response
+    {
+        return $this->render('encounter/combat.html.twig', [
+            'encounter' => $encounter,
+        ]);
+    }
 
     ############################################################################################################
 

@@ -5,11 +5,11 @@
 	<h1>Roll initiative !</h1>
 	<div class="container encounter-nav">
 		<nav>
-			<a href="{{ path('app_encounter_show', {'id': encounter.id}) }}">Back</a>
+			<a href="{{ path('app_encounter_show', {'id': encounterId}) }}">Back</a>
 			<a href="{{ path('app_encounter_index') }}">Encounter</a>
 		</nav>
 	</div>
-	<div data-controller="encounter">
+	<div data-controller="encounter" data-id="{{ encounterId }}">
 
 		<div class="container encounter-menu">
 			<div class="row">
@@ -30,12 +30,11 @@
 						{# START ENCOUNTER #}
 
 {# à modifier #}
-						{# <a href="{{ path('app_encounter_active', {'id': encounter.id, 'units': units}) }}">
+						{# <a href="{{ path('app_encounter_combat', {'id': encounter.id, 'units': units}) }}">
 							<button class="btn btn-primary" id="startEncounterButton">Start Encounter</button>
 						</a> #}
-
-						<a href="#">
-							<button class="btn btn-primary" id="startEncounterButton" data-action="click->encounter#startEncounter">Start Encounter</button>
+						<a href="#" data-action="click->encounter#startEncounter">
+							<button class="btn btn-primary" id="startEncounterButton"  >Start Encounter</button>
 						</a>
 
 
