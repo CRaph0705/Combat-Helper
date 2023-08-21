@@ -211,10 +211,10 @@ public function error(Encounter $encounter): Response
     ############################################################################################################
 
     //encounter/combat
-    #[Route('/{id}/combat', name: 'app_encounter_combat', methods: ['GET', 'POST'])]
+    #[Route('/{id}/active', name: 'app_encounter_active', methods: ['GET', 'POST'])]
     public function active(Encounter $encounter, Request $request): Response
     {
-        return $this->render('encounter/combat.html.twig', [
+        return $this->render('encounter/active.html.twig', [
             'encounter' => $encounter,
         ]);
     }

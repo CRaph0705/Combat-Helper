@@ -129,7 +129,7 @@ export default class extends Controller {
         this.saveEncounterData(encounterUnitsData);
 
         const encounterId = this.element.dataset.id;
-        window.location.href = `/encounter/${encounterId}/combat`;
+        window.location.href = `/encounter/${encounterId}/active`;
 
     }
 }
