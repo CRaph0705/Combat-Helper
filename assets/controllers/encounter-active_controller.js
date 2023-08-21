@@ -40,7 +40,8 @@ export default class extends Controller {
             unitDiv.innerHTML = `
             <p>Nom : ${unitName}</p>
             <p>Classe d'armure (AC) : ${unitData.ac}</p>
-            <p>Points de vie (HP) : ${unitData.hp}</p>
+            <p>Points de vie (HP) : <input type="number" id="hp" name="hp" value="${unitData.hp}">
+            </p>
             <p>Initiative : ${unitData.initiative}</p>
         `;
 
