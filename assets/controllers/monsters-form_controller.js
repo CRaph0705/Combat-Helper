@@ -28,6 +28,7 @@ export default class extends Controller {
             });
 
             const addMonsterTagLink = document.createElement('button');
+            addMonsterTagLink.type = "button";
             addMonsterTagLink.classList.add('add_tag_list');
             addMonsterTagLink.innerText = 'Ajouter un monstre';
             addMonsterTagLink.dataset.collectionHolderClass = 'monsters-content';
@@ -56,9 +57,7 @@ export default class extends Controller {
                 ScrollHeight();
                 // scroll the page to the new form
                 item.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                console.log("scrollIntoView");
             };
-
 
             addMonsterTagLink.addEventListener("click", addFormToCollection)
         }
