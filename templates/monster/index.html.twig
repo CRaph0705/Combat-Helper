@@ -8,24 +8,17 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Name</th>
                 <th>HP</th>
                 <th>AC</th>
-                <th>Initiative</th>
-                <th>HpMax</th>
-                <th>actions</th>
             </tr>
         </thead>
         <tbody>
         {% for monster in monsters %}
             <tr>
-                <td>{{ monster.id }}</td>
                 <td>{{ monster.name }}</td>
                 <td>{{ monster.hp }}</td>
                 <td>{{ monster.ac }}</td>
-                <td>{{ monster.initiative }}</td>
-                <td>{{ monster.hpMax }}</td>
                 <td>
                     <a href="{{ path('app_monster_show', {'id': monster.id}) }}">show</a>
                     <a href="{{ path('app_monster_edit', {'id': monster.id}) }}">edit</a>

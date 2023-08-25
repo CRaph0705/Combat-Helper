@@ -45,7 +45,7 @@ class PlayerCharacterController extends AbstractController
         }
 
 
-        return $this->renderForm('player_character/new.html.twig', [
+        return $this->render('player_character/new.html.twig', [
             'player_character' => $playerCharacter,
             'form' => $form,
         ]);
@@ -72,9 +72,10 @@ class PlayerCharacterController extends AbstractController
             return $this->redirectToRoute('app_player_character_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('player_character/edit.html.twig', [
+        return $this->render('player_character/edit.html.twig', [
             'player_character' => $playerCharacter,
             'form' => $form,
+
         ]);
     }
 

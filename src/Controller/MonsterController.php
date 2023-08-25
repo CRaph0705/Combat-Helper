@@ -36,7 +36,7 @@ class MonsterController extends AbstractController
             return $this->redirectToRoute('app_monster_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('monster/new.html.twig', [
+        return $this->render('monster/new.html.twig', [
             'monster' => $monster,
             'form' => $form,
         ]);
@@ -62,7 +62,7 @@ class MonsterController extends AbstractController
             return $this->redirectToRoute('app_monster_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('monster/edit.html.twig', [
+        return $this->render('monster/edit.html.twig', [
             'monster' => $monster,
             'form' => $form,
         ]);
