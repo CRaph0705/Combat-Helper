@@ -45,7 +45,7 @@
 
 		<div class="container encounter-content" id="unitContainer" data-encounter-target="unitContainer">
 			{% for unit in units %}
-		
+
 				{% if unit in monsters %}
 					{% for i in 1..unit.quantity %}
 						<div class="unit d-flex flex-row" data-monster="true" data-unit-name="{{ unit.attributes.name }}_{{i}}">
