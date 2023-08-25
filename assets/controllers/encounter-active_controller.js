@@ -26,15 +26,15 @@ export default class extends Controller {
     displayEncounterData() {
         console.log('displayEncounterData');
         const unitsData = this.loadEncounterData();
-    
+
         // Sélectionnez le conteneur où vous souhaitez afficher les éléments
         const container = document.querySelector('#encounterUnitsContainer');
-    
+
         // Parcours des données des unités
         let isFirstUnit = true;
         for (const unitName in unitsData) {
             const unitData = unitsData[unitName];
-    
+
             // Création d'une nouvelle div pour chaque unité
             const unitDiv = document.createElement('div');
             unitDiv.classList.add('unit');
@@ -47,22 +47,36 @@ export default class extends Controller {
             </p>
             <p>Initiative : ${unitData.initiative}</p>
             `;
-    
+
+            if (unitData.hp <= 0) {
+                unitDiv.classList.add('KO');
+            }
+
             // Si c'est la première unité, ajouter la classe "active"
             if (isFirstUnit) {
                 unitDiv.classList.add('active');
                 isFirstUnit = false;
             }
-    
+
             // Ajout de la div de l'unité au conteneur
             container.appendChild(unitDiv);
             ScrollHeight();
+
+
+            // Ajout de l'écouteur d'événements sur les HP de l'unité
+            const hpInput = unitDiv.querySelector('input[name="hp"]');
+            hpInput.addEventListener('input', () => {
+                if (parseInt(hpInput.value) <= 0) {
+                    unitDiv.classList.add('KO');
+                } else {
+                    unitDiv.classList.remove('KO');
+                }
+            });
         }
-    
+
     }
 
     /* ------------------------------------------------------------------------------------------- */
-
     nextUnit() {
         const unitsData = this.loadEncounterData();
         const currentUnit = document.querySelector('.unit.active');
@@ -83,22 +97,24 @@ export default class extends Controller {
             currentIndex++;
         }
     
-        // Trouver l'index de l'unité suivante, en bouclant si nécessaire
-        const nextIndex = (currentIndex + 1) % Object.keys(unitsData).length;
+        // Rechercher la prochaine unité sans la classe KO
+        let nextIndex = (currentIndex + 1) % Object.keys(unitsData).length;
+        while (nextIndex !== currentIndex) {
+            const nextUnitName = Object.keys(unitsData)[nextIndex];
+            const nextUnit = document.querySelector(`.unit[data-unit-name="${nextUnitName}"]`);
     
-        // Récupérer le nom de l'unité suivante
-        const nextUnitName = Object.keys(unitsData)[nextIndex];
+            if (!nextUnit.classList.contains('KO')) {
+                // Supprimer la classe active de l'unité actuelle
+                currentUnit.classList.remove('active');
+                // Ajouter la classe active à l'unité suivante
+                nextUnit.classList.add('active');
+                nextUnit.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
     
-        // Supprimer la classe active de l'unité actuelle
-        currentUnit.classList.remove('active');
-    
-        // Ajouter la classe active à l'unité suivante
-        const nextUnit = document.querySelector(`.unit[data-unit-name="${nextUnitName}"]`);
-        nextUnit.classList.add('active');
-        nextUnit.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
+            nextIndex = (nextIndex + 1) % Object.keys(unitsData).length;
+        }
     }
-    
     
 
     /* ------------------------------------------------------------------------------------------- */
@@ -126,19 +142,23 @@ export default class extends Controller {
             currentIndex++;
         }
     
-        // Trouver l'index de l'unité précédente, en bouclant si nécessaire
-        const previousIndex = (currentIndex - 1 + unitNames.length) % unitNames.length;
+        // Rechercher l'unité précédente sans la classe KO
+        let previousIndex = (currentIndex - 1 + unitNames.length) % unitNames.length;
+        while (previousIndex !== currentIndex) {
+            const previousUnitName = unitNames[previousIndex];
+            const previousUnit = document.querySelector(`.unit[data-unit-name="${previousUnitName}"]`);
     
-        // Récupérer le nom de l'unité précédente
-        const previousUnitName = unitNames[previousIndex];
+            if (!previousUnit.classList.contains('KO')) {
+                // Supprimer la classe active de l'unité actuelle
+                currentUnit.classList.remove('active');
+                // Ajouter la classe active à l'unité précédente
+                previousUnit.classList.add('active');
+                previousUnit.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
     
-        // Supprimer la classe active de l'unité actuelle
-        currentUnit.classList.remove('active');
-    
-        // Ajouter la classe active à l'unité précédente
-        const previousUnit = document.querySelector(`.unit[data-unit-name="${previousUnitName}"]`);
-        previousUnit.classList.add('active');
-        previousUnit.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            previousIndex = (previousIndex - 1 + unitNames.length) % unitNames.length;
+        }
     }
     
 

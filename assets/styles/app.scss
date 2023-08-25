@@ -213,3 +213,12 @@ div p:not(:first-child)::first-letter {
 // .controlPannel-item {
 //   margin: 5%;
 // }
+
+.KO {
+  text-decoration: line-through;
+  // color: red;
+  //background-color: gris foncé
+  background-color: #7F3300;
+  opacity: 0.5;
+  box-shadow: 0 0 0.2em 0.2em black;
+}
