@@ -7,6 +7,7 @@ export default class extends Controller {
             console.log('players-form controller connected');
 
 
+
             const addTagFormDeleteLink = (item) => {
                 const wrapperDiv = document.createElement('div');
                 wrapperDiv.classList.add('col-2');
@@ -26,12 +27,21 @@ export default class extends Controller {
             players.forEach((player) => {
                 addTagFormDeleteLink(player);
             });
+            // on va créer un button pour ajouter un joueur
+            const addPlayerTagLink = document.createElement('button');
+            addPlayerTagLink.type = "button";
+            addPlayerTagLink.classList.add('add_tag_list');
+            addPlayerTagLink.innerText = 'Ajouter un joueur';
+            addPlayerTagLink.dataset.collectionHolderClass = 'players-content';
 
-            const addPlayerTagLink = document.createElement('a')
-            addPlayerTagLink.classList.add('add_tag_list')
-            addPlayerTagLink.href = '#'
-            addPlayerTagLink.innerText = 'Ajouter un joueur'
-            addPlayerTagLink.dataset.collectionHolderClass = 'players-content'
+
+
+
+            // const addPlayerTagLink = document.createElement('a')
+            // addPlayerTagLink.classList.add('add_tag_list')
+            // addPlayerTagLink.href = '#'
+            // addPlayerTagLink.innerText = 'Ajouter un joueur'
+            // addPlayerTagLink.dataset.collectionHolderClass = 'players-content'
             const collectionHolder = document.querySelector('div.players-content')
             document.querySelector('div.player-title').appendChild(addPlayerTagLink)
             const addFormToCollection = (e) => {
@@ -50,6 +60,8 @@ export default class extends Controller {
                 addTagFormDeleteLink(item);
 
                 ScrollHeight();
+
+                item.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
             addPlayerTagLink.addEventListener("click", addFormToCollection)
         }

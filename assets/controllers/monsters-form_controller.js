@@ -27,9 +27,9 @@ export default class extends Controller {
                 addTagFormDeleteLink(monster);
             });
 
-            const addMonsterTagLink = document.createElement('a');
+            const addMonsterTagLink = document.createElement('button');
+            addMonsterTagLink.type = "button";
             addMonsterTagLink.classList.add('add_tag_list');
-            addMonsterTagLink.href = '#';
             addMonsterTagLink.innerText = 'Ajouter un monstre';
             addMonsterTagLink.dataset.collectionHolderClass = 'monsters-content';
 
@@ -51,11 +51,13 @@ export default class extends Controller {
                 collectionHolder.dataset.index++;
 
 
+                // add a delete link to the new form
                 addTagFormDeleteLink(item);
-
+                // ajust the height of the page with the new form
                 ScrollHeight();
+                // scroll the page to the new form
+                item.scrollIntoView({ behavior: 'smooth', block: 'start' });
             };
-
 
             addMonsterTagLink.addEventListener("click", addFormToCollection)
         }
