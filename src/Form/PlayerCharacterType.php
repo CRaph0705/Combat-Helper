@@ -13,20 +13,29 @@ class PlayerCharacterType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
         {
-            $showAc = $options['show_ac'];
     
             $builder
                 ->add('name')
                 ->add('hp')
-                ->add('ac', null, [
+                ->add('ac', IntegerType::class, [
                     'required' => false,
                     'label' => 'Classe d\'armure (AC)',
                     'attr' => [
                         'placeholder' => 'Classe d\'armure (AC)',
                     ],
-                    'mapped' => $showAc, // Utiliser cette option pour afficher ou non le champ 'ac'
+                ])
+                ->add('hpMax', IntegerType::class, [
+                    'label' => 'Points de vie max',
+                    'attr' => [
+                        'placeholder' => 'Points de vie max',
+                    ],
                 ])
         ;
+        $playerCharacter = $options['data'] ?? null;
+
+        if ($playerCharacter instanceof PlayerCharacter) {
+            $builder->setData($playerCharacter);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void

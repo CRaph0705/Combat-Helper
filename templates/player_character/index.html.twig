@@ -8,24 +8,17 @@
     <table class="table">
         <thead>
             <tr>
-                {# <th>Id</th> #}
                 <th>Name</th>
                 <th>Hp</th>
                 <th>AC</th>
-                {# <th>Initiative</th> #}
-                {# <th>HpMax</th> #}
-                {# <th>actions</th> #}
             </tr>
         </thead>
         <tbody>
         {% for player_character in player_characters %}
             <tr>
-                {# <td>{{ player_character.id }}</td> #}
                 <td>{{ player_character.name }}</td>
                 <td>{{ player_character.hp }}</td>
                 <td>{{ player_character.ac }}</td>
-                {# <td>{{ player_character.initiative }}</td> #}
-                {# <td>{{ player_character.hpMax }}</td> #}
                 <td>
                     <a href="{{ path('app_player_character_show', {'id': player_character.id}) }}">show</a>
                     <a href="{{ path('app_player_character_edit', {'id': player_character.id}) }}">edit</a>
