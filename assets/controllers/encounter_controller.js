@@ -5,6 +5,9 @@ export default class extends Controller {
     static targets = ["unitContainer"];
 
     connect() {
+        document.addEventListener('DOMContentLoaded', () => {
+            this.checkEncounterStartConditions();
+        });
         console.log('encounter_controller connected');
         this.unitContainer = document.getElementById('unitContainer');
         // this.unitContainerTarget.addEventListener('input', this.sortAndUpdate.bind(this));
@@ -13,6 +16,33 @@ export default class extends Controller {
             input.addEventListener('focusout', this.sortAndUpdate.bind(this));
         });
     }
+
+
+
+    checkEncounterStartConditions() {
+        const initiatives = Array.from(this.unitContainer.querySelectorAll('.initiative'));
+        const monsters = Array.from(this.unitContainer.querySelectorAll('.unit[data-monster="true"]'));
+        const players = Array.from(this.unitContainer.querySelectorAll('.unit:not([data-monster="true"])'));
+        const hps = Array.from(this.unitContainer.querySelectorAll('.hp'));
+        const acs = Array.from(this.unitContainer.querySelectorAll('.ac'));
+        
+    
+        const allInitiativesDefined = initiatives.every(initiativeElement => initiativeElement.value !== '');
+        const allHpDefined = hps.every(hpElement => hpElement.value !== '');
+        const allAcDefined = acs.every(acElement => acElement.value !== '');
+
+
+
+        const isEncounterReady = allInitiativesDefined && monsters.length > 0 && players.length > 0 && allHpDefined && allAcDefined;
+    
+        const startEncounterButton = document.getElementById('startEncounterButton');
+        if (startEncounterButton) {
+            startEncounterButton.disabled = !isEncounterReady;
+        }
+        console.log('checkEncounterStartConditions');
+    }
+
+
 
     sortAndUpdate() {
         // Récupérer toutes les unités
@@ -37,6 +67,7 @@ export default class extends Controller {
             this.unitContainerTarget.appendChild(unit);
         });
         console.log('sortAndUpdate');
+        this.checkEncounterStartConditions();
 
     }
 
