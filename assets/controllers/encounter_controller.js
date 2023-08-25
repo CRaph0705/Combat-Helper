@@ -17,19 +17,26 @@ export default class extends Controller {
     sortAndUpdate() {
         // Récupérer toutes les unités
         const units = Array.from(this.unitContainer.querySelectorAll('.unit'));
+        const unitsWithInitiative = units.filter(unit => unit.querySelector('.initiative').value !== '');
+        const unitsWithoutInitiative = units.filter(unit => unit.querySelector('.initiative').value === '');
+
+
         // Tri des unités par initiative
-        units.sort((a, b) => {
+        unitsWithInitiative.sort((a, b) => {
             const initiativeA = parseInt(a.querySelector('.initiative').value);
             const initiativeB = parseInt(b.querySelector('.initiative').value);
             return initiativeB - initiativeA;
         });
 
+        const sortedUnits = [...unitsWithInitiative, ...unitsWithoutInitiative];
+
+
         // Vider le conteneur et ajouter les unités triées
         this.unitContainerTarget.innerHTML = '';
-        units.forEach(unit => {
+        sortedUnits.forEach(unit => {
             this.unitContainerTarget.appendChild(unit);
         });
-
+        console.log('sortAndUpdate');
 
     }
 
@@ -38,9 +45,9 @@ export default class extends Controller {
     // Méthode pour générer des initiatives aléatoires pour les monstres
     rollMonstersInitiatives() {
         const monstersByType = {};
-    
+
         const monsters = Array.from(this.unitContainer.querySelectorAll('.unit[data-monster="true"]'));
-    
+
         monsters.forEach(monster => {
             const monsterName = monster.dataset.unitName;
             const monsterType = monsterName.split('_')[0];
@@ -49,20 +56,20 @@ export default class extends Controller {
             }
             monstersByType[monsterType].push(monster);
         });
-    
+
         Object.keys(monstersByType).forEach(monsterType => {
             const typeMonsters = monstersByType[monsterType];
             const typeInitiative = Math.floor(Math.random() * 20) + 1;
-    
+
             typeMonsters.forEach(monster => {
                 const initiativeElement = monster.querySelector('.initiative');
                 initiativeElement.value = typeInitiative;
             });
         });
-    
+
         this.sortAndUpdate();
     }
-    
+
 
     resetInitiatives() {
         console.log('resetInitiatives');
@@ -113,7 +120,7 @@ export default class extends Controller {
         const unitsData = this.collectUnitsData();
         localStorage.setItem('encounterData', JSON.stringify(unitsData));
     }
-    
+
 
     //load the data from local storage
     loadEncounterData() {
@@ -129,13 +136,13 @@ export default class extends Controller {
 
     startEncounter() {
         console.log('startEncounter');
-        
+
         // d'abord on clean le local storage
         this.deleteEncounterData();
-        
+
         // ensuite on récupère les données des unités
         const encounterUnitsData = this.collectUnitsData();
-        
+
         // on les stocke dans le local storage
         this.saveEncounterData(encounterUnitsData);
 

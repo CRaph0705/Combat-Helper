@@ -61,7 +61,7 @@ export default class extends Controller {
 
                 ScrollHeight();
 
-                item.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                item.scrollIntoViewIfNeeded({ behavior: 'smooth', block: 'center' });
             }
             addPlayerTagLink.addEventListener("click", addFormToCollection)
         }
