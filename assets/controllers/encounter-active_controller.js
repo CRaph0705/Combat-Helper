@@ -164,7 +164,12 @@ export default class extends Controller {
 
     /* ------------------------------------------------------------------------------------------- */
 
-
+    //stop encounter function
+    stopEncounter() {
+        console.log('stopEncounter');
+        localStorage.removeItem('encounterData');
+        window.location.href = '/';
+    }
 
 
 }
