@@ -15,11 +15,17 @@ class MonsterType extends AbstractType
 
     $builder
         ->add('name')
-        ->add('hp')
-        ->add('ac', null, [
+        //hp cannot be negative
+        ->add('hp' , IntegerType::class, [
+            'attr' => [
+                'min' => 0,
+            ],
+        ])
+        ->add('ac', IntegerType::class, [
             'required' => false,
             'label' => 'Armor Class (AC)',
             'attr' => [
+                'min' => 0,
                 'placeholder' => 'Armor Class (AC)',
             ],
         ])

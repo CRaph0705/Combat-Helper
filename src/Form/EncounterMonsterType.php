@@ -25,6 +25,11 @@ class EncounterMonsterType extends AbstractType
             ->add('quantity', IntegerType::class, [ // Add the quantity field
                 'label' => 'Quantity',
                 'required' => true,
+                'attr' => [
+                    'min' => 1,
+                    'step' => 1,
+                ],
+                'data' => 1,
             ]);
         ;
     }
