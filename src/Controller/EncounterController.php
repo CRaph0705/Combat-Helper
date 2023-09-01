@@ -50,7 +50,7 @@ class EncounterController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $encounterRepository->save($encounter, true);
 
-            return $this->redirectToRoute('app_encounter_show', ['id' => $encounter->getId()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_encounter_init', ['id' => $encounter->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('encounter/new.html.twig', [
@@ -133,7 +133,7 @@ class EncounterController extends AbstractController
             }
 
             //redirect to encounter show of this encounter
-            return $this->redirectToRoute('app_encounter_show', ['id' => $encounter->getId()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_encounter_init', ['id' => $encounter->getId()], Response::HTTP_SEE_OTHER);
         }
 
 
