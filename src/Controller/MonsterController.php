@@ -10,18 +10,26 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 #[Route('/monster')]
 class MonsterController extends AbstractController
 {
     #[Route('/', name: 'app_monster_index', methods: ['GET'])]
-    public function index(MonsterRepository $monsterRepository): Response
+    public function index(Request $request, MonsterRepository $monsterRepository): Response
     {
         return $this->render('monster/index.html.twig', [
             'monsters' => $monsterRepository->findAll(),
         ]);
     }
 
+    ############################################################################################################
+
+
+
+
+
+    ############################################################################################################
     #[Route('/new', name: 'app_monster_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {

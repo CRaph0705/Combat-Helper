@@ -222,3 +222,20 @@ div p:not(:first-child)::first-letter {
   opacity: 0.5;
   box-shadow: 0 0 0.2em 0.2em black;
 }
+
+
+
+.monster-index-container {
+  display: flex;
+
+  .monster-index-list,
+  .monster-index-details {
+    flex: 1;
+    width: 50%;
+  }
+
+  .monster-index-list {
+    overflow-y: scroll;
+    max-height: 65vh;
+  }
+}

@@ -4,6 +4,7 @@
 
 {% block body %}
     <h1>PlayerCharacter index</h1>
+    <a href="{{ path('app_player_character_new') }}">Create new character</a>
 
     <table class="table">
         <thead>
@@ -32,6 +33,4 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_player_character_new') }}">Create new character</a>
-    {# {% include "footer.html.twig" %} #}
 {% endblock %}
