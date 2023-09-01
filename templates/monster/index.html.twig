@@ -1,36 +1,33 @@
 {% extends 'navbar.html.twig' %}
 
-{% block title %}Monster index{% endblock %}
+{% block title %}Monster index
+{% endblock %}
 
 {% block body %}
+
     <h1>Monster index</h1>
+    <a href="{{ path('app_monster_new') }}">Create new monster</a>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>HP</th>
-                <th>AC</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for monster in monsters %}
-            <tr>
-                <td>{{ monster.name }}</td>
-                <td>{{ monster.hp }}</td>
-                <td>{{ monster.ac }}</td>
-                <td>
-                    <a href="{{ path('app_monster_show', {'id': monster.id}) }}">show</a>
-                    <a href="{{ path('app_monster_edit', {'id': monster.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="7">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_monster_new') }}">Create new</a>
+	<div class="monster-index-container" data-controller="monster-index">
+		<div class="monster-index-list">
+			<!-- Liste des monstres avec un défilement indépendant -->
+			<ul>
+				{% for monster in monsters %}
+					<div class="monster-parchment container" data-action="click->monster-index#loadMonsterDetails" data-monster-id="{{ monster.id }}">
+						<li>{{ monster.name }}</li>
+						<li>{{ monster.hp }}</li>
+						<li>{{ monster.ac }}</li>
+						<li>
+							<a href="{{ path('app_monster_show', {'id': monster.id}) }}">show</a>
+							<a href="{{ path('app_monster_edit', {'id': monster.id}) }}">edit</a>
+						</li>
+					</div>
+				{% endfor %}
+			</ul>
+		</div>
+		<div class="monster-index-details">
+			<!-- Détails de l'unité sélectionnée (à afficher lors de la sélection) -->
+			<div id="detailsContent"></div>
+		</div>
+	</div>
 {% endblock %}
