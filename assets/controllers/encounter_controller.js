@@ -1,4 +1,5 @@
 import { Controller } from '@hotwired/stimulus';
+// import { is } from 'core-js/core/object';
 
 
 export default class extends Controller {
@@ -25,8 +26,8 @@ export default class extends Controller {
         const players = Array.from(this.unitContainer.querySelectorAll('.unit:not([data-monster="true"])'));
         const hps = Array.from(this.unitContainer.querySelectorAll('.hp'));
         const acs = Array.from(this.unitContainer.querySelectorAll('.ac'));
-        
-    
+
+
         const allInitiativesDefined = initiatives.every(initiativeElement => initiativeElement.value !== '');
         const allHpDefined = hps.every(hpElement => hpElement.value !== '');
         const allAcDefined = acs.every(acElement => acElement.value !== '');
@@ -34,7 +35,7 @@ export default class extends Controller {
 
 
         const isEncounterReady = allInitiativesDefined && monsters.length > 0 && players.length > 0 && allHpDefined && allAcDefined;
-    
+
         const startEncounterButton = document.getElementById('startEncounterButton');
         if (startEncounterButton) {
             startEncounterButton.disabled = !isEncounterReady;
@@ -112,6 +113,7 @@ export default class extends Controller {
     }
 
     collectUnitsData() {
+        // var isEncounterValid = false;
         const units = Array.from(this.unitContainer.querySelectorAll('.unit'));
         const initiatives = Array.from(this.unitContainer.querySelectorAll('.initiative'));
         const hps = Array.from(this.unitContainer.querySelectorAll('.hp'));
@@ -122,28 +124,40 @@ export default class extends Controller {
         const acValues = acs.map(acElement => parseInt(acElement.value));
         const initiativeValues = initiatives.map(initiativeElement => parseInt(initiativeElement.value));
 
+        //à l'initialisation, on vérifie que les valeurs sont bien des nombres et supérieures à ou égales à 0
+        const isInitiativeValid = initiativeValues.every(initiative => !isNaN(initiative) && initiative >= 0);
+        const isHpValid = hpValues.every(hp => !isNaN(hp) && hp >= 0);
+        const isAcValid = acValues.every(ac => !isNaN(ac) && ac >= 0);
 
-        //récupérer valeur de tous les inputs et les mettre en tableaux 
-        // les clefs sont les initiatives, ac et hp des unités
-        const unitsData = {};
+        if (!isInitiativeValid || !isHpValid || !isAcValid) {
+            //on affiche un message d'erreur
+            alert('Les valeurs d\'initiative, de points de vie et de classe d\'armure doivent être des nombres supérieurs ou égaux à 0');
+            //et on redirige vers la page d'encounter/init
+            return;
+        } else {
+            // isEncounterValid = true;
+            //récupérer valeur de tous les inputs et les mettre en tableaux 
+            // les clefs sont les initiatives, ac et hp des unités
+            const unitsData = {};
 
-        units.forEach((unit, index) => {
-            const unitName = unit.dataset.unitName; // Supposons que le nom de l'unité soit stocké dans un attribut data-unit-name
+            units.forEach((unit, index) => {
+                const unitName = unit.dataset.unitName; // Supposons que le nom de l'unité soit stocké dans un attribut data-unit-name
 
-            const initiative = parseInt(initiativeValues[index]);
-            const hp = parseInt(hpValues[index]);
-            const ac = parseInt(acValues[index]);
+                const initiative = parseInt(initiativeValues[index]);
+                const hp = parseInt(hpValues[index]);
+                const ac = parseInt(acValues[index]);
 
 
-            unitsData[unitName] = {
-                initiative: initiative,
-                hp: hp,
-                ac: ac
-            };
-        });
-        //ICI ON A DES TABLEAUX D'UNITS AVEC LEURS INITIATIVES, AC ET HP DES UNITES RESPECTIVES
-        console.log(unitsData);
-        return unitsData;
+                unitsData[unitName] = {
+                    initiative: initiative,
+                    hp: hp,
+                    ac: ac
+                };
+            });
+            //ICI ON A DES TABLEAUX D'UNITS AVEC LEURS INITIATIVES, AC ET HP DES UNITES RESPECTIVES
+            console.log(unitsData);
+            return unitsData;
+        }
     }
 
     //store the data in local storage
@@ -167,7 +181,9 @@ export default class extends Controller {
 
     startEncounter() {
         console.log('startEncounter');
-
+        // if (isEncounterValid = false) {
+        //     return;
+        // }
         // d'abord on clean le local storage
         this.deleteEncounterData();
 

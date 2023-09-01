@@ -125,6 +125,7 @@ class EncounterController extends AbstractController
             $formData = $form->getData();
             // Loop through submitted monsters and update quantities
             foreach ($formData->getEncounterMonsters() as $encounterMonster) {
+
                 $quantity = $encounterMonster->getQuantity();  // Nouvelle façon d'obtenir la quantité
                 // Set the quantity to the EncounterMonster
                 $encounterMonster->setQuantity($quantity);
