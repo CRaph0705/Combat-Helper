@@ -27,8 +27,29 @@ class Monster
     #[ORM\Column(nullable: true)]
     private ?int $initiative = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $speed = null;
+
     #[ORM\Column(nullable: true)]
-    private ?int $hpMax = null;
+    private ?int $strength = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $dexterity = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $constitution = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $intelligence = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $wisdom = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $charisma = null;
+
+    #[ORM\Column(length: 10, nullable: true)]
+    private ?string $difficulty = null;
 
     public function __construct()
     {
@@ -92,18 +113,99 @@ class Monster
         return $this;
     }
 
-    public function getHpMax(): ?int
+    public function getSpeed(): ?string
     {
-        return $this->hpMax;
+        return $this->speed;
     }
 
-    public function setHpMax(?int $hpMax): self
+    public function setSpeed(?string $speed): self
     {
-        $this->hpMax = $hpMax;
+        $this->speed = $speed;
 
         return $this;
     }
 
+    public function getStrength(): ?int
+    {
+        return $this->strength;
+    }
 
+    public function setStrength(?int $strength): self
+    {
+        $this->strength = $strength;
 
+        return $this;
+    }
+
+    public function getDexterity(): ?int
+    {
+        return $this->dexterity;
+    }
+
+    public function setDexterity(?int $dexterity): self
+    {
+        $this->dexterity = $dexterity;
+
+        return $this;
+    }
+
+    public function getConstitution(): ?int
+    {
+        return $this->constitution;
+    }
+
+    public function setConstitution(?int $constitution): self
+    {
+        $this->constitution = $constitution;
+
+        return $this;
+    }
+
+    public function getIntelligence(): ?int
+    {
+        return $this->intelligence;
+    }
+
+    public function setIntelligence(?int $intelligence): self
+    {
+        $this->intelligence = $intelligence;
+
+        return $this;
+    }
+
+    public function getWisdom(): ?int
+    {
+        return $this->wisdom;
+    }
+
+    public function setWisdom(?int $wisdom): self
+    {
+        $this->wisdom = $wisdom;
+
+        return $this;
+    }
+
+    public function getCharisma(): ?int
+    {
+        return $this->charisma;
+    }
+
+    public function setCharisma(?int $charisma): self
+    {
+        $this->charisma = $charisma;
+
+        return $this;
+    }
+
+    public function getDifficulty(): ?string
+    {
+        return $this->difficulty;
+    }
+
+    public function setDifficulty(?string $difficulty): self
+    {
+        $this->difficulty = $difficulty;
+
+        return $this;
+    }
 }
