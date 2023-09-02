@@ -30,6 +30,4 @@ open : ## Open the project in the browser
 
 build : ## Build the project
 	npm run build
-
-watch : ## Watch the project
 	npm run watch

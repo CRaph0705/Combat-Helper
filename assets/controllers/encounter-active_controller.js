@@ -1,5 +1,5 @@
 import { Controller } from '@hotwired/stimulus';
-import { ScrollHeight } from '../app.js';
+// import { ScrollHeight } from '../app.js';
 
 export default class extends Controller {
     connect() {
@@ -10,8 +10,8 @@ export default class extends Controller {
         console.log(unitsData);
 
         this.displayEncounterData();
-        ScrollHeight();
-        console.log(ScrollHeight());
+        // ScrollHeight();
+        // console.log(ScrollHeight());
     }
 
     //load the data from local storage
@@ -60,7 +60,7 @@ export default class extends Controller {
 
             // Ajout de la div de l'unité au conteneur
             container.appendChild(unitDiv);
-            ScrollHeight();
+            // ScrollHeight();
 
 
             // Ajout de l'écouteur d'événements sur les HP de l'unité
