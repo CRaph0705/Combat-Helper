@@ -19,10 +19,13 @@
 	</head>
 	<body>
 		{# <div id="parchment"></div> #}
-		<div id="contain">
-			{% block navbar %}{% endblock %}
+		{# <div id="contain"> #}
+		
+		{% block navbar %}{% endblock %}
+		<div class="container">
 			{% block body %}{% endblock %}
 		</div>
+		{# </div> #}
 		{# <svg>
 			<filter id="wavy2">
 				<feTurbulence x="0" y="0" basefrequency="0.02" numoctaves="5" seed="1"/>
