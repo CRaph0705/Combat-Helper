@@ -13,21 +13,17 @@
 			<!-- Liste des monstres avec un défilement indépendant -->
 			<ul>
 				{% for monster in monsters %}
-					<div class="monster-parchment container" data-action="click->monster-index#loadMonsterDetails" data-monster-id="{{ monster.id }}">
+					<div class="monster monster-parchment container" data-id="{{ monster.id }}" data-src="{{ path('app_monster_show',{'id': monster.id}) }}">
 						<li>{{ monster.name }}</li>
 						<li>{{ monster.hp }}</li>
 						<li>{{ monster.ac }}</li>
-						<li>
-							<a href="{{ path('app_monster_show', {'id': monster.id}) }}">show</a>
-							<a href="{{ path('app_monster_edit', {'id': monster.id}) }}">edit</a>
-						</li>
 					</div>
 				{% endfor %}
 			</ul>
 		</div>
-		<div class="monster-index-details">
-			<!-- Détails de l'unité sélectionnée (à afficher lors de la sélection) -->
-			<div id="detailsContent"></div>
+		<div>
+            <turbo-frame id="monster-details-content" src="">
+            </turbo-frame>
 		</div>
 	</div>
 {% endblock %}

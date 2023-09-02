@@ -225,16 +225,20 @@ div p:not(:first-child)::first-letter {
 
 
 
-.monster-index-container {
+.monster-index-container,
+.player-index-container {
   display: flex;
 
   .monster-index-list,
-  .monster-index-details {
+  .monster-index-details,
+  .player-index-list,
+  .player-index-details {
     flex: 1;
     width: 50%;
   }
 
-  .monster-index-list {
+  .monster-index-list,
+  .player-index-list {
     overflow-y: scroll;
     max-height: 65vh;
   }

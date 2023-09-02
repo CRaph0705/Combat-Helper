@@ -4,27 +4,29 @@ export default class extends Controller {
 
     connect() {
         console.log("monster-index controller connected");
-        // on récupère la div content dans la colonne de droite
-        this.detailsContentTarget = document.getElementById("detailsContent");
-        console.log(this.detailsContentTarget);
-    }
 
-    loadMonsterDetails(event) {
-        console.log('loadMonsterDetails called');
+        const turboFrame = document.querySelector("turbo-frame");
+        if (!turboFrame) {
+            return;
+        }
+        let currentMonsterId = null; // Stocke l'ID du monstre actuellement affiché
 
-        const monsterId = event.currentTarget.getAttribute("data-monster-id");
-        // console.log(monsterId);
+        const monsters = document.querySelectorAll(".monster");
 
-        // Effectuez une requête AJAX pour obtenir les détails du monstre
-        fetch(`/monster/${monsterId}`)
-            .then(response => response.text())
-            .then(data => {
-                // Affichez les détails dans la colonne de droite
-                this.detailsContentTarget.innerHTML = data;
-            })
-            .catch(error => {
-                console.error("Error loading monster details:", error);
+        monsters.forEach((monster) => {
+            monster.addEventListener("click", (event) => {
+                const monsterId = event.currentTarget.dataset.id;
+                const monsterSrc = event.currentTarget.dataset.src;
+                console.log(currentMonsterId);
+                if (currentMonsterId === monsterId) {
+                    turboFrame.src = "";
+                    currentMonsterId = null;
+                } else {
+                    turboFrame.src = monsterSrc;
+                    currentMonsterId = monsterId;
+                }
             });
+        });
     }
 }
 
