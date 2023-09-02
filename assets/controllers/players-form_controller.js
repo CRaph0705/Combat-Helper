@@ -1,5 +1,5 @@
 import { Controller } from '@hotwired/stimulus';
-import { ScrollHeight } from '../app.js';
+// import { ScrollHeight } from '../app.js';
 
 export default class extends Controller {
     connect() {
@@ -19,7 +19,7 @@ export default class extends Controller {
                     e.preventDefault();
                     item.remove();
 
-                    ScrollHeight();
+                    // ScrollHeight();
                 });
             }
 
@@ -59,7 +59,7 @@ export default class extends Controller {
                 collectionHolder.dataset.index++;
                 addTagFormDeleteLink(item);
 
-                ScrollHeight();
+                // ScrollHeight();
 
                 item.scrollIntoViewIfNeeded({ behavior: 'smooth', block: 'center' });
             }

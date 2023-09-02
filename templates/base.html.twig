@@ -18,17 +18,17 @@
 		{% endblock %}
 	</head>
 	<body>
-		<div id="parchment"></div>
+		{# <div id="parchment"></div> #}
 		<div id="contain">
 			{% block navbar %}{% endblock %}
 			{% block body %}{% endblock %}
 		</div>
-		<svg>
+		{# <svg>
 			<filter id="wavy2">
 				<feTurbulence x="0" y="0" basefrequency="0.02" numoctaves="5" seed="1"/>
 				<feDisplacementMap in="SourceGraphic" scale="20"/>
 			</filter>
-		</svg>
+		</svg> #}
 		{# {% block footer %}{% endblock %} #}
 	</body>
 </html>

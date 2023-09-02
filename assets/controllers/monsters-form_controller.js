@@ -1,5 +1,5 @@
 import { Controller } from '@hotwired/stimulus';
-import { ScrollHeight } from '../app.js';
+// import { ScrollHeight } from '../app.js';
 export default class extends Controller {
     connect() {
         onload = () => {
@@ -18,7 +18,7 @@ export default class extends Controller {
                     e.preventDefault();
                     item.remove();
 
-                    ScrollHeight();
+                    // ScrollHeight();
                 });
             }
 
@@ -54,7 +54,7 @@ export default class extends Controller {
                 // add a delete link to the new form
                 addTagFormDeleteLink(item);
                 // ajust the height of the page with the new form
-                ScrollHeight();
+                // ScrollHeight();
                 // scroll the page to the new form
                 item.scrollIntoView({ behavior: 'smooth', block: 'start' });
             };
