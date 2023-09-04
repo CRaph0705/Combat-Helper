@@ -4,7 +4,6 @@
 {% endblock %}
 
 {% block body %}
-
 	<h1>Monster index</h1>
 	<a href="{{ path('app_monster_new') }}">Create new monster</a>
 
@@ -17,7 +16,6 @@
 					<div class="ripped-paper mb-2">
 						<div class="monster monster-parchment" data-id="{{ monster.id }}" data-src="{{ path('app_monster_show',{'id': monster.id}) }}">
 							<h2 class="mb-2 d-flex justify-content-center">{{ monster.name }}</h2>
-
 							<div class="d-flex justify-content-between mx-5">
 								<div class"d-flex flex-column">
 									<p><strong>FP</strong></p>{# facteur de puissance #}

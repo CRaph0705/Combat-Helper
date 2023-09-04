@@ -27,9 +27,6 @@ class PlayerCharacter
     #[ORM\Column(nullable: true)]
     private ?int $initiative = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $hpMax = null;
-
     #[ORM\OneToMany(mappedBy: 'playerCharacter', targetEntity: EncounterPlayerCharacter::class, orphanRemoval: true)]
     private Collection $encounterPlayerCharacters;
 
@@ -92,18 +89,6 @@ class PlayerCharacter
     public function setInitiative(?int $initiative): self
     {
         $this->initiative = $initiative;
-
-        return $this;
-    }
-
-    public function getHpMax(): ?int
-    {
-        return $this->hpMax;
-    }
-
-    public function setHpMax(?int $hpMax): self
-    {
-        $this->hpMax = $hpMax;
 
         return $this;
     }

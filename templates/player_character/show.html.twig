@@ -6,34 +6,41 @@
     <h1>PlayerCharacter</h1>
 
 	<turbo-frame id="player-details-content">
-
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ player_character.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ player_character.name }}</td>
-            </tr>
-            <tr>
-                <th>Hp</th>
-                <td>{{ player_character.hp }}</td>
-            </tr>
-            <tr>
-                <th>Ac</th>
-                <td>{{ player_character.ac }}</td>
-            </tr>
-            <tr>
-                <th>HpMax</th>
-                <td>{{ player_character.hpMax }}</td>
-            </tr>
-        </tbody>
-    </table>
+		<div class="player-detail-card">
+			<h1>{{ player_character.name }}</h1>
+            <hr class="mb-2 mt-2">
+			<p><strong>Classe d'armure</strong> {{ player_character.ac }}</p>
+			<p><strong>Points de vie</strong> {{ player_character.hp }}</p>
+        </div>
+        {# <div class="d-flex justify-content-between">
+				<div class"d-flex flex-column">
+					<p><strong>FOR</strong></p> 
+					<p class="text-center">{{ player_character.strength }}</p>
+				</div>
+				<div class"d-flex flex-column">
+					<p><strong>DEX</strong></p> 
+					<p class="text-center">{{ player_character.dexterity }}</p>
+				</div>
+				<div class"d-flex flex-column">
+					<p><strong>CON</strong></p> 
+					<p class="text-center">{{ player_character.constitution }}</p>
+				</div>
+				<div class"d-flex flex-column">
+					<p><strong>INT</strong></p> 
+					<p class="text-center">{{ player_character.intelligence }}</p>
+				</div>
+				<div class"d-flex flex-column">
+					<p><strong>SAG</strong></p> 
+					<p class="text-center">{{ player_character.wisdom }}</p>
+				</div>
+				<div class"d-flex flex-column">
+					<p><strong>CHA</strong></p> 
+					<p class="text-center">{{ player_character.charisma }}</p>
+				</div>
+			</div> #}
 
     <a href="{{ path('app_player_character_edit', {'id': player_character.id}) }}">edit</a>
 	</turbo-frame>
-    <a href="{{ path('app_player_character_index') }}">back to list</a>
-    {{ include('player_character/_delete_form.html.twig') }}
+    {# <a href="{{ path('app_player_character_index') }}">back to list</a> #}
+    {# {{ include('player_character/_delete_form.html.twig') }} #}
 {% endblock %}
