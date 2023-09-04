@@ -18,8 +18,15 @@ class MonsterController extends AbstractController
     #[Route('/', name: 'app_monster_index', methods: ['GET'])]
     public function index(Request $request, MonsterRepository $monsterRepository): Response
     {
+        //on récupère les monsters et on les trie par name
+
+        $monsters = $monsterRepository->findBy([], ['name' => 'ASC']);
+
+
+
+
         return $this->render('monster/index.html.twig', [
-            'monsters' => $monsterRepository->findAll(),
+            'monsters' => $monsters,
         ]);
     }
 

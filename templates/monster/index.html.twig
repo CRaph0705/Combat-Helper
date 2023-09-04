@@ -5,25 +5,44 @@
 
 {% block body %}
 
-    <h1>Monster index</h1>
-    <a href="{{ path('app_monster_new') }}">Create new monster</a>
+	<h1>Monster index</h1>
+	<a href="{{ path('app_monster_new') }}">Create new monster</a>
 
-	<div class="monster-index-container" data-controller="monster-index">
-		<div class="monster-index-list">
+	<div class="monster-index-container d-flex" data-controller="monster-index">
+		<div
+			class="monster-index-list">
 			<!-- Liste des monstres avec un défilement indépendant -->
 			<ul>
 				{% for monster in monsters %}
-					<div class="monster monster-parchment container" data-id="{{ monster.id }}" data-src="{{ path('app_monster_show',{'id': monster.id}) }}">
-						<li>{{ monster.name }}</li>
-						<li>{{ monster.hp }}</li>
-						<li>{{ monster.ac }}</li>
+					<div class="ripped-paper mb-2">
+						<div class="monster monster-parchment" data-id="{{ monster.id }}" data-src="{{ path('app_monster_show',{'id': monster.id}) }}">
+							<h2 class="mb-2 d-flex justify-content-center">{{ monster.name }}</h2>
+
+							<div class="d-flex justify-content-between mx-5">
+								<div class"d-flex flex-column">
+									<p><strong>FP</strong></p>{# facteur de puissance #}
+									<p>{{ monster.difficulty }}</p>
+								</div>
+
+								<div class"d-flex flex-column">
+									<p><strong>CA</strong></p>
+									<p>{{ monster.ac }}</p>
+								</div>
+
+								<div class"d-flex flex-column">
+									<p><strong>PV</strong></p>
+									<p>{{ monster.hp }}</p>
+								</div>
+							</div>
+
+						</div>
 					</div>
 				{% endfor %}
 			</ul>
 		</div>
-		<div>
-            <turbo-frame id="monster-details-content" src="">
-            </turbo-frame>
+		<div class="monster-details">
+			<turbo-frame id="monster-details-content" src=""></turbo-frame>
 		</div>
 	</div>
 {% endblock %}
+{# class="flex-column" #}
