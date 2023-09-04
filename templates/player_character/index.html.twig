@@ -1,27 +1,41 @@
 {% extends 'navbar.html.twig' %}
 
-{% block title %}PlayerCharacter index{% endblock %}
+{% block title %}PlayerCharacter index
+{% endblock %}
 
 {% block body %}
-    <h1>PlayerCharacter index</h1>
-    <a href="{{ path('app_player_character_new') }}">Create new character</a>
+	<h1>PlayerCharacter index</h1>
+	<a href="{{ path('app_player_character_new') }}">Create new character</a>
 
-	<div class="player-index-container" data-controller="player-index">
-		<div class="player-index-list">
+	<div class="player-index-container d-flex" data-controller="player-index">
+		<div
+			class="player-index-list">
 			<!-- Liste des players avec un défilement indépendant -->
 			<ul>
 				{% for player_character in player_characters %}
-					<div class="player player-parchment container" data-id="{{ player_character.id }}" data-src="{{ path('app_player_character_show',{'id': player_character.id}) }}">
-						<li>{{ player_character.name }}</li>
-						<li>{{ player_character.hp }}</li>
-						<li>{{ player_character.ac }}</li>
+					<div class="ripped-paper mb-2">
+						<div class="player player-parchment" data-id="{{ player_character.id }}" data-src="{{ path('app_player_character_show',{'id': player_character.id}) }}">
+							<h2 class="mb-2 d-flex justify-content-center">{{ player_character.name }}</h2>
+							<div class"d-flex flex-column">
+								<p>
+									<strong>CA</strong>
+								</p>
+								<p>{{ player_character.ac }}</p>
+							</div>
+
+							<div class"d-flex flex-column">
+								<p>
+									<strong>PV</strong>
+								</p>
+								<p>{{ player_character.hp }}</p>
+							</div>
+						</div>
 					</div>
 				{% endfor %}
 			</ul>
 		</div>
-		<div>
-            <turbo-frame id="player-details-content" src="">
-            </turbo-frame>
+		<div class="player-details">
+			<turbo-frame id="player-details-content" src=""></turbo-frame>
 		</div>
 	</div>
 {% endblock %}
