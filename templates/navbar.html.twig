@@ -1,21 +1,16 @@
 {% extends "base.html.twig" %}
 {% block navbar %}
-    <nav>
-        {# Home #}
-        <a href="{{ path('app_hello') }}">Home</a>
-        <a href="{{ path('app_player_character_index') }}">Characters</a>
-        <a href="{{ path('app_monster_index') }}">Monsters</a>
-        {# <a href="{{ path('app_encounter_list_index') }}">Saved Lists</a> #}
-        <a href="{{ path('app_encounter_new') }}">New Encounter</a>
-        {# New encounter #}
-        
-        {# if !encounter :
-        {# Start encounter #}
-        {# <a href="{{ path('start_encounter') }}">Start Encounter</a> #}
-        {# if encounter : #}
-        {# Previous turn #}
-        {# <a href="{{ path('previous_turn') }}">Previous Turn</a> #}
-        {# Next turn #}
-        {# <a href="{{ path('next_turn') }}">Next Turn</a> #}
+    <nav class="nav-menu-area">
+        <div class="nav-position-left">
+            <a href="{{ path('app_hello') }}">LOGO</a>
+        </div>
+        <div class="nav-position-right">
+            <div class="nav-button-pannel">
+                <a class="nav-link {{ app.request.attributes.get('_route') == 'hello' ? 'active' }}" href="{{ path('app_hello') }}"><span>Accueil</span></a>
+                <a class="nav-link {{ app.request.attributes.get('_route') == 'app_player_character_index' ? 'active' }}" href="{{ path('app_player_character_index') }}">Personnages</a>
+                <a class="nav-link {{ app.request.attributes.get('_route') == 'app_monster_index' ? 'active' }}" href="{{ path('app_monster_index') }}">Bestiaire</a>
+                <a class="nav-link {{ app.request.attributes.get('_route') == 'app_encounter_new' ? 'active' }}" href="{{ path('app_encounter_new') }}">Combat</a>
+            </div>
+        </div>
     </nav>
 {% endblock %}

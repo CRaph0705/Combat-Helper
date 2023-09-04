@@ -17,14 +17,14 @@ export default class extends Controller {
             monster.addEventListener("click", (event) => {
                 const monsterId = event.currentTarget.dataset.id;
                 const monsterSrc = event.currentTarget.dataset.src;
-                console.log(currentMonsterId);
-                if (currentMonsterId === monsterId) {
-                    turboFrame.src = "";
-                    currentMonsterId = null;
-                } else {
+                // if (currentMonsterId === monsterId) {
+                //     turboFrame.src = "";
+                //     currentMonsterId = null;
+                // } else {
                     turboFrame.src = monsterSrc;
                     currentMonsterId = monsterId;
-                }
+                // }
+                // console.log(currentMonsterId);
             });
         });
     }
