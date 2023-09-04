@@ -133,7 +133,9 @@ export default class extends Controller {
             //on affiche un message d'erreur
             alert('Les valeurs d\'initiative, de points de vie et de classe d\'armure doivent être des nombres supérieurs ou égaux à 0');
             //et on redirige vers la page d'encounter/init
-            return;
+
+            //on return à l'encounter/init            
+            window.location.href = `/encounter/${encounterId}/init`;
         } else {
             // isEncounterValid = true;
             //récupérer valeur de tous les inputs et les mettre en tableaux 
@@ -181,10 +183,15 @@ export default class extends Controller {
 
     startEncounter() {
         console.log('startEncounter');
-        // if (isEncounterValid = false) {
-        //     return;
-        // }
-        // d'abord on clean le local storage
+        //si toutes les unités ont une initiative, des hp et une ac on peut commencer l'encounter
+        //sinon on affiche un message d'erreur
+        // d'abord la vérification :
+        const unitsData = this.collectUnitsData();
+        if (!unitsData) {
+            return;
+        }
+
+        // on commence par supprimer les données de l'encounter précédent
         this.deleteEncounterData();
 
         // ensuite on récupère les données des unités
