@@ -23,19 +23,74 @@ p {
   font-size: 16px;
 }
 
+
+//LOGO /!\
+a {
+  color: black;
+  text-decoration: none;
+  &:hover {
+    color: #7F3300;
+    text-decoration: none;
+  }
+}
+//les liens dans la navbar
+.nav-link {
+  color: #ccc;
+  text-transform: uppercase;
+  text-decoration: none;
+  letter-spacing: 0.15em;
+
+  display: inline-block;
+  position: relative;
+
+  &:hover {
+    // color: #7F3300;
+    color: #fff;
+  }
+}
+
+.nav-link::after {
+  background: none repeat scroll 0 0 transparent;
+  bottom: 0;
+  content: "";
+  display: block;
+  height: 2px;
+  left: 50%;
+  position: absolute;
+  background: #fff;
+  transition: width 0.3s ease 0s, left 0.3s ease 0s;
+  width: 0;
+}
+
+.nav-link:hover:after { 
+	width: 100%; 
+	left: 0; 
+}
+
+.nav-link.active {
+  color: #fff;
+  &:after {
+    width: 100%;
+    left: 0;
+  }
+}
+
+
+
+
 hr {
   background-color: white;
   height: 3px;
 }
 
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 60px;
-  line-height: 60px;
-  background-color: #f5f5f5;
-}
+// .footer {
+//   position: absolute;
+//   bottom: 0;
+//   width: 100%;
+//   height: 40px;
+//   line-height: 60px;
+//   background-color: #f5f5f5;
+// }
 
 
 
@@ -324,3 +379,39 @@ August 2021 : ok on Chrome v92+, Firefox v90+, Edge v92+
 //     0% 90%
 //   );
 // }
+
+
+
+
+/* #################################################### NAVBAR #################################################### */
+
+.nav-menu-area {
+  // ici on a une div qui contient les 2 divs suivantes : nav-position-left et nav-position-right
+  // nav-position-left contient le logo et le titre, et nav-position-right contient les boutons de navigation
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin: 4%;
+}
+
+.nav-position-left {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 50%;
+}
+
+.nav-position-right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 50%;
+}
+
+.nav-button-pannel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
