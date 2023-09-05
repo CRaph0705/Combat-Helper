@@ -9,6 +9,8 @@
 		<div class="player-detail-card">
 			<h1>{{ player_character.name }}</h1>
             <hr class="mb-2 mt-2">
+			{# <p><strong>Niveau</strong> {{ player_character.level }}</p> #}
+			<p><strong>Niveau</strong> player_character.level</p>
 			<p><strong>Classe d'armure</strong> {{ player_character.ac }}</p>
 			<p><strong>Points de vie</strong> {{ player_character.hp }}</p>
         </div>
@@ -38,9 +40,8 @@
 					<p class="text-center">{{ player_character.charisma }}</p>
 				</div>
 			</div> #}
-
-    <a href="{{ path('app_player_character_edit', {'id': player_character.id}) }}">edit</a>
 	</turbo-frame>
+    <a href="{{ path('app_player_character_edit', {'id': player_character.id}) }}">edit</a>
     {# <a href="{{ path('app_player_character_index') }}">back to list</a> #}
     {# {{ include('player_character/_delete_form.html.twig') }} #}
 {% endblock %}

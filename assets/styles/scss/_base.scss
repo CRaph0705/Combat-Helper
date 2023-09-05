@@ -1,0 +1,67 @@
+// Styles de base (body, typographie, etc.)
+
+
+body {
+    background-color: $primary-bg;
+}
+
+h1 {
+    font-size: 30px;
+}
+
+h2 {
+    font-size: 20px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: $title-font;
+    font-weight: bold;
+    color: $title-color;
+}
+
+p {
+    font-size: 16px;
+    color: $text-color;
+}
+
+hr {
+    background-color: $light;
+    height: 3px;
+}
+
+
+html,
+body {
+    height: 100%;
+}
+
+
+main {
+    position: relative;
+    width: 100%;
+    height: auto;
+}
+
+//LOGO /!\
+a {
+    color: $primary;
+    text-decoration: none;
+
+    &:hover {
+        color: $accent;
+        text-decoration: none;
+    }
+}
+
+// le a avec la class contact-mail
+a.contact-info {
+    color: $primary;
+    text-decoration: underline;
+    text-decoration-color: $accent;
+
+    &:hover {
+        color: $accent;
+        text-decoration: underline;
+        text-decoration-color: $primary;
+    }
+}

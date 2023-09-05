@@ -2,7 +2,7 @@ import { Controller } from '@hotwired/stimulus';
 // import { ScrollHeight } from '../app.js';
 export default class extends Controller {
     connect() {
-        onload = () => {
+        // onload = () => {
             console.log('monsters-form controller connected');
 
 
@@ -12,6 +12,7 @@ export default class extends Controller {
                 wrapperDiv.classList.add('col-2');
                 item.append(wrapperDiv);
                 const removeFormButton = document.createElement('button');
+                removeFormButton.classList.add('btn-remove-unit');
                 removeFormButton.innerText = 'Retirer';
                 wrapperDiv.append(removeFormButton);
                 removeFormButton.addEventListener('click', (e) => {
@@ -29,6 +30,7 @@ export default class extends Controller {
 
             const addMonsterTagLink = document.createElement('button');
             addMonsterTagLink.type = "button";
+            addMonsterTagLink.classList.add('btn-add-unit');
             addMonsterTagLink.classList.add('add_tag_list');
             addMonsterTagLink.innerText = 'Ajouter un monstre';
             addMonsterTagLink.dataset.collectionHolderClass = 'monsters-content';
@@ -61,6 +63,6 @@ export default class extends Controller {
 
             addMonsterTagLink.addEventListener("click", addFormToCollection)
         }
-    }
+    // }
 }
 

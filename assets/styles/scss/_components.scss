@@ -1,0 +1,126 @@
+// component card
+
+// .unit-card {
+//     display: flex;
+// }
+
+.unit-card,
+.monster-card,
+.player-card {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    padding: 1em;
+    border: 1px solid black;
+    border-radius: 1em;
+    background-color: #fffef0;
+    box-shadow: 0 0 0.2em 0.2em lightgray;
+
+    &:hover {
+        box-shadow: 0 0 0.2em 0.2em #7F3300;
+    }
+}
+
+
+// .ripped-paper {
+//   clip-path: polygon(
+//     1% 0%,
+//     3% 2%,
+//     9% 0%,
+//     13% 0%,
+//     13% 6%,
+//     15% 1%,
+//     21% 2%,
+//     26% 5%,
+//     30% 100%,
+//     10% 100%,
+//     0% 90%
+//   );
+// }
+
+.unit.active {
+    box-shadow: 0 0 10px #FFD700;
+}
+
+.KO {
+    text-decoration: line-through;
+    // color: red;
+    //background-color: gris foncé
+    background-color: #7F3300;
+    opacity: 0.5;
+    box-shadow: 0 0 0.2em 0.2em black;
+}
+
+.unit-parchment,
+.monster-parchment,
+.player-parchment {
+    box-shadow: 2px 3px 10px black, 0 0 125px #8f5922 inset;
+    background: #fffef0;
+    color: black;
+    padding: 2%;
+    margin-right: 5%;
+}
+//le h2 et p dans le parchemin ont le texte de couleur noir
+.unit-parchment h2,
+.monster-parchment h2,
+.player-parchment h2,
+.unit-parchment div div p,
+.monster-parchment div div p,
+.player-parchment div div p {
+    color: black;
+}
+
+.unit-details,
+.monster-details,
+.player-details {
+    width: 50%;
+    margin-left: 5%;
+}
+
+.unit-details-card,
+.monster-detail-card,
+.player-detail-card {
+    color: white;
+    // width: 400px;
+}
+
+.unit-index-container,
+.monster-index-container,
+.player-index-container {
+    display: flex;
+    justify-content: space-between;
+
+    .unit-index-list,
+    .unit-index-details,
+    .monster-index-list,
+    .monster-index-details,
+    .player-index-list,
+    .player-index-details {
+        flex: 1;
+        width: 50%;
+    }
+
+    .unit-index-list,
+    .monster-index-list,
+    .player-index-list {
+        overflow-y: scroll;
+        max-height: 65vh;
+        width: 50%;
+    }
+}
+
+
+
+.section-separator {
+    width: 100%;
+    height: 1px;
+    // background-color: #ccc;
+    padding-left: 10%;
+    padding-right: 10%;
+    margin-top: 10%;
+    margin-bottom: 20%;
+}

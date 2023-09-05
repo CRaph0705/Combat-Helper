@@ -13,6 +13,7 @@ export default class extends Controller {
                 wrapperDiv.classList.add('col-2');
                 item.append(wrapperDiv);
                 const removeFormButton = document.createElement('button');
+                removeFormButton.classList.add('btn-remove-unit');
                 removeFormButton.innerText = 'Retirer';
                 wrapperDiv.append(removeFormButton);
                 removeFormButton.addEventListener('click', (e) => {
@@ -30,6 +31,7 @@ export default class extends Controller {
             // on va créer un button pour ajouter un joueur
             const addPlayerTagLink = document.createElement('button');
             addPlayerTagLink.type = "button";
+            addPlayerTagLink.classList.add('btn-add-unit');
             addPlayerTagLink.classList.add('add_tag_list');
             addPlayerTagLink.innerText = 'Ajouter un joueur';
             addPlayerTagLink.dataset.collectionHolderClass = 'players-content';
