@@ -19,14 +19,14 @@
     text-align: center;
 }
 
-.home-description {
+.home-description,
+.about-us {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
     font-size: 1.5em;
-    // font-weight: bold;
-    color: $text-color;
-    margin-left: 2%;
-    text-align: center;
+    padding: 1em;
 }
-
 
 
 
