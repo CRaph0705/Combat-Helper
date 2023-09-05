@@ -1,37 +1,28 @@
 import { Controller } from '@hotwired/stimulus';
 
-/*
- * This is an example Stimulus controller!
- *
- * Any element with a data-controller="hello" attribute will cause
- * this controller to be executed. The name "hello" comes from the filename:
- * hello_controller.js -> "hello"
- *
- * Delete this file or adapt it for your use!
- */
 export default class extends Controller {
-    connect() {
-        // this.element.textContent = 'plop';
-        console.log('hello controller connected');
+  connect() {
+    console.log('hello controller connected');
 
 
-// First call to define "parchment" height
-// document.onload = ScrollHeight();
+    /// navbar fixed sur la homepage uniquement
+    if (window.location.pathname === '/') {
+      window.onscroll = function () { stickTheNavbar() };
 
-// Redraw when viewport is modified
-// window.addEventListener('resize', function(event){
-//   ScrollHeight();
-// });
+      // Get the navbar
+      var navbar = document.getElementById("navbar");
 
+      // Get the offset position of the navbar
+      var sticky = navbar.offsetTop;
 
-// function ScrollHeight() {
-//   var content = document.querySelector('#parchment');
-//   var container = document.querySelector('#contain');
-
-  // SVG feTurbulence can modify all others elements, fo this reason "parchment" is in another <div> and in absolute position.
-  // so for a better effect, absolute height is defined by his content.
-//   content.style.height = container.offsetHeight + 'px';
-// }
-
+      // Add the sticky class to the navbar when you reach its scroll position. Remove "sticky" when you leave the scroll position
+      function stickTheNavbar() {
+        if (window.scrollY >= sticky) {
+          navbar.classList.add("sticky")
+        } else {
+          navbar.classList.remove("sticky");
+        }
+      }
     }
+  }
 }

@@ -4,8 +4,9 @@
 
 {% block body %}
 	<h1>Monster index</h1>
-	<a href="{{ path('app_monster_new') }}">Create new monster</a>
-
+	<div class="button-container">
+		<a href="{{ path('app_monster_new') }}"><button class="btn-new-unit">Create new monster</button></a>
+	</div>
 	<div class="monster-index-container d-flex" data-controller="monster-index">
 		<div
 			class="monster-index-list">

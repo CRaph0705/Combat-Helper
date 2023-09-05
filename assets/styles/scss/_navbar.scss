@@ -10,9 +10,20 @@
 
 .logo {
     color: $primary;
+
     &:hover {
         color: $accent;
     }
+}
+
+.sticky {
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+
+.sticky+.content {
+    padding-top: $navbar-height;
 }
 
 
@@ -20,7 +31,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-
+    height: $navbar-height;
     margin: 4%;
 }
 
@@ -89,3 +100,8 @@
         left: 0;
     }
 }
+
+
+// #navbar-placeholder {
+//     height: $navbar-height;
+// }

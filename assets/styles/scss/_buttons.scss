@@ -1,3 +1,4 @@
+// #################################################### HOME ####################################################
 .home-encounter-button-container {
     display: flex;
     justify-content: center;
@@ -15,6 +16,20 @@
     text-align: center;
     justify-items: center;
     align-items: center;
+    border: 1px solid $button-border-color;
+    &:hover {
+        background-color: $button-bg;
+        color: $button-color-hover;
+        border: 1px solid $button-border-color-hover;
+    }
+}
+// #################################################### UNIT INDEX ####################################################
+
+.btn-new-unit {
+    background-color: $button-bg;
+    color: $button-color;
+    // font-size: $button-font-size;
+    font-weight: $button-font-weight;
     border: 1px solid $button-border-color;
     &:hover {
         background-color: $button-bg;
