@@ -1,0 +1,60 @@
+.home-encounter-button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 10%;
+    margin-bottom: 10%;
+}
+
+.home-encounter-button {
+    font-size: $button-font-size;
+    font-weight: $button-font-weight;
+    color: $button-color;
+    background-color: $button-bg;
+    text-align: center;
+    justify-items: center;
+    align-items: center;
+    border: 1px solid $button-border-color;
+    &:hover {
+        background-color: $button-bg;
+        color: $button-color-hover;
+        border: 1px solid $button-border-color-hover;
+    }
+}
+
+
+// #################################################### ENCOUNTER NEW / EDIT ####################################################
+.btn-save {
+    font-size: $button-font-size;
+    font-weight: $button-font-weight;
+    color: $button-color;
+    background-color: $button-bg;
+    text-align: center;
+    justify-items: center;
+    align-items: center;
+    border: 1px solid $button-border-color;
+    &:hover {
+        background-color: $button-bg;
+        color: $button-color-hover;
+        border: 1px solid $button-border-color-hover;
+    }
+}
+
+// .btn-add-unit {}
+// .btn-remove-unit {}
+
+// #################################################### ENCOUNTER ACTIVE ####################################################
+.controlPannel {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    position: fixed;
+    top: 15%;
+    right: 20%;
+    transform: translateY(-50%);
+    box-shadow: 0 0 10px grey;
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 1000;
+}

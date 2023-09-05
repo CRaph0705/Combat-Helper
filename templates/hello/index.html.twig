@@ -1,23 +1,65 @@
-{% extends 'base.html.twig' %}
-{% block title %}Hello HelloController!{% endblock %}
+{% extends 'navbar.html.twig' %}
+{% block title %}Home
+{% endblock %}
 
 {% block body %}
 	<div data-controller="hello">
-		<h1>Combat Helper</h1>
-		<p><a href="{{ path('app_encounter_new') }}">New Encounter</a></p>
+		<section>
+			{# centrer le titre #}
+			<h1 class="main-title">Combat Helper</h1>
+			{# image en background #}
 
-		<p><a href="{{ path('app_player_character_index') }}">Characters</a></p>
+			{# séparation #}
 
-		<p><a href="{{ path('app_monster_index') }}">Monsters</a></p>
-		{# titre accrocheur #}
-		{# petite description, à quoi sert l'app #}
-		<p>Cette application propose une interface de combat dans Donjon & Dragons.</p>
-		<p>Elle permet de gérer les personnages et les monstres, de créer une rencontre et de la jouer.</p>
-		<button class="btn btn-primary">Ceci est un bouton</button>{# START ENCOUNTER / NEW ENCOUNTER #}
 
-		{# séparation #}
-		{# qui sommes nous #}
-		{# séparation #}
-		{# formulaire de contact : report bug / suggestions ajout de fonctionnalité #}
-	</div>
-{% endblock %}
+			{# description centrée #}
+				<div class="home-description"> <p>Cette application propose une interface de combat dans Donjon & Dragons.</p>
+				<p>Elle permet de gérer les personnages et les monstres, de créer une rencontre et de la jouer.</p>
+			</div>
+
+
+			{# centrer le bouton #}
+			<div class="home-encounter-button-container">
+				<a href="{{ path('app_encounter_new') }}">
+					<button class="btn home-encounter-button">Lancez le combat !</button>
+				</a>
+			</div>
+
+			{# SEPARATOR #}
+			{% include "_parts/separator.html.twig" %}
+		</section>
+
+
+		<section>
+			{# qui sommes nous #}
+			<div>
+				<h2 class="secondary-title">About us</h2>
+				<div class="about-us">
+
+					<p>
+						Lors de nos campagnes, on a tous ressenti le besoin d'une méthode plus efficace pour gérer les combats qu'avec cette chère gomme. 
+						<br>
+						La mission est simple : offrir une interface visuelle et pratique pour rendre les combats plus fluides et plus agréables pour le MJ. 
+						<br>
+						Cet outil permet de gérer les initiatives, de suivre les points de vie, de suivre le déroulement du combat, le tout en quelques clics.
+					</p>
+						<br>
+					<p>
+						Si vous avez des questions, des suggestions ou rencontrez des bugs, n'hésitez surtout pas à me contacter en passant <a href="" class="contact-info">par ici</a>.</p>
+					<p>
+						Je serai ravi d'entendre vos retours et de continuer à améliorer cet outil.
+						<br>
+						Merci de faire partie de l'aventure.
+					</p>
+				</div>
+			</div>
+		</section>
+
+
+	{% include "_parts/separator.html.twig" %}
+
+
+	{% include "_parts/footer.html.twig" %}
+
+
+</div>{% endblock %}

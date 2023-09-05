@@ -24,12 +24,6 @@ class PlayerCharacterType extends AbstractType
                         'placeholder' => 'Classe d\'armure (AC)',
                     ],
                 ])
-                ->add('hpMax', IntegerType::class, [
-                    'label' => 'Points de vie max',
-                    'attr' => [
-                        'placeholder' => 'Points de vie max',
-                    ],
-                ])
         ;
         $playerCharacter = $options['data'] ?? null;
 
