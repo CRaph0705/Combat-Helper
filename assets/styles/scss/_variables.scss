@@ -2,6 +2,7 @@
 
 // $primary-bg: #343a40;
 $primary-bg: #272727;
+// $primary-bg: grey;
 // /!\ si on change la couleur de fond, il faut changer la couleur dans le svg separator
 $accent: #ff652f;
 $primary: #fafafa;
@@ -12,7 +13,8 @@ $text-color: $primary;
 $light: $primary;
 
 $global-font: 'Marcellus';
-$title-font: 'Bilbo Swash Caps', cursive;
+// $title-font: 'Bilbo Swash Caps', cursive;
+$title-font: 'Marcellus';
 
 //buttons variables
 $button-color: $primary;
