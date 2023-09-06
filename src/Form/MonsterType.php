@@ -16,11 +16,13 @@ class MonsterType extends AbstractType
 
     $builder
         ->add('name', TextType::class, [
+            'label' => 'Name',
             'attr' => [
                 'class' => 'form-control',
             ],
         ])
         ->add('hp' , IntegerType::class, [
+            'label' => 'HP',
             'attr' => [
                 'min' => 0,
                 'class' => 'form-control',
