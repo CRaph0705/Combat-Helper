@@ -125,16 +125,3 @@
     margin-top: 10%;
     margin-bottom: 20%;
 }
-
-
-//about us
-.about-us {
-    // on veut centrer la div mais garder le texte à gauche
-    display: flex;
-    // justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    padding: 1em;
-    border-radius: 1em;
-    background-color: $primary-bg;
-}

@@ -3,7 +3,7 @@
 {% endblock %}
 
 {% block body %}
-	<div data-controller="hello">
+	<div data-controller="hello" class="content">
 		<section>
 			{# centrer le titre #}
 			<h1 class="main-title">Combat Helper</h1>
@@ -58,12 +58,7 @@
 				</div>
 			</div>
 		</section>
-
-
 	{% include "_parts/separator.html.twig" %}
-
-
 	{% include "_parts/footer.html.twig" %}
-
-
-</div>{% endblock %}
+	</div>
+{% endblock %}

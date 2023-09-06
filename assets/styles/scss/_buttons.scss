@@ -1,3 +1,4 @@
+// #################################################### HOME ####################################################
 .home-encounter-button-container {
     display: flex;
     justify-content: center;
@@ -21,6 +22,32 @@
         color: $button-color-hover;
         border: 1px solid $button-border-color-hover;
     }
+}
+// #################################################### UNIT INDEX ####################################################
+
+.btn-new-unit {
+    background-color: $button-bg;
+    color: $button-color;
+    width: auto;
+    // font-size: $button-font-size;
+    font-weight: $button-font-weight;
+    border: 1px solid $button-border-color;
+    padding: 1em 2em;
+    box-sizing: border-box;
+    &:hover {
+        background-color: $button-bg;
+        color: $button-color-hover;
+        border: 1px solid $button-border-color-hover;
+    }
+}
+
+.button-container {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    width: auto;
+    margin-top: 1%;
+    margin-bottom: 2%;
 }
 
 
