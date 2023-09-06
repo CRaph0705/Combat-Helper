@@ -9,22 +9,24 @@ export default class extends Controller {
         if (!turboFrame) {
             return;
         }
-        let currentPlayerId = null; // Stocke l'ID du player actuellement affiché
 
         const players = document.querySelectorAll(".player");
+        let currentPlayerId = null;
+        players[0].classList.add("unit-selected");
+        turboFrame.src = players[0].dataset.src;
+        currentPlayerId = players[0].dataset.id;
 
         players.forEach((player) => {
             player.addEventListener("click", (event) => {
                 const playerId = event.currentTarget.dataset.id;
                 const playerSrc = event.currentTarget.dataset.src;
-                console.log(currentPlayerId);
-                if (currentPlayerId === playerId) {
-                    turboFrame.src = "";
-                    currentPlayerId = null;
-                } else {
-                    turboFrame.src = playerSrc;
-                    currentPlayerId = playerId;
-                }
+
+                players.forEach((p) => p.classList.remove("unit-selected"));
+                event.currentTarget.classList.add("unit-selected");
+
+                turboFrame.src = playerSrc;
+                currentPlayerId = playerId;
+
             });
         });
     }
