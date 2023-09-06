@@ -9,24 +9,25 @@ export default class extends Controller {
         if (!turboFrame) {
             return;
         }
-        let currentMonsterId = null; // Stocke l'ID du monstre actuellement affiché
 
         const monsters = document.querySelectorAll(".monster");
+        let currentMonsterId = null;
+        monsters[0].classList.add("unit-selected");
+        turboFrame.src = monsters[0].dataset.src;
+        currentMonsterId = monsters[0].dataset.id;
 
         monsters.forEach((monster) => {
             monster.addEventListener("click", (event) => {
                 const monsterId = event.currentTarget.dataset.id;
                 const monsterSrc = event.currentTarget.dataset.src;
-                // if (currentMonsterId === monsterId) {
-                //     turboFrame.src = "";
-                //     currentMonsterId = null;
-                // } else {
-                    turboFrame.src = monsterSrc;
-                    currentMonsterId = monsterId;
-                // }
-                // console.log(currentMonsterId);
+
+                monsters.forEach((m) => m.classList.remove("unit-selected"));
+                event.currentTarget.classList.add("unit-selected");
+
+                turboFrame.src = monsterSrc;
+                currentMonsterId = monsterId;
+
             });
         });
     }
 }
-
