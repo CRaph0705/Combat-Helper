@@ -6,11 +6,13 @@
 	<turbo-frame id="monster-details-content">
 		<div class="monster-detail-card">
 			<h1>{{ monster.name }}</h1>
-			{# todo reste de la fiche monstre #}
 			<hr class="mb-2 mt-2">
+
 			<p><strong>Classe d'armure</strong> {{ monster.ac }}</p>
 			<p><strong>Points de vie</strong> {{ monster.hp }}</p>
 			<p><strong>Vitesse</strong> {{ monster.speed }}</p>
+			{# <p><strong>Alignement</strong> {{ monster.alignment }}</p> #}
+
 			<hr class="mb-2 mt-2">
 			<div class="d-flex justify-content-between">
 				<div class"d-flex flex-column">
@@ -38,9 +40,11 @@
 					<p class="text-center">{{ monster.charisma }}</p>
 				</div>
 			</div>
+
 			<hr class="mb-2 mt-2">
 			<p><strong>Puissance</strong> {{ monster.difficulty }}</p>
 		</div>
-		{# <a href="{{ path('app_monster_edit', {'id': monster.id}) }}">edit</a> #}
 	</turbo-frame>
+	{# <a href="{{ path('app_monster_edit', {'id': monster.id}) }}">edit</a> #}
+	{# <a href="{{ path('app_monster_delete', {'id': monster.id}) }}">delete</a> #}
 {% endblock %}
