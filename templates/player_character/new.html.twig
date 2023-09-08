@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'navbar.html.twig' %}
 
 {% block title %}New PlayerCharacter{% endblock %}
 
@@ -7,7 +7,7 @@
 
     {{ include('player_character/_form.html.twig') }}
 
-    <a href="{{ path('app_player_character_index') }}">back to list</a>
+    <a class="btn btn-default" href="{{ path('app_player_character_index') }}">Back</a>
     {# {% include "footer.html.twig" %} #}
 
 {% endblock %}

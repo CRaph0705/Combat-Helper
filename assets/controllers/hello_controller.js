@@ -5,24 +5,26 @@ export default class extends Controller {
     console.log('hello controller connected');
 
 
-    /// navbar fixed sur la homepage uniquement
-    if (window.location.pathname === '/') {
-      window.onscroll = function () { stickTheNavbar() };
+    // ONLY ON HOME -> STICKY NAVBAR ? FIXED NAVBAR ?
 
-      // Get the navbar
-      var navbar = document.getElementById("navbar");
+    // /// navbar fixed sur la homepage uniquement
+    // if (window.location.pathname === '/') {
+    //   window.onscroll = function () { stickTheNavbar() };
 
-      // Get the offset position of the navbar
-      var sticky = navbar.offsetTop;
+    //   // Get the navbar
+    //   var navbar = document.getElementById("navbar");
 
-      // Add the sticky class to the navbar when you reach its scroll position. Remove "sticky" when you leave the scroll position
-      function stickTheNavbar() {
-        if (window.scrollY >= sticky) {
-          navbar.classList.add("sticky")
-        } else {
-          navbar.classList.remove("sticky");
-        }
-      }
-    }
+    //   // Get the offset position of the navbar
+    //   var sticky = navbar.offsetTop;
+
+    //   // Add the sticky class to the navbar when you reach its scroll position. Remove "sticky" when you leave the scroll position
+    //   function stickTheNavbar() {
+    //     if (window.scrollY >= sticky) {
+    //       navbar.classList.add("sticky")
+    //     } else {
+    //       navbar.classList.remove("sticky");
+    //     }
+    //   }
+    // }
   }
 }

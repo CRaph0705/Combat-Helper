@@ -35,15 +35,30 @@
 
 .encounter-units {
     display: flex;
+    // flex-direction: row;
+    justify-content: space-around;
 }
 
 .left-column,
 .right-column {
     flex: 1;
+    margin: 1%;
 }
 
 .unit {
     border: 1px solid #ccc;
     padding: 10px;
     margin-bottom: 10px;
+}
+//card on new encounter
+.encounter-unit-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    height: $unit-card-height;
+    width: 100%;
 }

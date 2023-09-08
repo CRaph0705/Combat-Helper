@@ -7,14 +7,15 @@
 		</h2>
 	</div>
 
-	<div class="card border-light mb-3" data-controller="players-form">
+<div class="encounter-units">
+	<div class="mb-3 encounter-players-container left-column" data-controller="players-form">
 		<div class="player-title">
 			<h3>Players</h3>
 		</div>
 			<div class="players-content" data-index="{{ form.encounterPlayerCharacters|length > 0 ? form.encounterPlayerCharacters|last.vars.name + 1 : 0 }}" data-prototype="{{ form_widget(form.encounterPlayerCharacters.vars.prototype)|e('html_attr') }}">
 				
 				{% for player in form.encounterPlayerCharacters %}
-					<div class="player-card mb-4 row">
+					<div class="player-card mb-4 row encounter-unit-card">
 						{{ form_row(player) }}
 					</div>
 				{% endfor %}
@@ -23,7 +24,7 @@
 
 
 
-	<div class="card border-light mb-3" data-controller="monsters-form">
+	<div class="mb-3 encounter-monsters-container right-column" data-controller="monsters-form">
 		<div class="monster-title">
 			<h3>Monsters</h3>
 		</div>
@@ -31,13 +32,13 @@
 			
 			
 			{% for monster in form.encounterMonsters %}
-				<div class="monster-card mb-4 row">
+				<div class="monster-card mb-4 row unit-card">
 					{{ form_row(monster) }}
 				</div>
 			{% endfor %}
 		</div>
 	</div>
-
+</div>
 
 	<button class="btn btn-save">{{ button_label|default('Save') }}</button>
 
