@@ -24,6 +24,7 @@ class EncounterType extends AbstractType
             'label' => false,
             'attr' => [
                 'hidden' => true,
+                'class' => 'form-control'
             ],
         ])
 

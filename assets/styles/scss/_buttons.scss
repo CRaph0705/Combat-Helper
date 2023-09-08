@@ -53,7 +53,6 @@
 
 // #################################################### ENCOUNTER NEW / EDIT ####################################################
 .btn-save, .btn-default {
-    margin: 1em;
     font-size: $button-font-size;
     font-weight: $button-font-weight;
     color: $button-color;
@@ -69,8 +68,22 @@
     }
 }
 
-// .btn-add-unit {}
-// .btn-remove-unit {}
+.btn-remove-unit {
+    font-size: $button-font-size;
+    font-weight: $button-font-weight;
+    color: $button-color;
+    background-color: $button-bg;
+    padding: $button-padding;
+    text-align: center;
+    justify-items: center;
+    align-items: center;
+    border: 1px solid $button-border-color;
+    &:hover {
+        background-color: $button-bg;
+        color: $button-color-hover;
+        border: 1px solid $button-border-color-hover;
+    }
+}
 
 // #################################################### ENCOUNTER ACTIVE ####################################################
 .controlPannel {

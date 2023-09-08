@@ -62,3 +62,16 @@
     height: $unit-card-height;
     width: 100%;
 }
+
+.encounter-monster-select {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.encounter-monster-quantity {
+    //col 2 d-flex flex-column
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
