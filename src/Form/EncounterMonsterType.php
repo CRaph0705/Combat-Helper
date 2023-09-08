@@ -21,13 +21,18 @@ class EncounterMonsterType extends AbstractType
                 // 'label' => 'Monster',
                 'label' => false,
                 'required' => true,
+                'attr' => [
+                    'class' => 'form-control encounter-monster-select',
+                ],
             ])
             ->add('quantity', IntegerType::class, [ // Add the quantity field
-                'label' => 'Quantity',
+                // 'label' => 'Quantity',
+                'label' => false,
                 'required' => true,
                 'attr' => [
                     'min' => 1,
                     'step' => 1,
+                    'class' => 'form-control encounter-monster-quantity',
                 ],
                 'data' => 1,
             ]);
