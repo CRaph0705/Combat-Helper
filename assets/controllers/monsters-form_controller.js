@@ -12,7 +12,7 @@ export default class extends Controller {
                 wrapperDiv.classList.add('col-2');
                 item.append(wrapperDiv);
                 const removeFormButton = document.createElement('button');
-                removeFormButton.classList.add('btn-remove-unit');
+                removeFormButton.classList.add('btn','btn-remove-unit');
                 removeFormButton.innerText = 'Retirer';
                 wrapperDiv.append(removeFormButton);
                 removeFormButton.addEventListener('click', (e) => {
@@ -30,7 +30,7 @@ export default class extends Controller {
 
             const addMonsterTagLink = document.createElement('button');
             addMonsterTagLink.type = "button";
-            addMonsterTagLink.classList.add('btn-add-unit');
+            addMonsterTagLink.classList.add('btn','btn-default','btn-add-unit');
             addMonsterTagLink.classList.add('add_tag_list');
             addMonsterTagLink.innerText = 'Ajouter un monstre';
             addMonsterTagLink.dataset.collectionHolderClass = 'monsters-content';
