@@ -42,8 +42,8 @@ class PlayerCharacterFixtures extends Fixture
 
         $ornagar = new PlayerCharacter();
         $ornagar->setName('Ornagar');
-        $ornagar->setHp(40);
-        $ornagar->setAC(18);
+        $ornagar->setHp(16);
+        $ornagar->setAC(15);
         $ornagar->setLevel(3);
         $ornagar->setStats(
             13, // strength
@@ -57,7 +57,7 @@ class PlayerCharacterFixtures extends Fixture
 
         $rhan = new PlayerCharacter();
         $rhan->setName('Rhan');
-        $rhan->setHp(16);
+        $rhan->setHp(11);
         $rhan->setAC(15);
         $rhan->setLevel(3);
         $rhan->setStats(
