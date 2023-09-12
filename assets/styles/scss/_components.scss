@@ -129,6 +129,8 @@
 
 
 .unit-selected {
-    background-color: #f0f0f0;
-    box-shadow: 0 0 10px white;
+    // background-color: #f0f0f0;
+    // box-shadow: 0 0 10px white;
+    // on ajoute une bordure blanche
+    border: 2px solid white;
 }

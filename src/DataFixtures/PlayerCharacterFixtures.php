@@ -27,8 +27,8 @@ class PlayerCharacterFixtures extends Fixture
 
         $zeke = new PlayerCharacter();
         $zeke->setName('Zeke');
-        $zeke->setHp(30);
-        $zeke->setAC(17);
+        $zeke->setHp(18);
+        $zeke->setAC(15);
         $zeke->setLevel(3);
         $zeke->setStats(
             11, // strength
@@ -57,8 +57,8 @@ class PlayerCharacterFixtures extends Fixture
 
         $rhan = new PlayerCharacter();
         $rhan->setName('Rhan');
-        $rhan->setHp(30);
-        $rhan->setAC(16);
+        $rhan->setHp(16);
+        $rhan->setAC(15);
         $rhan->setLevel(3);
         $rhan->setStats(
             14, // strength
@@ -72,22 +72,38 @@ class PlayerCharacterFixtures extends Fixture
 
         $fray = new PlayerCharacter();
         $fray->setName('Fray');
-        $fray->setHp(30);
-        $fray->setAC(16);
-        $fray->setLevel(3);
+        $fray->setHp(14);
+        $fray->setAC(10);
+        $fray->setLevel(2);
+        $fray->setStats(
+            5, // strength
+            9, // dexterity
+            12, // constitution
+            14, // intelligence
+            17, // wisdom
+            18  // charisma
+        );
         $manager->persist($fray);
 
         $mortecouille = new PlayerCharacter();
         $mortecouille->setName('Mortecouille');
-        $mortecouille->setHp(30);
-        $mortecouille->setAC(16);
-        $mortecouille->setLevel(3);
+        $mortecouille->setHp(12);
+        $mortecouille->setAC(18);
+        $mortecouille->setLevel(1);
+        $mortecouille->setStats(
+            19, // strength
+            18, // dexterity
+            15, // constitution
+            13, // intelligence
+            15, // wisdom
+            16  // charisma
+        );
         $manager->persist($mortecouille);
 
         $khalvi = new PlayerCharacter();
         $khalvi->setName('Khalvi');
-        $khalvi->setHp(30);
-        $khalvi->setAC(16);
+        $khalvi->setHp(37);
+        $khalvi->setAC(14);
         $khalvi->setLevel(3);
         $khalvi->setStats(
             18, // strength
