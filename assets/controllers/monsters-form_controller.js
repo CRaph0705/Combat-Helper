@@ -1,5 +1,6 @@
 import { Controller } from '@hotwired/stimulus';
 
+
 export default class extends Controller {
     connect() {
 
@@ -34,12 +35,12 @@ export default class extends Controller {
         addMonsterTagLink.dataset.collectionHolderClass = 'monsters-content';
         const collectionHolder = document.querySelector('div.monsters-content');
         document.querySelector('div.monster-title').appendChild(addMonsterTagLink);
-        
+
         const addFormToCollection = (e) => {
             const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
             const item = document.createElement('div');
-            item.classList.add('monster-form', 'row', 'mb-4','unit-parchment');
-
+            item.classList.add('monster-form', 'row', 'mb-4', 'unit-parchment');
+            
             item.innerHTML = collectionHolder
                 .dataset
                 .prototype
@@ -73,5 +74,33 @@ export default class extends Controller {
         };
 
         addMonsterTagLink.addEventListener("click", addFormToCollection)
+
+
+
+
+        // on récupère les encounterExistingMonsters et on les affiche dans la console
+        // on les récupère grâce au data-monster dans 
+        // <div id="encounterExistingMonsters" data-monsters="{{ monsters | json_encode }}"></div>
+        // const element = this.element;
+        // const encounterExistingMonstersDiv = document.getElementById('encounterExistingMonsters');
+        // console.log('test', encounterExistingMonstersDiv);
+
+        // console.log('this', this);
+        // console.log('this.element', this.element);
+        // const encounterExistingMonstersData = JSON.parse(element.getAttribute("data-encounterExistingMonsters"));
+        // console.log(JSON.parse(encounterExistingMonstersDiv.getAttribute("data-encounterExistingMonsters")));
+
+        // encounterExistingMonstersData.forEach(encounterMonster => {
+        //     const monster = encounterMonster.monster;
+        //     const quantity = encounterMonster.quantity;
+        //     console.log('Monster Name:', monster.name);
+        //     console.log('Quantity:', quantity);
+        // });    
+
+        //var twig à récupérer : form.encounterMonsters
+        //<div class="monsters-content" data-index="{{ form.encounterMonsters|length > 0 ? form.encounterMonsters|last.vars.name + 1 : 0 }}" data-prototype="{{ form_widget(form.encounterMonsters.vars.prototype)|e('html_attr') }}">
+
     }
+
+
 }
