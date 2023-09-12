@@ -120,6 +120,7 @@ export default class extends Controller {
         const initiatives = Array.from(this.unitContainer.querySelectorAll('.initiative'));
         const hps = Array.from(this.unitContainer.querySelectorAll('.hp'));
         const acs = Array.from(this.unitContainer.querySelectorAll('.ac'));
+        
 
         // Récupérer les valeurs des HP et AC
         const hpValues = hps.map(hpElement => parseInt(hpElement.value));
@@ -145,21 +146,31 @@ export default class extends Controller {
             const unitsData = {};
 
             units.forEach((unit, index) => {
-                const unitName = unit.dataset.unitName; // Supposons que le nom de l'unité soit stocké dans un attribut data-unit-name
-
+                const unitName = unit.dataset.unitName; 
                 const initiative = parseInt(initiativeValues[index]);
                 const hp = parseInt(hpValues[index]);
                 const ac = parseInt(acValues[index]);
+                //monster or player
+                const isMonster = unit.dataset.monster === 'true';
 
+                const unitId = unit.dataset.unitId;
+
+                const unitSrc = unit.dataset.src;
 
                 unitsData[unitName] = {
                     initiative: initiative,
                     hp: hp,
-                    ac: ac
+                    ac: ac,
+                    //on ajoute cette propriété pour pouvoir différencier les monstres des joueurs dans le controller encounter-active_controller.js
+                    // ça permettra d'afficher le show de l'unité dans le turbo frame
+                    isMonster: isMonster,
+                    id: unitId,
+                    unitSrc: unitSrc,
+                    
                 };
             });
             //ICI ON A DES TABLEAUX D'UNITS AVEC LEURS INITIATIVES, AC ET HP DES UNITES RESPECTIVES
-            console.log(unitsData);
+            // console.log(unitsData);
             return unitsData;
         }
     }

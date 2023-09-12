@@ -217,8 +217,22 @@ public function error(Encounter $encounter): Response
     #[Route('/{id}/active', name: 'app_encounter_active', methods: ['GET', 'POST'])]
     public function active(Encounter $encounter, Request $request): Response
     {
+        $playerEncounter = $encounter->getEncounterPlayerCharacters();
+        $monsterEncounter = $encounter->getEncounterMonsters();
+        $players = [];
+        foreach($playerEncounter as $encounterPlayer) {
+            $players[$encounterPlayer->getPlayerCharacter()->getName()] = $encounterPlayer->getPlayerCharacter();
+        }
+
+        $monsters = []; 
+        foreach($monsterEncounter as $encounterMonster) {
+            $monsters[$encounterMonster->getMonster()->getName()] = $encounterMonster->getMonster();
+        }
+
+        $units = array_merge($players, $monsters);
         return $this->render('encounter/active.html.twig', [
             'encounter' => $encounter,
+            'units' => $units,
         ]);
     }
 
