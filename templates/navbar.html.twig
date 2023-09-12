@@ -9,7 +9,7 @@
                 <a class="nav-link {{ app.request.attributes.get('_route') == 'app_hello' ? 'active' }}" href="{{ path('app_hello') }}">Accueil</a>
                 <a class="nav-link {{ app.request.attributes.get('_route') == 'app_player_character_index' ? 'active' }}" href="{{ path('app_player_character_index') }}">Personnages</a>
                 <a class="nav-link {{ app.request.attributes.get('_route') == 'app_monster_index' ? 'active' }}" href="{{ path('app_monster_index') }}">Bestiaire</a>
-                <a class="nav-link {{ app.request.attributes.get('_route') == 'app_encounter_new' ? 'active' }}" href="{{ path('app_encounter_new') }}">Combat</a>
+                <a class="nav-link {{ app.request.attributes.get('_route') == 'app_encounter_new' ? 'active' }}" href="{{ path('app_encounter_new') }}" data-turbo="false">Combat</a>
             </div>
         </div>
     </nav>
