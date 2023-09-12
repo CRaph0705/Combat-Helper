@@ -118,6 +118,7 @@ class EncounterController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()) {
+            
             // Save the encounter
             $encounterRepository->save($encounter, true);
 
@@ -136,7 +137,6 @@ class EncounterController extends AbstractController
             return $this->redirectToRoute('app_encounter_init', ['id' => $encounter->getId()], Response::HTTP_SEE_OTHER);
         }
 
-
         return $this->render('encounter/edit.html.twig', [
             'encounter' => $encounter,
             'encounterMonsters' => $encounterMonsters,
@@ -144,6 +144,8 @@ class EncounterController extends AbstractController
             'form' => $form,
             'monsters' => $monsters,
             'players' => $players,
+            'encounterExistingMonsters' => $encounterMonsters,
+            'encounterExistingPlayers' => $encounterPlayerCharacters,
         ]);
     }
 
