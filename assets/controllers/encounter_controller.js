@@ -76,7 +76,8 @@ export default class extends Controller {
     //next step: add a button to roll initiatives for monsters
     // Méthode pour générer des initiatives aléatoires pour les monstres
     rollMonstersInitiatives() {
-        // TODO : Prendre en compte la dextérité des monstres pour ajouter les éventuels modificateurs à l'initiative
+        console.log('rollMonstersInitiatives');
+        // TODO NEXT : Prendre en compte la dextérité des monstres pour ajouter les éventuels modificateurs à l'initiative
         const monstersByType = {};
 
         const monsters = Array.from(this.unitContainer.querySelectorAll('.unit[data-monster="true"]'));

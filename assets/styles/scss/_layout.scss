@@ -75,3 +75,14 @@
     flex-direction: column;
     width: 100%;
 }
+
+.encounter-menu {
+    margin-bottom: 4%;
+}
+.encounter-menu__buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+}

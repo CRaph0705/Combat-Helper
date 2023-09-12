@@ -208,4 +208,28 @@ class Monster
 
         return $this;
     }
+
+    public function setStats(int $strength, int $dexterity, int $constitution, int $intelligence, int $wisdom, int $charisma): self
+    {
+        $this->strength = $strength;
+        $this->dexterity = $dexterity;
+        $this->constitution = $constitution;
+        $this->intelligence = $intelligence;
+        $this->wisdom = $wisdom;
+        $this->charisma = $charisma;
+
+        return $this;
+    }
+
+    public function getStats(): array
+    {
+        return [
+            'strength' => $this->strength,
+            'dexterity' => $this->dexterity,
+            'constitution' => $this->constitution,
+            'intelligence' => $this->intelligence,
+            'wisdom' => $this->wisdom,
+            'charisma' => $this->charisma,
+        ];
+    }
 }

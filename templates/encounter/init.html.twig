@@ -21,15 +21,15 @@
 					<div
 						class="encounter-menu__buttons">
 						{# ERASE INIT #}
-						<button class="btn" data-action="click->encounter#resetInitiatives">
+						<button class="btn btn-default" data-action="click->encounter#resetInitiatives">
 							Reset Initiatives</button>
 
 						{# ROLL MONSTERS INITIATIVES #}
-						<button class="btn" data-action="click->encounter#rollMonstersInitiatives">Roll Monsters Initiatives</button>
+						<button class="btn btn-default" data-action="click->encounter#rollMonstersInitiatives">Roll Monsters Initiatives</button>
 
 						{# START ENCOUNTER #}
 						<a href="#" data-action="click->encounter#startEncounter">
-							<button class="btn" id="startEncounterButton">Start Encounter</button>
+							<button class="btn btn-default" id="startEncounterButton">Start Encounter</button>
 						</a>
 
 
@@ -44,43 +44,49 @@
 
 				{% if unit in monsters %}
 					{% for i in 1..unit.quantity %}
-						<div class="unit d-flex flex-row" data-monster="true" data-unit-name="{{ unit.attributes.name }}_{{i}}">
-							<div class="unit__name">
-								{{ unit.attributes.name }}
+						<div class="unit unit-parchment d-flex flex-row" data-monster="true" data-unit-name="{{ unit.attributes.name }}_{{i}}">
+							<div class="unit__name col-4">
+								<h1>{{ unit.attributes.name }}</h1>
 							</div>
-							<div class="unit__initiative">
-								<label for="initiative">Initiative :</label>
-								<input value="{{ unit.attributes.initiative }}" placeholder="initiative" type="number" class="initiative" data-id="initiative_{{ unit.attributes.id }}" required="required">
-							</div>
-							<div class="unit__AC">
-								<label for="ac">AC :</label>
-								<input value="{{ unit.attributes.ac }}" placeholder="ac" type="number" class="ac" required="required">
-							</div>
-							{# unit.current-hp #}
-							<div class="unit__currentHP">
-								<label for="hp">HP :</label>
-								<input value="{{ unit.attributes.hp }}" placeholder="hp" type="number" class="hp" required="required">
+							<div class="d-flex justify-content-between col-8">
+								<div class="unit__initiative d-flex flex-column">
+									<label for="initiative">Initiative :</label>
+									<input value="{{ unit.attributes.initiative }}" placeholder="initiative" type="number" class="initiative" data-id="initiative_{{ unit.attributes.id }}" required="required">
+								</div>
+								<div class="unit__AC d-flex flex-column">
+									<label for="ac">AC :</label>
+									<input value="{{ unit.attributes.ac }}" placeholder="ac" type="number" class="ac" required="required">
+								</div>
+								{# unit.current-hp #}
+								<div class="unit__HP d-flex flex-column">
+									<label for="hp">HP :</label>
+									<input value="{{ unit.attributes.hp }}" placeholder="hp" type="number" class="hp" required="required">
+								</div>
 							</div>
 						</div>
 					{% endfor %}
 				{% else %}
-					<div class="unit d-flex flex-row" data-unit-name="{{ unit.name }}">
-						<div class="unit__name">
-							{{ unit.name }}
-						</div>
-						<div class="unit__initiative">
-							<label for="initiative">Initiative :</label>
-							<input value="{{ unit.initiative }}" placeholder="initiative" type="number" class="initiative" required="required">
-						</div>
-						<div class="unit__AC">
-							<label for="ac">AC :</label>
-							<input value="{{ unit.ac }}" placeholder="ac" type="number" class="ac" required="required">
-						</div>
-						{# unit.current-hp #}
-						<div class="unit__currentHP">
-							<label for="hp">HP :</label>
-							<input value="{{ unit.hp }}" placeholder="hp" type="number" class="hp" required="required">
-						</div>
+					<div class="unit unit-parchment d-flex flex-row" data-unit-name="{{ unit.name }}">
+						{# <div class="d-flex justify-content-between"> #}
+							<div class="unit__name col-4">
+								<h1>{{ unit.name }}</h1>
+							</div>
+							<div class="d-flex justify-content-between col-8">
+								<div class="unit__initiative d-flex flex-column">
+									<label for="initiative">Initiative :</label>
+									<input value="{{ unit.initiative }}" placeholder="initiative" type="number" class="initiative" required="required">
+								</div>
+								<div class="unit__AC d-flex flex-column">
+									<label for="ac">AC :</label>
+									<input value="{{ unit.ac }}" placeholder="ac" type="number" class="ac" required="required">
+								</div>
+								{# unit.current-hp #}
+								<div class="unit__HP d-flex flex-column">
+									<label for="hp">HP :</label>
+									<input value="{{ unit.hp }}" placeholder="hp" type="number" class="hp" required="required">
+								</div>
+							</div>
+						{# </div> #}
 					</div>
 				{% endif %}
 
