@@ -16,13 +16,19 @@
 				<button data-action="click->encounter-active#previousUnit">^</button>
 				<button data-action="click->encounter-active#nextUnit">v</button>
 			</div>
-
 		</div>
-		<div class="encounterUnitsContainer" id="encounterUnitsContainer"></div>
 
-		<div>
-			<button data-action="click->encounter-active#stopEncounter">End</button>
+		<div class="unit-index-container d-flex">
+			<div class="unit-index-list">
+				<div class="encounterUnitsContainer" id="encounterUnitsContainer"></div>
+			</div>
+			<div class="unit-details">
+				{# <turbo-frame id="unit-details-frame" class="unit-details-frame" src=""></turbo-frame> #}
+				<turbo-frame id="" src=""></turbo-frame>
+			</div>
+			<div>
+				<button data-action="click->encounter-active#stopEncounter">End</button>
+			</div>
 		</div>
-		{# <p>Units Data: {{ dump(unitsData) }}</p> #}
 	</div>
 {% endblock %}

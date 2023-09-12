@@ -7,17 +7,61 @@ export default class extends Controller {
 
         //on récupère les données de l'encounter
         const unitsData = this.loadEncounterData();
-        console.log(unitsData);
-
+        // console.log('unitsData', unitsData);
         this.displayEncounterData();
-        // ScrollHeight();
-        // console.log(ScrollHeight());
+
+
+
+
+
+        // ----------------- TURBO FRAME ----------------- //
+            const turboFrame = document.querySelector("turbo-frame");
+            if (!turboFrame) {
+                return;
+            }
+
+
+            const units = document.querySelectorAll(".unit");
+            console.log('units :',units);
+            let currentUnitId = null;
+            let currentUnitType = null;
+            units[0].classList.add("unit-selected");
+            turboFrame.id = units[0].dataset.isMonster === 'true' ? 'monster-details-content' : 'player-details-content';
+            turboFrame.src = units[0].dataset.src;
+            currentUnitId = units[0].dataset.id;
+            currentUnitType = units[0].dataset.isMonster===true ? 'monster' : 'player';
+            console.log('currentUnitType :', currentUnitType);
+
+
+            units.forEach((unit) => {
+                unit.addEventListener("click", (event) => {
+                    const unitId = event.currentTarget.dataset.id;
+                    const unitSrc = event.currentTarget.dataset.src;
+                    const unitIsMonster = event.currentTarget.dataset.isMonster;
+
+                    units.forEach((u) => u.classList.remove("unit-selected"));
+                    event.currentTarget.classList.add("unit-selected");
+
+                    turboFrame.id = unitIsMonster === 'true' ? 'monster-details-content' : 'player-details-content';
+                    turboFrame.src = unitSrc;
+                    currentUnitId = unitId;
+                });
+            });
+
+        // ----------------- /TURBO FRAME ----------------- //
+
     }
 
     //load the data from local storage
     loadEncounterData() {
-        console.log('loadEncounterData');
+        // console.log('loadEncounterData');
         const unitsData = JSON.parse(localStorage.getItem('encounterData'));
+        // console.log('unitsData', unitsData);
+
+        if (!unitsData) {
+            // console.log('no unitsData');
+            return;
+        }
         return unitsData;
     }
 
@@ -38,14 +82,16 @@ export default class extends Controller {
             // Création d'une nouvelle div pour chaque unité
             const unitDiv = document.createElement('div');
             unitDiv.classList.add('unit');
-            unitDiv.classList.add('unit-card');
+            unitDiv.classList.add('unit-parchment');
+            unitDiv.dataset.id = unitData.id;
+            unitDiv.dataset.src = unitData.unitSrc;
             unitDiv.dataset.unitName = unitName;
+            unitDiv.dataset.isMonster = unitData.isMonster;
             unitDiv.innerHTML = `
-            <p>Nom : ${unitName}</p>
-            <p>Classe d'armure (AC) : ${unitData.ac}</p>
-            <p>Points de vie (HP) : <input type="number" id="hp" name="hp" value="${unitData.hp}">
+            <p>${unitName}</p>
+            <p>AC : ${unitData.ac}</p>
+            <p>HP : <input type="number" id="hp" name="hp" value="${unitData.hp}">
             </p>
-            <p>Initiative : ${unitData.initiative}</p>
             `;
 
             if (unitData.hp <= 0) {
@@ -80,14 +126,14 @@ export default class extends Controller {
     nextUnit() {
         const unitsData = this.loadEncounterData();
         const currentUnit = document.querySelector('.unit.active');
-    
+
         if (!currentUnit) {
             // Si aucune unité n'est active, initialiser avec la première unité du tableau
             const firstUnit = document.querySelector('.unit');
             firstUnit.classList.add('active');
             return;
         }
-    
+
         // Trouver l'index de l'unité actuelle en parcourant les clés de l'objet
         let currentIndex = 0;
         for (const unitName in unitsData) {
@@ -96,13 +142,13 @@ export default class extends Controller {
             }
             currentIndex++;
         }
-    
+
         // Rechercher la prochaine unité sans la classe KO
         let nextIndex = (currentIndex + 1) % Object.keys(unitsData).length;
         while (nextIndex !== currentIndex) {
             const nextUnitName = Object.keys(unitsData)[nextIndex];
             const nextUnit = document.querySelector(`.unit[data-unit-name="${nextUnitName}"]`);
-    
+
             if (!nextUnit.classList.contains('KO')) {
                 // Supprimer la classe active de l'unité actuelle
                 currentUnit.classList.remove('active');
@@ -111,18 +157,18 @@ export default class extends Controller {
                 nextUnit.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 return;
             }
-    
+
             nextIndex = (nextIndex + 1) % Object.keys(unitsData).length;
         }
     }
-    
+
 
     /* ------------------------------------------------------------------------------------------- */
 
     previousUnit() {
         const unitsData = this.loadEncounterData();
         const currentUnit = document.querySelector('.unit.active');
-    
+
         if (!currentUnit) {
             // Si aucune unité n'est active, initialiser avec la dernière unité du tableau
             const unitNames = Object.keys(unitsData);
@@ -131,7 +177,7 @@ export default class extends Controller {
             lastUnit.classList.add('active');
             return;
         }
-    
+
         // Trouver l'index de l'unité actuelle en parcourant les clés de l'objet
         let currentIndex = 0;
         const unitNames = Object.keys(unitsData);
@@ -141,13 +187,13 @@ export default class extends Controller {
             }
             currentIndex++;
         }
-    
+
         // Rechercher l'unité précédente sans la classe KO
         let previousIndex = (currentIndex - 1 + unitNames.length) % unitNames.length;
         while (previousIndex !== currentIndex) {
             const previousUnitName = unitNames[previousIndex];
             const previousUnit = document.querySelector(`.unit[data-unit-name="${previousUnitName}"]`);
-    
+
             if (!previousUnit.classList.contains('KO')) {
                 // Supprimer la classe active de l'unité actuelle
                 currentUnit.classList.remove('active');
@@ -156,11 +202,11 @@ export default class extends Controller {
                 previousUnit.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 return;
             }
-    
+
             previousIndex = (previousIndex - 1 + unitNames.length) % unitNames.length;
         }
     }
-    
+
 
     /* ------------------------------------------------------------------------------------------- */
 

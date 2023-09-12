@@ -44,7 +44,7 @@
 
 				{% if unit in monsters %}
 					{% for i in 1..unit.quantity %}
-						<div class="unit unit-parchment d-flex flex-row" data-monster="true" data-unit-name="{{ unit.attributes.name }}_{{i}}">
+						<div class="unit unit-parchment d-flex flex-row" data-monster="true" data-unit-name="{{ unit.attributes.name }}_{{i}}" data-unit-id="{{ unit.attributes.id }}" data-src="{{ path('app_monster_show',{'id': unit.attributes.id}) }}">
 							<div class="unit__name col-4">
 								<h1>{{ unit.attributes.name }}</h1>
 							</div>
@@ -66,7 +66,7 @@
 						</div>
 					{% endfor %}
 				{% else %}
-					<div class="unit unit-parchment d-flex flex-row" data-unit-name="{{ unit.name }}">
+					<div class="unit unit-parchment d-flex flex-row" data-unit-name="{{ unit.name }}" data-unit-id="{{ unit.id }}" data-src="{{ path('app_player_character_show',{'id': unit.id}) }}">
 						{# <div class="d-flex justify-content-between"> #}
 							<div class="unit__name col-4">
 								<h1>{{ unit.name }}</h1>
