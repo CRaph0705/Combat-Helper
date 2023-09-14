@@ -3,13 +3,15 @@
 {% endblock %}
 {% block body %}
 	<div data-controller="encounter-active">
-
-		<h1>Encounter Active</h1>
-		<p>Encounter ID:
-			{{ encounter.getId() }}</p>
+		<div>
+			<h1 class="main-title">Combat</h1>
+		</div>
+		{# <p>Encounter ID:
+			{{ encounter.getId() }}
+		</p>
 		<p>Encounter Name:
-			{{ encounter.getName() }}</p>
-
+			{{ encounter.getName() }}
+		</p> #}
 
 		<div class="controlPannel d-flex">
 			<div class="controlPannel-item">
@@ -23,11 +25,13 @@
 				<div class="encounterUnitsContainer" id="encounterUnitsContainer"></div>
 			</div>
 			<div class="unit-details">
-				{# <turbo-frame id="unit-details-frame" class="unit-details-frame" src=""></turbo-frame> #}
 				<turbo-frame id="" src=""></turbo-frame>
 			</div>
-			<div>
-				<button data-action="click->encounter-active#stopEncounter">End</button>
+		</div>
+		<div class="row">
+			<div class="col-6"></div>
+			<div class="col-6">
+				<button class="btn btn-default" data-action="click->encounter-active#stopEncounter">End</button>
 			</div>
 		</div>
 	</div>
