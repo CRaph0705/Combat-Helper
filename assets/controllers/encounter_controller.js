@@ -73,11 +73,11 @@ export default class extends Controller {
     }
 
 
-    //next step: add a button to roll initiatives for monsters
+
     // Méthode pour générer des initiatives aléatoires pour les monstres
     rollMonstersInitiatives() {
         console.log('rollMonstersInitiatives');
-        // TODO NEXT : Prendre en compte la dextérité des monstres pour ajouter les éventuels modificateurs à l'initiative
+
         const monstersByType = {};
 
         const monsters = Array.from(this.unitContainer.querySelectorAll('.unit[data-monster="true"]'));
@@ -93,14 +93,16 @@ export default class extends Controller {
 
         Object.keys(monstersByType).forEach(monsterType => {
             const typeMonsters = monstersByType[monsterType];
-            const typeInitiative = Math.floor(Math.random() * 20) + 1;
+            // ajout du modificateur de dextérité
 
             typeMonsters.forEach(monster => {
+                const dexterity = parseInt(monster.dataset.unitDexterity);
+                const dexterityModifier = Math.floor((dexterity - 10) / 2);
+                const typeInitiative = Math.floor(Math.random() * 20) + 1 + dexterityModifier;
                 const initiativeElement = monster.querySelector('.initiative');
                 initiativeElement.value = typeInitiative;
             });
         });
-
         this.sortAndUpdate();
     }
 
