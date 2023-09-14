@@ -1,5 +1,4 @@
 import { Controller } from '@hotwired/stimulus';
-// import { ScrollHeight } from '../app.js';
 
 export default class extends Controller {
     connect() {
