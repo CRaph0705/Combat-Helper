@@ -94,11 +94,15 @@ export default class extends Controller {
         Object.keys(monstersByType).forEach(monsterType => {
             const typeMonsters = monstersByType[monsterType];
             // ajout du modificateur de dextérité
+            const monsterDexterity = monstersByType[monsterType][0].dataset.unitDexterity;
+
+            console.log('monsterDexterity :', monsterDexterity);
+            const dexterityModifier = Math.floor((monsterDexterity - 10) / 2);
+
+            const typeInitiative = Math.floor(Math.random() * 20) + 1 + dexterityModifier;
+
 
             typeMonsters.forEach(monster => {
-                const dexterity = parseInt(monster.dataset.unitDexterity);
-                const dexterityModifier = Math.floor((dexterity - 10) / 2);
-                const typeInitiative = Math.floor(Math.random() * 20) + 1 + dexterityModifier;
                 const initiativeElement = monster.querySelector('.initiative');
                 initiativeElement.value = typeInitiative;
             });
