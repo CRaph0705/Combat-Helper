@@ -11,6 +11,21 @@ export default class extends Controller {
         this.displayEncounterData();
 
 
+        document.addEventListener('keydown', (event) => {
+            switch(event.key) {
+                case 'e':
+                case 'ArrowRight':
+                case 'ArrowDown':
+                    this.nextUnit();
+                    break;
+                case 'a':
+                case 'ArrowLeft':
+                case 'ArrowUp':
+                    this.previousUnit();
+                    break;
+            }
+        });
+
 
 
 
@@ -224,6 +239,4 @@ export default class extends Controller {
         //on redirige vers la page d'accueil
         window.location.href = '/';
     }
-
-
 }
