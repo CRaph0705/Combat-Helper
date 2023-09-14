@@ -13,11 +13,7 @@
 
 		<div class="container encounter-menu">
 			<div class="row">
-				<div class="col-md-6">
-					{# <h1>Encounter
-						{{ encounter.shortName }}
-					</h1> #}
-				</div>
+				<div class="col-md-6"></div>
 				<div class="col-md-6">
 					<div
 						class="encounter-menu__buttons">
@@ -32,9 +28,6 @@
 						<a href="#" data-action="click->encounter#startEncounter">
 							<button class="btn btn-default" id="startEncounterButton">Start Encounter</button>
 						</a>
-
-
-
 					</div>
 				</div>
 			</div>
@@ -42,10 +35,9 @@
 
 		<div class="container encounter-content" id="unitContainer" data-encounter-target="unitContainer">
 			{% for unit in units %}
-
 				{% if unit in monsters %}
 					{% for i in 1..unit.quantity %}
-						<div class="unit unit-parchment d-flex flex-row" data-monster="true" data-unit-name="{{ unit.attributes.name }}_{{i}}" data-unit-id="{{ unit.attributes.id }}" data-src="{{ path('app_monster_show',{'id': unit.attributes.id}) }}">
+						<div class="unit unit-parchment d-flex flex-row" data-monster="true" data-unit-name="{{ unit.attributes.name }}_{{i}}" data-unit-id="{{ unit.attributes.id }}" data-unit-dexterity="{{ unit.attributes.dexterity }}" data-src="{{ path('app_monster_show',{'id': unit.attributes.id}) }}">
 							<div class="unit__name col-4">
 								<h1>{{ unit.attributes.name }}</h1>
 							</div>
