@@ -1,18 +1,18 @@
 import { Controller } from '@hotwired/stimulus';
-// import { ScrollHeight } from '../app.js';
 
+let currentUnitId = null;
 export default class extends Controller {
     connect() {
         console.log('encounter-active_controller connected');
 
         //on récupère les données de l'encounter
         const unitsData = this.loadEncounterData();
-        // console.log('unitsData', unitsData);
+        console.log('unitsData', unitsData);
         this.displayEncounterData();
 
 
         document.addEventListener('keydown', (event) => {
-            switch(event.key) {
+            switch (event.key) {
                 case 'e':
                 case 'ArrowRight':
                 case 'ArrowDown':
@@ -26,45 +26,45 @@ export default class extends Controller {
             }
         });
 
-
-
-
         // ----------------- TURBO FRAME ----------------- //
-            const turboFrame = document.querySelector("turbo-frame");
-            if (!turboFrame) {
-                return;
-            }
+        const turboFrame = document.querySelector("turbo-frame");
+        if (!turboFrame) {
+            return;
+        }
 
+        let currentUnitId = null;
+        let currentUnitType = null;
 
-            const units = document.querySelectorAll(".unit");
-            console.log('units :',units);
-            let currentUnitId = null;
-            let currentUnitType = null;
-            units[0].classList.add("unit-selected");
-            turboFrame.id = units[0].dataset.isMonster === 'true' ? 'monster-details-content' : 'player-details-content';
-            turboFrame.src = units[0].dataset.src;
-            currentUnitId = units[0].dataset.id;
-            currentUnitType = units[0].dataset.isMonster===true ? 'monster' : 'player';
-            console.log('currentUnitType :', currentUnitType);
+        const units = document.querySelectorAll(".unit");
+        console.log('units :', units);
+        units[0].classList.add("unit-selected");
+        turboFrame.id = units[0].dataset.isMonster === 'true' ? 'monster-details-content' : 'player-details-content';
+        turboFrame.src = units[0].dataset.src;
+        currentUnitId = units[0].dataset.id;
+        currentUnitType = units[0].dataset.isMonster === true ? 'monster' : 'player';
+        console.log('currentUnitType :', currentUnitType);
 
-
-            units.forEach((unit) => {
-                unit.addEventListener("click", (event) => {
-                    const unitId = event.currentTarget.dataset.id;
-                    const unitSrc = event.currentTarget.dataset.src;
-                    const unitIsMonster = event.currentTarget.dataset.isMonster;
-
-                    units.forEach((u) => u.classList.remove("unit-selected"));
-                    event.currentTarget.classList.add("unit-selected");
-
-                    turboFrame.id = unitIsMonster === 'true' ? 'monster-details-content' : 'player-details-content';
-                    turboFrame.src = unitSrc;
-                    currentUnitId = unitId;
-                });
+        units.forEach((unit) => {
+            unit.addEventListener("click", (event) => {
+                this.updateTurboFrame(event.currentTarget);
             });
+        });
+    }
 
-        // ----------------- /TURBO FRAME ----------------- //
+    updateTurboFrame(targetUnit) {
+        const turboFrame = document.querySelector("turbo-frame");
+        const unitId = targetUnit.dataset.id;
+        const unitSrc = targetUnit.dataset.src;
+        const unitIsMonster = targetUnit.dataset.isMonster;
+        const units = document.querySelectorAll(".unit");
+        units.forEach((u) => u.classList.remove("unit-selected"));
+        targetUnit.classList.add("unit-selected");
 
+        turboFrame.id = unitIsMonster === 'true' ? 'monster-details-content' : 'player-details-content';
+        turboFrame.src = unitSrc;
+        currentUnitId = unitId;
+        console.log('currentUnitId :', currentUnitId);
+        return currentUnitId;
     }
 
     //load the data from local storage
@@ -169,10 +169,10 @@ export default class extends Controller {
                 currentUnit.classList.remove('active');
                 // Ajouter la classe active à l'unité suivante
                 nextUnit.classList.add('active');
+                this.updateTurboFrame(nextUnit);
                 nextUnit.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 return;
             }
-
             nextIndex = (nextIndex + 1) % Object.keys(unitsData).length;
         }
     }
@@ -214,6 +214,7 @@ export default class extends Controller {
                 currentUnit.classList.remove('active');
                 // Ajouter la classe active à l'unité précédente
                 previousUnit.classList.add('active');
+                this.updateTurboFrame(previousUnit);
                 previousUnit.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 return;
             }
