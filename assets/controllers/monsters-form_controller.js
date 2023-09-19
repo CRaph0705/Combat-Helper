@@ -49,8 +49,7 @@ export default class extends Controller {
                     collectionHolder.dataset.index
                 );
 
-            //on récupère le select à l'intérieur de notre div
-            const select = item.querySelector('select');
+
 
             // const handleSelectChange = function() {
             //     $.ajax({
@@ -89,17 +88,15 @@ export default class extends Controller {
             //     })
             // });
 
+            //on récupère le select à l'intérieur de notre div
+            const select = item.querySelector('select');
             // ajout de style sur le select
-            console.log(select);
             const selectParent = select.parentElement;
-            console.log(selectParent);
             selectParent.classList.add('col-8');
 
             //on récupère l'input à l'intérieur de notre div
             const input = item.querySelector('input');
-            console.log(input);
             const inputParent = input.parentElement;
-            console.log(inputParent);
             inputParent.classList.add('col-4');
 
             inputParent.parentElement.classList.add('row', 'col-8');

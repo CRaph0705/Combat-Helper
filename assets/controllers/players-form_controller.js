@@ -48,11 +48,8 @@ export default class extends Controller {
 
             const select = item.querySelector('select');
             //on ajoute du style au select
-            console.log(select);
             const selectParent = select.parentElement;
-            console.log(selectParent);
             selectParent.classList.add('col-8');
-
             selectParent.parentElement.classList.add('row', 'col-8');
 
 
