@@ -49,18 +49,54 @@ export default class extends Controller {
                     collectionHolder.dataset.index
                 );
 
+
+
+            // const handleSelectChange = function() {
+            //     $.ajax({
+            //         url: '/encounter/' + encounterId + '/get_available_units',
+            //         method: 'GET',
+            //         success: data => {
+            //             console.log('success', data.avaialableMonsters);
+            //         },
+            //         error: data => {
+            //             console.log('erreur');
+            //         }
+            //     })
+            // }
+
+            // const attachChangeEventListeners = function() {
+            //     const selects = document.querySelectorAll('select');
+            //     selects.forEach((select) => {
+            //         select.addEventListener('change', handleSelectChange);
+            //     });
+            // };
+
+            // attachChangeEventListeners();
+
+
+            //on ajoute un event listener sur le select (ajax pour récupérer les unités disponibles)
+            // select.addEventListener('change', function (e) {
+			// 	$.ajax({
+			// 		url: '/encounter/' + encounterId + '/get_available_units',
+			// 		method: 'GET',
+			// 		success: data => {
+			// 			console.log('success', 'data.availableMonsters', data.availableMonsters);
+			// 		},
+			// 		error: data => {
+			// 			console.log('erreur');
+			// 		}
+            //     })
+            // });
+
             //on récupère le select à l'intérieur de notre div
             const select = item.querySelector('select');
-            console.log(select);
+            // ajout de style sur le select
             const selectParent = select.parentElement;
-            console.log(selectParent);
             selectParent.classList.add('col-8');
 
             //on récupère l'input à l'intérieur de notre div
             const input = item.querySelector('input');
-            console.log(input);
             const inputParent = input.parentElement;
-            console.log(inputParent);
             inputParent.classList.add('col-4');
 
             inputParent.parentElement.classList.add('row', 'col-8');
@@ -74,31 +110,6 @@ export default class extends Controller {
         };
 
         addMonsterTagLink.addEventListener("click", addFormToCollection)
-
-
-
-
-        // on récupère les encounterExistingMonsters et on les affiche dans la console
-        // on les récupère grâce au data-monster dans 
-        // <div id="encounterExistingMonsters" data-monsters="{{ monsters | json_encode }}"></div>
-        // const element = this.element;
-        // const encounterExistingMonstersDiv = document.getElementById('encounterExistingMonsters');
-        // console.log('test', encounterExistingMonstersDiv);
-
-        // console.log('this', this);
-        // console.log('this.element', this.element);
-        // const encounterExistingMonstersData = JSON.parse(element.getAttribute("data-encounterExistingMonsters"));
-        // console.log(JSON.parse(encounterExistingMonstersDiv.getAttribute("data-encounterExistingMonsters")));
-
-        // encounterExistingMonstersData.forEach(encounterMonster => {
-        //     const monster = encounterMonster.monster;
-        //     const quantity = encounterMonster.quantity;
-        //     console.log('Monster Name:', monster.name);
-        //     console.log('Quantity:', quantity);
-        // });    
-
-        //var twig à récupérer : form.encounterMonsters
-        //<div class="monsters-content" data-index="{{ form.encounterMonsters|length > 0 ? form.encounterMonsters|last.vars.name + 1 : 0 }}" data-prototype="{{ form_widget(form.encounterMonsters.vars.prototype)|e('html_attr') }}">
 
     }
 

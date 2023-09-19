@@ -30,9 +30,9 @@ export default class extends Controller {
         addPlayerTagLink.classList.add('add_tag_list');
         addPlayerTagLink.innerText = 'Ajouter un joueur';
         addPlayerTagLink.dataset.collectionHolderClass = 'players-content';
-        const collectionHolder = document.querySelector('div.players-content')
-        document.querySelector('div.player-title').appendChild(addPlayerTagLink)
-        
+        const collectionHolder = document.querySelector('div.players-content');
+        document.querySelector('div.player-title').appendChild(addPlayerTagLink);
+
         const addFormToCollection = (e) => {
             const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
             const item = document.createElement('div');
@@ -47,11 +47,9 @@ export default class extends Controller {
                 );
 
             const select = item.querySelector('select');
-            console.log(select);
+            //on ajoute du style au select
             const selectParent = select.parentElement;
-            console.log(selectParent);
             selectParent.classList.add('col-8');
-
             selectParent.parentElement.classList.add('row', 'col-8');
 
 
