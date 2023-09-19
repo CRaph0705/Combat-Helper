@@ -28,6 +28,7 @@
         "build": "encore production --progress"
     },
     "dependencies": {
+        "jquery": "^3.7.1",
         "stimulus": "^3.2.1"
     }
 }

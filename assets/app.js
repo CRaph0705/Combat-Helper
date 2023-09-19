@@ -8,6 +8,16 @@
 // any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.scss';
 
+import $ from "jquery";
+
+global.$ = global.jQuery = $;
+
+// const { JSDOM } = require( "jsdom" );
+// const { window } = new JSDOM( "" );
+// const $ = require( "jquery" )( window );
+
+
+
 // Importez le contrôleur Stimulus et les autres dépendances nécessaires
 import { Application } from 'stimulus';
 import { definitionsFromContext } from 'stimulus/webpack-helpers';
@@ -15,15 +25,7 @@ import { definitionsFromContext } from 'stimulus/webpack-helpers';
 
 // Initialisez l'application Stimulus
 // import stimulusApplication from './controllers/stimulusSingleton';
-// console.log('stimulus ok');
-
-
-// console.log(definitionsFromContext);
-// console.log(Application);
-// console.log(Controller);
 
 import './bootstrap';
 // Démarrez le code JavaScript spécifique à votre application après avoir initialisé l'application Stimulus
-// console.log('bootsrap ok');
-
 
