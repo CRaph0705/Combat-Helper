@@ -1,6 +1,7 @@
 import { Controller } from '@hotwired/stimulus';
 // import updateSelectOptions from '../js-functions/updateSelectOptions.js';
 import updateMonsterSelects from '../js-functions/updateMonsterSelects.js';
+import playersForm_controller from './players-form_controller.js';
 // import './select-controller.js';
 
 
@@ -8,6 +9,8 @@ export default class extends Controller {
     connect() {
 
         console.log('monsters-form controller connected');
+
+        let monsterFormCounter = 0;
 
         let monsterSelectors = document.querySelectorAll('.encounter-monster-select');
         monsterSelectors.forEach(function (monsterSelect) {
@@ -28,6 +31,7 @@ export default class extends Controller {
                 e.preventDefault();
                 item.remove();
                 updateMonsterSelects();
+                monsterFormCounter--;
             });
         }
 
@@ -48,6 +52,10 @@ export default class extends Controller {
         document.querySelector('div.monster-title').appendChild(addMonsterTagLink);
 
         const addFormToCollection = (e) => {
+            if (monsterFormCounter >= MAX_MONSTER_FORMS) {
+                return;
+            }
+            updateMonsterSelects();
             const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
             const item = document.createElement('div');
             item.classList.add('monster-form', 'row', 'mb-4', 'unit-parchment');
@@ -98,20 +106,12 @@ export default class extends Controller {
                     option.removeAttribute('selected');
                 }
             });
-
+            monsterFormCounter++;
             updateMonsterSelects();
         };
 
 
-        addMonsterTagLink.addEventListener("click", addFormToCollection)
-
-        // const monsterSelectors = document.querySelectorAll('.encounter-monster-select');
-
-        // monsterSelectors.forEach(select => {
-        //     select.addEventListener('change', function (e) {
-        //         updateMonsterSelects(monsterSelectors);
-        //     });
-        // });
+        addMonsterTagLink.addEventListener("click", addFormToCollection);
     }
 
 

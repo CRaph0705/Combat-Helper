@@ -31,9 +31,13 @@ class EncounterController extends AbstractController
     ############################################################################################################
 
     #[Route('/new', name: 'app_encounter_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EncounterRepository $encounterRepository): Response
+    public function new(Request $request, EncounterRepository $encounterRepository, PlayerCharacterRepository $playerCharacterRepository, MonsterRepository $monsterRepository): Response
     {
         $encounter = new Encounter();
+
+        $playerCharacterCount = $playerCharacterRepository->count([]);
+        $monsterCount = $monsterRepository->count([]);
+
 
         //new name = date + hash of random bytes and check if unique in db
         $newname = date('Y-m-d H:i', time() + 7200) .'-'. hash('sha256', random_bytes(32));
@@ -50,9 +54,20 @@ class EncounterController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $encounterRepository->save($encounter, true);
+            $encounterMonsters = $encounter->getEncounterMonsters();
+            $encounterPlayers = $encounter->getEncounterPlayerCharacters();
+            if (!empty($encounterMonsters) && !empty($encounterPlayers)) {
+                foreach ($encounterMonsters as $encounterMonster) {
+                    $quantity = $encounterMonster->getQuantity();
+                    $encounterMonster->setQuantity($quantity);
+                }
 
-            return $this->redirectToRoute('app_encounter_init', ['id' => $encounter->getId()], Response::HTTP_SEE_OTHER);
+                $encounterRepository->save($encounter, true);
+
+                return $this->redirectToRoute('app_encounter_init', ['id' => $encounter->getId()], Response::HTTP_SEE_OTHER);
+            } else {
+                return $this->redirectToRoute('app_encounter_new', [], Response::HTTP_SEE_OTHER);
+            }
         }
 
         return $this->render('encounter/new.html.twig', [
@@ -60,6 +75,8 @@ class EncounterController extends AbstractController
             'form' => $form,
             'current_encounter' => $encounter,
             'shortName' => $shortName,
+            'playerCharacterCount' => $playerCharacterCount,
+            'monsterCount' => $monsterCount,
         ]);
     }
 
@@ -69,24 +86,24 @@ class EncounterController extends AbstractController
     #[Route('/{id}', name: 'app_encounter_show', methods: ['GET'])]
     public function show(Encounter $encounter): Response
     {
-        $playerEncounter=$encounter->getEncounterPlayerCharacters();
-        $players=[];
+        $playerEncounter = $encounter->getEncounterPlayerCharacters();
+        $players = [];
         foreach($playerEncounter as $encounterPlayer) {
-            $players[]=$encounterPlayer->getPlayerCharacter();
+            $players[] = $encounterPlayer->getPlayerCharacter();
         }
 
-        $encounterMonsters=$encounter->getEncounterMonsters();
-        $monstersArray=[
+        $encounterMonsters = $encounter->getEncounterMonsters();
+        $monstersArray = [
             'monsters' => [],
             'quantities' => [],
         ];
         foreach($encounterMonsters as $encounterMonster) {
             $monstersArray[
                 'monsters'
-            ][]=$encounterMonster->getMonster();
+            ][] = $encounterMonster->getMonster();
             $monstersArray[
                 'quantities'
-            ][]=$encounterMonster->getQuantity();
+            ][] = $encounterMonster->getQuantity();
         }
 
         return $this->render('encounter/show.html.twig', [
@@ -101,42 +118,48 @@ class EncounterController extends AbstractController
 
 
     #[Route('/{id}/edit', name: 'app_encounter_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Encounter $encounter, EncounterRepository $encounterRepository, MonsterRepository $monsterRepository): Response
+    public function edit(Request $request, Encounter $encounter, EncounterRepository $encounterRepository, MonsterRepository $monsterRepository, PlayerCharacterRepository $playerCharacterRepository): Response
     {
         $form = $this->createForm(EncounterType::class, $encounter);
         $form->handleRequest($request);
 
-        $encounterPlayerCharacters=$encounter->getEncounterPlayerCharacters();
-        $players=[];
+        $encounterPlayerCharacters = $encounter->getEncounterPlayerCharacters();
+        $players = [];
         foreach($encounterPlayerCharacters as $player) {
-            $players[]=$player->getPlayerCharacter();
+            $players[] = $player->getPlayerCharacter();
         }
 
-        $encounterMonsters=$encounter->getEncounterMonsters();
-        $monsters=[];
+        $encounterMonsters = $encounter->getEncounterMonsters();
+        $monsters = [];
         foreach($encounterMonsters as $monster) {
-            $monsters[]=$monster->getMonster();
+            $monsters[] = $monster->getMonster();
         }
+
+        $playerCharacterCount = $playerCharacterRepository->count([]);
+        $monsterCount = $monsterRepository->count([]);
 
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Save the encounter
-            $encounterRepository->save($encounter, true);
-
-            // Get the submitted form data
-            $formData = $form->getData();
-            // Loop through submitted monsters and update quantities
-            foreach ($formData->getEncounterMonsters() as $encounterMonster) {
-
-                $quantity = $encounterMonster->getQuantity();  // Nouvelle façon d'obtenir la quantité
-                // Set the quantity to the EncounterMonster
-                $encounterMonster->setQuantity($quantity);
-
+            $encounterMonsters = $encounter->getEncounterMonsters();
+            $encounterPlayers = $encounter->getEncounterPlayerCharacters();
+    
+            if (empty($encounterMonsters)|| empty($encounterPlayers)) {
+                return $this->redirectToRoute('app_encounter_edit', ['id' => $encounter->getId()], Response::HTTP_SEE_OTHER);
             }
-
-            //redirect to encounter show of this encounter
-            return $this->redirectToRoute('app_encounter_init', ['id' => $encounter->getId()], Response::HTTP_SEE_OTHER);
+            if (!empty($encounterMonsters)&& $encounterMonsters !== null && !empty($encounterPlayers) && $encounterPlayers !== null) {
+                foreach ($encounterMonsters as $encounterMonster) {
+                    $quantity = $encounterMonster->getQuantity();
+                    $encounterMonster->setQuantity($quantity);
+                }
+    
+                $encounterRepository->save($encounter, true);
+    
+                return $this->redirectToRoute('app_encounter_init', ['id' => $encounter->getId()], Response::HTTP_SEE_OTHER);
+            } else {
+                return $this->redirectToRoute('app_encounter_edit', ['id' => $encounter->getId()], Response::HTTP_SEE_OTHER);
+            }
         }
+
 
         return $this->render('encounter/edit.html.twig', [
             'encounter' => $encounter,
@@ -147,6 +170,8 @@ class EncounterController extends AbstractController
             'players' => $players,
             'encounterExistingMonsters' => $encounterMonsters,
             'encounterExistingPlayers' => $encounterPlayerCharacters,
+            'playerCharacterCount' => $playerCharacterCount,
+            'monsterCount' => $monsterCount,
         ]);
     }
 
@@ -167,7 +192,7 @@ class EncounterController extends AbstractController
 
     ############################################################################################################
 
-    
+
     //encounter/init
     #[Route('/{id}/init', name: 'app_encounter_init', methods: ['GET', 'POST'])]
     public function init(Encounter $encounter): Response
@@ -203,14 +228,14 @@ class EncounterController extends AbstractController
 
     ############################################################################################################
 
-//encounter error
-#[Route('/{id}/error', name: 'app_encounter_error', methods: ['GET', 'POST'])]
-public function error(Encounter $encounter): Response
-{
-    return $this->render('encounter/error.html.twig', [
-        'encounter' => $encounter,
-    ]);
-}
+    //encounter error
+    #[Route('/{id}/error', name: 'app_encounter_error', methods: ['GET', 'POST'])]
+    public function error(Encounter $encounter): Response
+    {
+        return $this->render('encounter/error.html.twig', [
+            'encounter' => $encounter,
+        ]);
+    }
 
     ############################################################################################################
 
@@ -225,7 +250,7 @@ public function error(Encounter $encounter): Response
             $players[$encounterPlayer->getPlayerCharacter()->getName()] = $encounterPlayer->getPlayerCharacter();
         }
 
-        $monsters = []; 
+        $monsters = [];
         foreach($monsterEncounter as $encounterMonster) {
             $monsters[$encounterMonster->getMonster()->getName()] = $encounterMonster->getMonster();
         }

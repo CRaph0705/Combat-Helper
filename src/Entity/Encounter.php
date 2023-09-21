@@ -24,10 +24,10 @@ class Encounter
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\OneToMany(mappedBy: 'encounter', targetEntity: EncounterMonster::class, orphanRemoval: true, cascade: ['persist'])]
+    #[ORM\OneToMany(mappedBy: 'encounter', targetEntity: EncounterMonster::class, orphanRemoval: true, cascade: ['persist']), ORM\JoinColumn(nullable: false)]
     private Collection $encounterMonsters;
 
-    #[ORM\OneToMany(mappedBy: 'encounter', targetEntity: EncounterPlayerCharacter::class, orphanRemoval: true, cascade: ['persist'])]
+    #[ORM\OneToMany(mappedBy: 'encounter', targetEntity: EncounterPlayerCharacter::class, orphanRemoval: true, cascade: ['persist']), ORM\JoinColumn(nullable: false)]
     private Collection $encounterPlayerCharacters;
 
     #[ORM\Column(length: 255)]
