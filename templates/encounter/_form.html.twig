@@ -49,9 +49,11 @@
 		</div>
 	</div>
 </div>
-</div><button class="btn btn-save">{{ button_label|default('Save') }}</button>
+</div><button id="btn-save" class="btn btn-save">{{ button_label|default('Save') }}</button>
+
 <script>
     let MAX_PLAYER_FORMS = {{ playerCharacterCount }};
 	let MAX_MONSTER_FORMS = {{ monsterCount }}
+
 </script>
 {{ form_end(form) }}
