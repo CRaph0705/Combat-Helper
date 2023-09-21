@@ -19,7 +19,6 @@ class EncounterType extends AbstractType
     {
     $builder
 
-        //hide name field on form
         ->add('name', null, [
             'label' => false,
             'attr' => [
@@ -31,35 +30,26 @@ class EncounterType extends AbstractType
 
         ->add('encounterPlayerCharacters', CollectionType::class, [
             'entry_type' => EncounterPlayerCharacterType::class,
-            // 'label' => 'Player Character',
             'allow_add' => true,
             'allow_delete' => true,
             'by_reference' => false,
             'entry_options' => [
                 'label' => false,
-                // 'attr' => [
-                //     'placeholder' => 'Player',
-                // ]
             ],
             'label' => false,
+            'required' => true,
         ])
 
         ->add('encounterMonsters', CollectionType::class, [
             'entry_type' => EncounterMonsterType::class,
-            // 'label' => 'Monsters',
-
             'allow_add' => true,
             'allow_delete' => true,
             'by_reference' => false,
-            //id hidden
             'entry_options' => [
                 'label' => false,
-                // 'attr' => [
-                //     'placeholder' => 'Monster',
-                // ]
             ],
-            //label hidden
             'label' => false,
+            'required' => true,
         ]);
 }
 

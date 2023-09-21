@@ -9,6 +9,8 @@ export default class extends Controller {
 
         console.log('players-form controller connected');
 
+        let playerFormCounter = 0;
+        // const MAX_PLAYER_FORMS = 6;
 
         let playerSelectors = document.querySelectorAll('.encounter-player-character-select');
         playerSelectors.forEach(function (playerSelect) {
@@ -30,6 +32,7 @@ export default class extends Controller {
                 e.preventDefault();
                 item.remove();
                 updatePlayerSelects();
+                playerFormCounter--;
             });
         }
 
@@ -48,6 +51,9 @@ export default class extends Controller {
         document.querySelector('div.player-title').appendChild(addPlayerTagLink);
 
         const addFormToCollection = (e) => {
+            if (playerFormCounter >= MAX_PLAYER_FORMS) {
+                return;
+            }
             updatePlayerSelects();
             const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
             const item = document.createElement('div');
@@ -90,19 +96,10 @@ export default class extends Controller {
                     option.removeAttribute('selected');
                 }
             });
-
+            playerFormCounter++;
             updatePlayerSelects();
         };
 
-        addPlayerTagLink.addEventListener("click", addFormToCollection)
-
-        // const playerSelectors = document.querySelectorAll('.encounter-player-character-select');
-
-
-        // playerSelectors.forEach(select => {
-        //     select.addEventListener('change', function (e) {
-        //         updatePlayerSelects(playerSelectors);
-        //     });
-        // });
+        addPlayerTagLink.addEventListener("click", addFormToCollection);
     }
 }
