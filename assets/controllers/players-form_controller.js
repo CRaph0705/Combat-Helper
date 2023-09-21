@@ -11,17 +11,12 @@ export default class extends Controller {
         console.log('players-form controller connected');
 
         // let playerFormCounter = 0;
-        const playerFormCounter = document.querySelectorAll('.player-form').length;
+        let playerFormCounter = document.querySelectorAll('.player-form').length;
         const saveButton = document.querySelector('#btn-save');
 
         updateSaveButtonState();
 
         console.log(playerFormCounter);
-        // on met un écouteur d'événement sur la page pour vérifier qu'on a bien des joueurs 
-        //si on a des joueurs, on active le bouton save sinon on le désactive
-        // document.addEventListener()
-        //     saveButton.setAttribute('disabled', 'disabled');
-
 
 
 
@@ -45,7 +40,7 @@ export default class extends Controller {
                 e.preventDefault();
                 item.remove();
                 updatePlayerSelects();
-                // playerFormCounter--;
+                playerFormCounter--;
                 updateSaveButtonState();
             });
         }
@@ -68,6 +63,7 @@ export default class extends Controller {
             if (playerFormCounter >= MAX_PLAYER_FORMS) {
                 return;
             }
+
             updatePlayerSelects();
             const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
             const item = document.createElement('div');
@@ -111,10 +107,9 @@ export default class extends Controller {
                     option.removeAttribute('selected');
                 }
             });
-            // playerFormCounter++;
+            playerFormCounter++;
             updatePlayerSelects();
             updateSaveButtonState();
-
         };
 
         addPlayerTagLink.addEventListener("click", addFormToCollection);

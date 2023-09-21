@@ -10,20 +10,12 @@ export default class extends Controller {
     connect() {
         console.log('monsters-form controller connected');
 
-
-
-
-        const monsterFormCounter = document.querySelectorAll('.monster-form').length;
+        let monsterFormCounter = document.querySelectorAll('.monster-form').length;
         const saveButton = document.querySelector('#btn-save');
 
-        // let monsterFormCounter = 0;
+
         updateSaveButtonState();
 
-        // let saveButton = document.querySelector('#btn-save');
-        // while(monsterFormCounter == 0){
-        //     // on désactive le bouton save
-        //     saveButton.setAttribute('disabled', 'disabled');
-        // }
         let monsterSelectors = document.querySelectorAll('.encounter-monster-select');
         monsterSelectors.forEach(function (monsterSelect) {
             monsterSelect.addEventListener('change', updateMonsterSelects);
@@ -44,7 +36,7 @@ export default class extends Controller {
                 item.remove();
                 updateMonsterSelects();
                 updateSaveButtonState();
-                // monsterFormCounter--;
+                monsterFormCounter--;
             });
         }
 
@@ -120,7 +112,7 @@ export default class extends Controller {
                     option.removeAttribute('selected');
                 }
             });
-            // monsterFormCounter++;
+            monsterFormCounter++;
             updateMonsterSelects();
             updateSaveButtonState();
         };
