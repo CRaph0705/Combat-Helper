@@ -16,7 +16,7 @@
 		</div>
 		<div class="players-content" data-index="{{ form.encounterPlayerCharacters|length > 0 ? form.encounterPlayerCharacters|last.vars.name + 1 : 0 }}" data-prototype="{{ form_widget(form.encounterPlayerCharacters.vars.prototype)|e('html_attr') }}">
 			{% for player in form.encounterPlayerCharacters %}
-				<div class="monster-form row mb-4 unit-parchment">
+				<div class="player-form row mb-4 unit-parchment">
 					<div class="row col-8">
 						<div class="col-8">
 							{{ form_row(player) }}
@@ -51,25 +51,3 @@
 </div>
 </div><button class="btn btn-save">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
-{# 
-{% block javascripts %}
-    <script>
-		const selects = document.querySelectorAll('select');
-		let encounterId = {{ encounter.id }};
-		console.log('encounterId', encounterId);
-		selects.forEach(select => {
-			select.addEventListener('change', function (e) {
-				$.ajax({
-					url: '/encounter/' + encounterId + '/get_available_units',
-					method: 'GET',
-					success: data => {
-						console.log('success', data.availableUnits);
-					},
-					error: data => {
-						console.log('erreur');
-					}
-				});
-			});
-		});
-    </script>
-{% endblock %} #}

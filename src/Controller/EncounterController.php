@@ -120,7 +120,6 @@ class EncounterController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
             // Save the encounter
             $encounterRepository->save($encounter, true);
 
@@ -240,76 +239,4 @@ public function error(Encounter $encounter): Response
 
     ############################################################################################################
 
-//     // route d'ajax pour modifier les selects des pages new et edit
-
-//     #[Route('/{id}/get_available_units', name: 'get_available_units')]
-//     public function getAvailableUnits(Request $request, Encounter $encounter, MonsterRepository $monsterRepository, PlayerCharacterRepository $playerCharacterRepository): JsonResponse
-//     {
-
-        
-
-//         $allMonsters = $monsterRepository->findAll();
-
-//         $allPlayers = $playerCharacterRepository->findAll();
-
-//         // Filtrer les monstres et joueurs disponibles
-
-
-//         $encounterMonsters = [];
-//         foreach($encounter->getEncounterMonsters() as $encounterMonster) {
-//             $encounterMonsters[] = $encounterMonster->getMonster();
-//         }
-
-//         $encounterPlayers = [];
-//         foreach($encounter->getEncounterPlayerCharacters() as $encounterPlayer) {
-//             $encounterPlayers[] = $encounterPlayer->getPlayerCharacter();
-//         }
-
-
-//         $availableMonsters = array_filter($allMonsters, function($monster) use ($encounterMonsters) {
-//             return !in_array($monster, $encounterMonsters);
-//         });
-
-//         $availablePlayers = array_filter($allPlayers, function($player) use ($encounterPlayers) {
-//             return !in_array($player, $encounterPlayers);
-//         });
-
-
-//         $availableUnits = [
-//             'availableMonsters' => $availableMonsters,
-//             'availablePlayers' => $availablePlayers,
-//         ];
-
-//         return new JsonResponse([
-//             'availableUnits' => $availableUnits,
-//             'availableMonsters' => $availableMonsters,
-//             'availablePlayers' => $availablePlayers,
-//         ]);
-
-//     }
-
 }
-
-//         // Filtrer les monstres et joueurs disponibles
-//         // $availableMonsters = array_filter($allMonsters, function($monster) use ($encounterMonsters) {
-//         //     return !in_array($monster, $encounterMonsters->toArray());
-//         // });
-
-//         // $availablePlayers = array_filter($allPlayers, function($player) use ($encounterPlayers) {
-//         //     return !in_array($player, $encounterPlayers->toArray());
-//         // });
-
-
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-//         $availableMonsters = array_diff($allMonsters, $encounterMonsters->toArray());
-//         $availablePlayers = array_diff($allPlayers, $encounterPlayers->toArray());
-
-//         $availableMonsters = array_filter($allMonsters, function($monster) use ($encounterMonsters) {
-//             return !in_array($monster, $encounterMonsters->toArray());
-//         });
-
-//         $availablePlayers = array_filter($allPlayers, function($player) use ($encounterPlayers) {
-//             return !in_array($player, $encounterPlayers->toArray());
-//         });
