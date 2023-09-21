@@ -2,15 +2,28 @@ import { Controller } from '@hotwired/stimulus';
 // import updateSelectOptions from '../js-functions/updateSelectOptions.js';
 import updatePlayerSelects from '../js-functions/updatePlayerSelects.js';
 // import './select-controller.js';
+import updateSaveButtonState from "../js-functions/updateSaveButtonState";
+
 
 
 export default class extends Controller {
     connect() {
-
         console.log('players-form controller connected');
 
-        let playerFormCounter = 0;
-        // const MAX_PLAYER_FORMS = 6;
+        // let playerFormCounter = 0;
+        const playerFormCounter = document.querySelectorAll('.player-form').length;
+        const saveButton = document.querySelector('#btn-save');
+
+        updateSaveButtonState();
+
+        console.log(playerFormCounter);
+        // on met un écouteur d'événement sur la page pour vérifier qu'on a bien des joueurs 
+        //si on a des joueurs, on active le bouton save sinon on le désactive
+        // document.addEventListener()
+        //     saveButton.setAttribute('disabled', 'disabled');
+
+
+
 
         let playerSelectors = document.querySelectorAll('.encounter-player-character-select');
         playerSelectors.forEach(function (playerSelect) {
@@ -32,7 +45,8 @@ export default class extends Controller {
                 e.preventDefault();
                 item.remove();
                 updatePlayerSelects();
-                playerFormCounter--;
+                // playerFormCounter--;
+                updateSaveButtonState();
             });
         }
 
@@ -80,6 +94,7 @@ export default class extends Controller {
             item.scrollIntoViewIfNeeded({ behavior: 'smooth', block: 'center' });
 
             updatePlayerSelects();
+            updateSaveButtonState();
 
             select.addEventListener('change', function (e) {
                 updatePlayerSelects();
@@ -96,8 +111,10 @@ export default class extends Controller {
                     option.removeAttribute('selected');
                 }
             });
-            playerFormCounter++;
+            // playerFormCounter++;
             updatePlayerSelects();
+            updateSaveButtonState();
+
         };
 
         addPlayerTagLink.addEventListener("click", addFormToCollection);
