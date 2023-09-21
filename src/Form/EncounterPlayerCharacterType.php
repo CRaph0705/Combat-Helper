@@ -20,7 +20,7 @@ class EncounterPlayerCharacterType extends AbstractType
                 'label' => false,
                 'required' => true,
                 'attr' => [
-                    'class' => 'form-control',
+                    'class' => 'form-control encounter-player-character-select',
                 ],
             ])
         ;

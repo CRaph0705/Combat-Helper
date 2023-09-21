@@ -1,9 +1,22 @@
 import { Controller } from '@hotwired/stimulus';
+// import updateSelectOptions from '../js-functions/updateSelectOptions.js';
+import updatePlayerSelects from '../js-functions/updatePlayerSelects.js';
+// import './select-controller.js';
+
 
 export default class extends Controller {
     connect() {
 
         console.log('players-form controller connected');
+
+
+        let playerSelectors = document.querySelectorAll('.encounter-player-character-select');
+        playerSelectors.forEach(function (playerSelect) {
+            playerSelect.addEventListener('change', updatePlayerSelects);
+        });
+
+
+        updatePlayerSelects();
 
         const addTagFormDeleteLink = (item) => {
             const wrapperDiv = document.createElement('div');
@@ -16,6 +29,7 @@ export default class extends Controller {
             removeFormButton.addEventListener('click', (e) => {
                 e.preventDefault();
                 item.remove();
+                updatePlayerSelects();
             });
         }
 
@@ -34,9 +48,10 @@ export default class extends Controller {
         document.querySelector('div.player-title').appendChild(addPlayerTagLink);
 
         const addFormToCollection = (e) => {
+            updatePlayerSelects();
             const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
             const item = document.createElement('div');
-            item.classList.add('player-form', 'row', 'mb-4','unit-parchment');
+            item.classList.add('player-form', 'row', 'mb-4', 'unit-parchment');
 
             item.innerHTML = collectionHolder
                 .dataset
@@ -47,19 +62,47 @@ export default class extends Controller {
                 );
 
             const select = item.querySelector('select');
+
             //on ajoute du style au select
             const selectParent = select.parentElement;
             selectParent.classList.add('col-8');
             selectParent.parentElement.classList.add('row', 'col-8');
-
-
             addTagFormDeleteLink(item);
 
             collectionHolder.appendChild(item);
             collectionHolder.dataset.index++;
             item.scrollIntoViewIfNeeded({ behavior: 'smooth', block: 'center' });
+
+            updatePlayerSelects();
+
+            select.addEventListener('change', function (e) {
+                updatePlayerSelects();
+            });
+
+            let options = select.querySelectorAll('option');
+
+            let firstAvailableOption = Array.from(options).find(option => option.style.display !== 'none' && !option.selected);
+
+            options.forEach(function (option) {
+                if (option === firstAvailableOption) {
+                    option.setAttribute('selected', 'selected');
+                } else {
+                    option.removeAttribute('selected');
+                }
+            });
+
+            updatePlayerSelects();
         };
 
         addPlayerTagLink.addEventListener("click", addFormToCollection)
+
+        // const playerSelectors = document.querySelectorAll('.encounter-player-character-select');
+
+
+        // playerSelectors.forEach(select => {
+        //     select.addEventListener('change', function (e) {
+        //         updatePlayerSelects(playerSelectors);
+        //     });
+        // });
     }
 }

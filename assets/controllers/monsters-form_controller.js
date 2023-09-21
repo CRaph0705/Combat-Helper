@@ -1,10 +1,20 @@
 import { Controller } from '@hotwired/stimulus';
+// import updateSelectOptions from '../js-functions/updateSelectOptions.js';
+import updateMonsterSelects from '../js-functions/updateMonsterSelects.js';
+// import './select-controller.js';
 
 
 export default class extends Controller {
     connect() {
 
         console.log('monsters-form controller connected');
+
+        let monsterSelectors = document.querySelectorAll('.encounter-monster-select');
+        monsterSelectors.forEach(function (monsterSelect) {
+            monsterSelect.addEventListener('change', updateMonsterSelects);
+        });
+
+        updateMonsterSelects();
         // ----------------- BOUTON RETIRER -----------------
         const addTagFormDeleteLink = (item) => {
             const wrapperDiv = document.createElement('div');
@@ -17,6 +27,7 @@ export default class extends Controller {
             removeFormButton.addEventListener('click', (e) => {
                 e.preventDefault();
                 item.remove();
+                updateMonsterSelects();
             });
         }
 
@@ -40,7 +51,7 @@ export default class extends Controller {
             const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
             const item = document.createElement('div');
             item.classList.add('monster-form', 'row', 'mb-4', 'unit-parchment');
-            
+
             item.innerHTML = collectionHolder
                 .dataset
                 .prototype
@@ -48,45 +59,6 @@ export default class extends Controller {
                     /__name__/g,
                     collectionHolder.dataset.index
                 );
-
-
-
-            // const handleSelectChange = function() {
-            //     $.ajax({
-            //         url: '/encounter/' + encounterId + '/get_available_units',
-            //         method: 'GET',
-            //         success: data => {
-            //             console.log('success', data.avaialableMonsters);
-            //         },
-            //         error: data => {
-            //             console.log('erreur');
-            //         }
-            //     })
-            // }
-
-            // const attachChangeEventListeners = function() {
-            //     const selects = document.querySelectorAll('select');
-            //     selects.forEach((select) => {
-            //         select.addEventListener('change', handleSelectChange);
-            //     });
-            // };
-
-            // attachChangeEventListeners();
-
-
-            //on ajoute un event listener sur le select (ajax pour récupérer les unités disponibles)
-            // select.addEventListener('change', function (e) {
-			// 	$.ajax({
-			// 		url: '/encounter/' + encounterId + '/get_available_units',
-			// 		method: 'GET',
-			// 		success: data => {
-			// 			console.log('success', 'data.availableMonsters', data.availableMonsters);
-			// 		},
-			// 		error: data => {
-			// 			console.log('erreur');
-			// 		}
-            //     })
-            // });
 
             //on récupère le select à l'intérieur de notre div
             const select = item.querySelector('select');
@@ -103,14 +75,43 @@ export default class extends Controller {
 
 
             addTagFormDeleteLink(item);
+            updateMonsterSelects();
 
             collectionHolder.appendChild(item);
             collectionHolder.dataset.index++;
             item.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            updateMonsterSelects();
+
+            select.addEventListener('change', function (e) {
+                updateMonsterSelects();
+            });
+
+            let options = select.querySelectorAll('option');
+
+            let firstAvailableOption = Array.from(options).find(option => option.style.display !== 'none' && !option.selected);
+
+            options.forEach(function (option) {
+                if (option === firstAvailableOption) {
+                    option.setAttribute('selected', 'selected');
+                } else {
+                    option.removeAttribute('selected');
+                }
+            });
+
+            updateMonsterSelects();
         };
+
 
         addMonsterTagLink.addEventListener("click", addFormToCollection)
 
+        // const monsterSelectors = document.querySelectorAll('.encounter-monster-select');
+
+        // monsterSelectors.forEach(select => {
+        //     select.addEventListener('change', function (e) {
+        //         updateMonsterSelects(monsterSelectors);
+        //     });
+        // });
     }
 
 

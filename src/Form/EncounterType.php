@@ -37,6 +37,9 @@ class EncounterType extends AbstractType
             'by_reference' => false,
             'entry_options' => [
                 'label' => false,
+                // 'attr' => [
+                //     'placeholder' => 'Player',
+                // ]
             ],
             'label' => false,
         ])
@@ -44,12 +47,16 @@ class EncounterType extends AbstractType
         ->add('encounterMonsters', CollectionType::class, [
             'entry_type' => EncounterMonsterType::class,
             // 'label' => 'Monsters',
+
             'allow_add' => true,
             'allow_delete' => true,
             'by_reference' => false,
             //id hidden
             'entry_options' => [
                 'label' => false,
+                // 'attr' => [
+                //     'placeholder' => 'Monster',
+                // ]
             ],
             //label hidden
             'label' => false,
