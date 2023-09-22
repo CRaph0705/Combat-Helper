@@ -3,7 +3,7 @@ import { Controller } from "stimulus";
 export default class extends Controller {
 
     connect() {
-        console.log("monster-index controller connected");
+        // console.log("monster-index controller connected");
 
         const turboFrame = document.querySelector("turbo-frame");
         if (!turboFrame) {
