@@ -3,11 +3,11 @@ import { Controller } from '@hotwired/stimulus';
 let currentUnitId = null;
 export default class extends Controller {
     connect() {
-        console.log('encounter-active_controller connected');
+        // console.log('encounter-active_controller connected');
 
         //on récupère les données de l'encounter
         const unitsData = this.loadEncounterData();
-        console.log('unitsData', unitsData);
+        // console.log('unitsData', unitsData);
         this.displayEncounterData();
 
 
@@ -36,13 +36,13 @@ export default class extends Controller {
         let currentUnitType = null;
 
         const units = document.querySelectorAll(".unit");
-        console.log('units :', units);
+        // console.log('units :', units);
         units[0].classList.add("unit-selected");
         turboFrame.id = units[0].dataset.isMonster === 'true' ? 'monster-details-content' : 'player-details-content';
         turboFrame.src = units[0].dataset.src;
         currentUnitId = units[0].dataset.id;
         currentUnitType = units[0].dataset.isMonster === true ? 'monster' : 'player';
-        console.log('currentUnitType :', currentUnitType);
+        // console.log('currentUnitType :', currentUnitType);
 
         units.forEach((unit) => {
             unit.addEventListener("click", (event) => {
@@ -63,7 +63,7 @@ export default class extends Controller {
         turboFrame.id = unitIsMonster === 'true' ? 'monster-details-content' : 'player-details-content';
         turboFrame.src = unitSrc;
         currentUnitId = unitId;
-        console.log('currentUnitId :', currentUnitId);
+        // console.log('currentUnitId :', currentUnitId);
         return currentUnitId;
     }
 
@@ -83,7 +83,7 @@ export default class extends Controller {
     /* ------------------------------------------------------------------------------------------- */
 
     displayEncounterData() {
-        console.log('displayEncounterData');
+        // console.log('displayEncounterData');
         const unitsData = this.loadEncounterData();
 
         // Sélectionnez le conteneur où vous souhaitez afficher les éléments
@@ -228,7 +228,7 @@ export default class extends Controller {
 
     //stop encounter function
     stopEncounter() {
-        console.log('stopEncounter');
+        // console.log('stopEncounter');
         //on fait apparaître une fenêtre de confirmation
         if (!confirm('Attention, toute progression sera perdue, souhaitez-vous quitter ?')) {
             return;

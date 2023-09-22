@@ -9,7 +9,7 @@ export default class extends Controller {
         document.addEventListener('DOMContentLoaded', () => {
             this.checkEncounterStartConditions();
         });
-        console.log('encounter_controller connected');
+        // console.log('encounter_controller connected');
         this.unitContainer = document.getElementById('unitContainer');
         // this.unitContainerTarget.addEventListener('input', this.sortAndUpdate.bind(this));
         const inputs = this.unitContainer.querySelectorAll('.initiative');
@@ -40,7 +40,7 @@ export default class extends Controller {
         if (startEncounterButton) {
             startEncounterButton.disabled = !isEncounterReady;
         }
-        console.log('checkEncounterStartConditions');
+        // console.log('checkEncounterStartConditions');
     }
 
 
@@ -67,7 +67,7 @@ export default class extends Controller {
         sortedUnits.forEach(unit => {
             this.unitContainerTarget.appendChild(unit);
         });
-        console.log('sortAndUpdate');
+        // console.log('sortAndUpdate');
         this.checkEncounterStartConditions();
 
     }
@@ -76,7 +76,7 @@ export default class extends Controller {
 
     // Méthode pour générer des initiatives aléatoires pour les monstres
     rollMonstersInitiatives() {
-        console.log('rollMonstersInitiatives');
+        // console.log('rollMonstersInitiatives');
 
         const monstersByType = {};
 
@@ -96,7 +96,7 @@ export default class extends Controller {
             // ajout du modificateur de dextérité
             const monsterDexterity = monstersByType[monsterType][0].dataset.unitDexterity;
 
-            console.log('monsterDexterity :', monsterDexterity);
+            // console.log('monsterDexterity :', monsterDexterity);
             const dexterityModifier = Math.floor((monsterDexterity - 10) / 2);
 
             const typeInitiative = Math.floor(Math.random() * 20) + 1 + dexterityModifier;
@@ -112,7 +112,7 @@ export default class extends Controller {
 
 
     resetInitiatives() {
-        console.log('resetInitiatives');
+        // console.log('resetInitiatives');
         const initiatives = Array.from(this.unitContainer.querySelectorAll('.initiative'));
         initiatives.forEach(initiative => {
             initiative.value = '';
@@ -190,7 +190,7 @@ export default class extends Controller {
 
     //load the data from local storage
     loadEncounterData() {
-        console.log('loadEncounterData');
+        // console.log('loadEncounterData');
         const unitsData = JSON.parse(localStorage.getItem('encounterData'));
         return unitsData;
     }
@@ -201,7 +201,7 @@ export default class extends Controller {
     }
 
     startEncounter() {
-        console.log('startEncounter');
+        // console.log('startEncounter');
         //si toutes les unités ont une initiative, des hp et une ac on peut commencer l'encounter
         //sinon on affiche un message d'erreur
         // d'abord la vérification :

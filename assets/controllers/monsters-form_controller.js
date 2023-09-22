@@ -8,7 +8,7 @@ import updateSaveButtonState from "../js-functions/updateSaveButtonState.js";
 
 export default class extends Controller {
     connect() {
-        console.log('monsters-form controller connected');
+        // console.log('monsters-form controller connected');
 
         let monsterFormCounter = document.querySelectorAll('.monster-form').length;
         const saveButton = document.querySelector('#btn-save');
@@ -60,7 +60,6 @@ export default class extends Controller {
             if (monsterFormCounter >= MAX_MONSTER_FORMS) {
                 return;
             }
-            updateMonsterSelects();
             const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
             const item = document.createElement('div');
             item.classList.add('monster-form', 'row', 'mb-4', 'unit-parchment');
@@ -73,9 +72,9 @@ export default class extends Controller {
                     collectionHolder.dataset.index
                 );
 
-            //on récupère le select à l'intérieur de notre div
             const select = item.querySelector('select');
-            // ajout de style sur le select
+
+
             const selectParent = select.parentElement;
             selectParent.classList.add('col-8');
 
@@ -86,9 +85,7 @@ export default class extends Controller {
 
             inputParent.parentElement.classList.add('row', 'col-8');
 
-
             addTagFormDeleteLink(item);
-            updateMonsterSelects();
 
             collectionHolder.appendChild(item);
             collectionHolder.dataset.index++;
@@ -112,6 +109,7 @@ export default class extends Controller {
                     option.removeAttribute('selected');
                 }
             });
+
             monsterFormCounter++;
             updateMonsterSelects();
             updateSaveButtonState();

@@ -1,32 +1,20 @@
 import { Controller } from '@hotwired/stimulus';
-// import updateSelectOptions from '../js-functions/updateSelectOptions.js';
-import updatePlayerSelects from '../js-functions/updatePlayerSelects.js';
-// import './select-controller.js';
+import updatePlayerSelects from "../js-functions/updatePlayerSelects";
 import updateSaveButtonState from "../js-functions/updateSaveButtonState";
-
-
 
 export default class extends Controller {
     connect() {
-        console.log('players-form controller connected');
+        // console.log('players-form controller connected');
 
-        // let playerFormCounter = 0;
         let playerFormCounter = document.querySelectorAll('.player-form').length;
         const saveButton = document.querySelector('#btn-save');
 
         updateSaveButtonState();
 
-        console.log(playerFormCounter);
-
-
-
         let playerSelectors = document.querySelectorAll('.encounter-player-character-select');
-        playerSelectors.forEach(function (playerSelect) {
-            playerSelect.addEventListener('change', updatePlayerSelects);
+        playerSelectors.forEach(function (select) {
+            select.addEventListener('change', updatePlayerSelects);
         });
-
-
-        updatePlayerSelects();
 
         const addTagFormDeleteLink = (item) => {
             const wrapperDiv = document.createElement('div');
@@ -40,8 +28,8 @@ export default class extends Controller {
                 e.preventDefault();
                 item.remove();
                 updatePlayerSelects();
-                playerFormCounter--;
                 updateSaveButtonState();
+                playerFormCounter--;
             });
         }
 
@@ -63,8 +51,6 @@ export default class extends Controller {
             if (playerFormCounter >= MAX_PLAYER_FORMS) {
                 return;
             }
-
-            updatePlayerSelects();
             const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
             const item = document.createElement('div');
             item.classList.add('player-form', 'row', 'mb-4', 'unit-parchment');
@@ -79,7 +65,15 @@ export default class extends Controller {
 
             const select = item.querySelector('select');
 
-            //on ajoute du style au select
+            //SI ON VEUT UN SELECT AVEC UN PLACEHOLDER -- CHOIX DU JOUEUR --   >>>>>>>>>>>>>>
+            // const placeholderOption = document.createElement('option');
+            // placeholderOption.value = '';
+            // placeholderOption.text = '-- Choix du joueur --';
+            // placeholderOption.disabled = true;
+            // placeholderOption.selected = true;
+            // select.appendChild(placeholderOption);
+            // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
             const selectParent = select.parentElement;
             selectParent.classList.add('col-8');
             selectParent.parentElement.classList.add('row', 'col-8');
@@ -89,10 +83,11 @@ export default class extends Controller {
             collectionHolder.dataset.index++;
             item.scrollIntoViewIfNeeded({ behavior: 'smooth', block: 'center' });
 
-            updatePlayerSelects();
             updateSaveButtonState();
+            updatePlayerSelects();
 
             select.addEventListener('change', function (e) {
+
                 updatePlayerSelects();
             });
 
@@ -102,14 +97,15 @@ export default class extends Controller {
 
             options.forEach(function (option) {
                 if (option === firstAvailableOption) {
-                    option.setAttribute('selected', 'selected');
+                    option.selected= true;
                 } else {
-                    option.removeAttribute('selected');
+                    option.selected = false;
                 }
             });
-            playerFormCounter++;
             updatePlayerSelects();
+            playerFormCounter++;
             updateSaveButtonState();
+            
         };
 
         addPlayerTagLink.addEventListener("click", addFormToCollection);
