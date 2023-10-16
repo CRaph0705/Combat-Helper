@@ -9,7 +9,10 @@ function updateMonsterSelects() {
     });
 
     monsterSelectors.forEach(function (select) {
-        let options = select.querySelectorAll('option');
+        let options = Array.from(select.options);
+        options.sort((a, b) => a.text.localeCompare(b.text));
+        select.innerHTML = '';
+        options.forEach(option => select.appendChild(option));
 
         options.forEach(function (option) {
             option.style.display = 'block';
