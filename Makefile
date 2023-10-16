@@ -8,6 +8,7 @@ install: ## Install the project
 	symfony composer install
 	symfony console doctrine:database:create
 	make rebuild
+	npm install
 
 rebuild: ## Rebuild the project
 	rm -rf var/cache/*

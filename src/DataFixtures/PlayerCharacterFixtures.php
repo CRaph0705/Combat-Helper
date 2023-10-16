@@ -56,9 +56,9 @@ class PlayerCharacterFixtures extends Fixture
         $manager->persist($ornagar);
 
         $rhan = new PlayerCharacter();
-        $rhan->setName('Rhan');
-        $rhan->setHp(11);
-        $rhan->setAC(15);
+        $rhan->setName('Rhanne');
+        $rhan->setHp(22);
+        $rhan->setAC(11);
         $rhan->setLevel(3);
         $rhan->setStats(
             14, // strength
@@ -114,6 +114,24 @@ class PlayerCharacterFixtures extends Fixture
             9  // charisma
         );
         $manager->persist($khalvi);
+
+
+        $jeanLuc = new PlayerCharacter();
+        $jeanLuc->setName('Jean-Luc');
+        $jeanLuc->setHp(18);
+        $jeanLuc->setAC(13);
+        $jeanLuc->setLevel(1);
+        $jeanLuc->setStats(
+            11, // strength
+            11, // dexterity
+            12, // constitution
+            5, // intelligence
+            8, // wisdom
+            2  // charisma
+        );
+        $manager->persist($jeanLuc);
+
+
 
         $manager->flush();
     }
