@@ -2,7 +2,6 @@ function updatePlayerSelects() {
     let playerSelectors = document.querySelectorAll('.encounter-player-character-select');
     let selectedPlayerValues = [];
 
-
     playerSelectors.forEach(function (select) {
         if (select.value && selectedPlayerValues.includes(select.value) === false) {
             selectedPlayerValues.push(select.value);
@@ -10,7 +9,11 @@ function updatePlayerSelects() {
     });
 
     playerSelectors.forEach(function (select) {
-        let options = select.querySelectorAll('option');
+        let options = Array.from(select.options);
+        options.sort((a, b) => a.text.localeCompare(b.text));
+        select.innerHTML = '';
+        options.forEach(option => select.appendChild(option));
+
         options.forEach(function (option) {
             option.style.display = 'block';
 
@@ -23,8 +26,6 @@ function updatePlayerSelects() {
     });
 
     console.log('selectedPlayerValues', selectedPlayerValues);
-
 }
-
 
 export default updatePlayerSelects;
