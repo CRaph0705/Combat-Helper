@@ -1,52 +1,54 @@
 {{ form_start(form) }}
-<div class="container">
-	<div class="row">
-		<div class="col-6">{{ form_row(form.name) }}</div>
-    </div>
-    <div class="row">
-        <div class="col-3">
-			{{ form_row(form.hp) }}
+	<div class="container">
+		<div class="row">
+			<div class="col-6">{{ form_row(form.name) }}</div>
 		</div>
-		<div class="col-3">
-            {{ form_row(form.ac) }}
-        </div>
-		<div class="col-3">
-            {{ form_row(form.speed) }}
-        </div>
-        <div class="col-3">
-            {{ form_row(form.level) }}
-        </div>
-	</div>
+		<div class="row">
+			<div class="col-3">
+				{{ form_row(form.hp) }}
+			</div>
+			<div class="col-3">
+				{{ form_row(form.ac) }}
+			</div>
+			<div class="col-3">
+				{{ form_row(form.speed) }}
+			</div>
+			<div class="col-3">
+				{{ form_row(form.level) }}
+			</div>
+		</div>
+		<br>
+
+		<div class="row">
+			<div class="col-2">
+				{{ form_row(form.strength) }}
+			</div>
+			<div class="col-2">
+				{{ form_row(form.dexterity) }}
+			</div>
+			<div class="col-2">
+				{{ form_row(form.constitution) }}
+			</div>
+			<div class="col-2">
+				{{ form_row(form.intelligence) }}
+			</div>
+			<div class="col-2">
+				{{ form_row(form.wisdom) }}
+			</div>
+			<div class="col-2">
+				{{ form_row(form.charisma) }}
+			</div>
+		</div>
 	<br>
 
-	<div class="row">
-		<div class="col-2">
-			{{ form_row(form.strength) }}
-		</div>
-		<div class="col-2">
-			{{ form_row(form.dexterity) }}
-		</div>
-		<div class="col-2">
-			{{ form_row(form.constitution) }}
-		</div>
-		<div class="col-2">
-			{{ form_row(form.intelligence) }}
-		</div>
-		<div class="col-2">
-			{{ form_row(form.wisdom) }}
-		</div>
-		<div class="col-2">
-			{{ form_row(form.charisma) }}
+		<div class="row">
+			
 		</div>
 	</div>
-<br>
-
-	<div class="row">
-        
-	</div>
-</div>
 
 
     {{ form_widget(form) }}
-    <button class="btn btn-save">{{ button_label|default('Save') }}</button>
+	<div class="button-container">
+		<button class="btn btn-default btn-save">{{ button_label|default('Save') }}</button>
+	</div>
 {{ form_end(form) }}

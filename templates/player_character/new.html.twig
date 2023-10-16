@@ -3,11 +3,12 @@
 {% block title %}New PlayerCharacter{% endblock %}
 
 {% block body %}
+    <a class="btn btn-default" href="{{ path('app_player_character_index') }}">Back</a>
+
     <h1>Create new PlayerCharacter</h1>
 
     {{ include('player_character/_form.html.twig') }}
 
-    <a class="btn btn-default" href="{{ path('app_player_character_index') }}">Back</a>
     {# {% include "footer.html.twig" %} #}
 
 {% endblock %}
