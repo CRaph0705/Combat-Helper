@@ -52,7 +52,7 @@
 
 
 // #################################################### ENCOUNTER NEW / EDIT ####################################################
-.btn-save, .btn-default {
+.btn-default {
     font-size: $button-font-size;
     font-weight: $button-font-weight;
     color: $button-color;
@@ -67,6 +67,10 @@
         border: 1px solid $button-border-color-hover;
     }
 }
+#btn-save {
+    right: 0;
+}
+
 
 .btn-remove-unit {
     font-size: $button-font-size;

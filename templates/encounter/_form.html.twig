@@ -1,12 +1,8 @@
 {{ form_start(form) }}
 
 
-<div>
-	<h2 {{ encounter.id }}>
-		Current Encounter:
-		{{ encounter.shortName }}
-		<br>
-	</h2>
+<div class="button-container">
+	<button id="btn-save" class="btn btn-default btn-save">{{ button_label|default('Save') }}</button>
 </div>
 
 <div class="encounter-units">
@@ -49,7 +45,7 @@
 		</div>
 	</div>
 </div>
-</div><button id="btn-save" class="btn btn-save">{{ button_label|default('Save') }}</button>
+</div>
 
 <script>
     let MAX_PLAYER_FORMS = {{ playerCharacterCount }};
