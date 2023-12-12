@@ -9,7 +9,7 @@ export default class extends Controller {
         const unitsData = this.loadEncounterData();
         // console.log('unitsData', unitsData);
         this.displayEncounterData();
-
+        this.displayActiveUnitTracker();
 
         document.addEventListener('keydown', (event) => {
             switch (event.key) {
@@ -146,6 +146,7 @@ export default class extends Controller {
             // Si aucune unité n'est active, initialiser avec la première unité du tableau
             const firstUnit = document.querySelector('.unit');
             firstUnit.classList.add('active');
+            this.updateActiveUnitTracker();
             return;
         }
 
@@ -169,7 +170,9 @@ export default class extends Controller {
                 currentUnit.classList.remove('active');
                 // Ajouter la classe active à l'unité suivante
                 nextUnit.classList.add('active');
-                this.updateTurboFrame(nextUnit);
+                // this.updateTurboFrame(nextUnit);
+                this.updateActiveUnitTracker();
+
                 nextUnit.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 return;
             }
@@ -214,7 +217,9 @@ export default class extends Controller {
                 currentUnit.classList.remove('active');
                 // Ajouter la classe active à l'unité précédente
                 previousUnit.classList.add('active');
-                this.updateTurboFrame(previousUnit);
+                // this.updateTurboFrame(previousUnit);
+                this.updateActiveUnitTracker();
+
                 previousUnit.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 return;
             }
@@ -240,4 +245,86 @@ export default class extends Controller {
         //on redirige vers la page d'accueil
         window.location.href = '/';
     }
+
+
+    /* -------------------------------------------- ACTIVE UNIT TRACKER -------------------------------------------- */
+    displayActiveUnitTracker() {
+        const unitsData = this.loadEncounterData();
+        const activeUnit = document.querySelector('.unit.active');
+    
+        if (!activeUnit) {
+            return;
+        }
+    
+        const activeUnitContainer = document.querySelector('.active-unit');
+        const previousUnitContainer = document.querySelector('.previous-unit');
+        const nextUnitContainer = document.querySelector('.next-unit');
+    
+        activeUnitContainer.innerHTML = activeUnit.innerHTML;
+    
+        const unitNames = Object.keys(unitsData);
+        const currentIndex = unitNames.findIndex(unitName => unitName === activeUnit.dataset.unitName);
+    
+        let previousIndex = (currentIndex - 1 + unitNames.length) % unitNames.length;
+        let nextIndex = (currentIndex + 1) % unitNames.length;
+    
+        const previousUnit = document.querySelector(`.unit[data-unit-name="${unitNames[previousIndex]}"]`);
+        const nextUnit = document.querySelector(`.unit[data-unit-name="${unitNames[nextIndex]}"]`);
+    
+        if (previousUnit) {
+            previousUnitContainer.innerHTML = previousUnit.innerHTML;
+        } else {
+            // Si c'est la première unité, afficher la dernière
+            const lastUnit = document.querySelector('.unit:last-child');
+            previousUnitContainer.innerHTML = lastUnit.innerHTML;
+        }
+    
+        if (nextUnit) {
+            nextUnitContainer.innerHTML = nextUnit.innerHTML;
+        } else {
+            // Si c'est la dernière unité, afficher la première
+            const firstUnit = document.querySelector('.unit:first-child');
+            nextUnitContainer.innerHTML = firstUnit.innerHTML;
+        }
+    }
+    
+    updateActiveUnitTracker() {
+        const unitsData = this.loadEncounterData();
+        const activeUnit = document.querySelector('.unit.active');
+    
+        if (!activeUnit) {
+            return;
+        }
+    
+        const activeUnitContainer = document.querySelector('.active-unit');
+        const previousUnitContainer = document.querySelector('.previous-unit');
+        const nextUnitContainer = document.querySelector('.next-unit');
+    
+        const unitNames = Object.keys(unitsData);
+        const currentIndex = unitNames.findIndex(unitName => unitName === activeUnit.dataset.unitName);
+    
+        let previousIndex = (currentIndex - 1 + unitNames.length) % unitNames.length;
+        let nextIndex = (currentIndex + 1) % unitNames.length;
+    
+        const previousUnit = document.querySelector(`.unit[data-unit-name="${unitNames[previousIndex]}"]`);
+        const nextUnit = document.querySelector(`.unit[data-unit-name="${unitNames[nextIndex]}"]`);
+    
+        if (previousUnit) {
+            previousUnitContainer.innerHTML = previousUnit.innerHTML;
+        } else {
+            const lastUnit = document.querySelector('.unit:last-child');
+            previousUnitContainer.innerHTML = lastUnit.innerHTML;
+        }
+    
+        if (nextUnit) {
+            nextUnitContainer.innerHTML = nextUnit.innerHTML;
+        } else {
+            const firstUnit = document.querySelector('.unit:first-child');
+            nextUnitContainer.innerHTML = firstUnit.innerHTML;
+        }
+    
+        activeUnitContainer.innerHTML = activeUnit.innerHTML; // Ajout de cette ligne pour mettre à jour l'unité active dans le tracker
+    }
+    
+
 }

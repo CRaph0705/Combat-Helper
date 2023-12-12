@@ -259,6 +259,8 @@ class EncounterController extends AbstractController
         return $this->render('encounter/active.html.twig', [
             'encounter' => $encounter,
             'units' => $units,
+            'players' => $players,
+            'monsters' => $monsters,
         ]);
     }
 
