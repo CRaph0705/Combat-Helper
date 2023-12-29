@@ -7,7 +7,9 @@ export default class extends Controller {
 
         //on récupère les données de l'encounter
         const unitsData = this.loadEncounterData();
-        // console.log('unitsData', unitsData);
+        console.log('unitsData', unitsData);
+
+        
         this.displayEncounterData();
         this.displayActiveUnitTracker();
 
