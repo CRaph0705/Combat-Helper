@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+{% block title %}Fight !
+{% endblock %}
+{% block body %}
+	<div data-controller="encounter-active-test">
+		<div>
+			<h1 class="main-title">Combat</h1>
+		</div>
+
+		<div class="controlPannel d-flex">
+			<div class="controlPannel-item">
+				<button class="btn btn-default" data-action="click->encounter-active#previousUnit">
+					<<
+				</button>
+				<button class="btn btn-default" data-action="click->encounter-active#nextUnit">
+					>>
+				</button>
+			</div>
+		</div>
+		
+
+		<div class="unit-tracker">
+			<div class="previous-unit">
+				<!-- Insérer les informations de l'unité précédente ici -->
+			</div>
+			
+			<div class="active-unit">
+				<!-- Insérer les informations de l'unité active ici -->
+			</div>
+			
+			<div class="next-unit">
+				<!-- Insérer les informations de l'unité suivante ici -->
+			</div>
+		</div>
+
+
+		<div class="unit-index-container d-flex">
+			<div class="unit-index-list">
+				<div class="encounterUnitsContainer" id="encounterUnitsContainer"></div>
+				{# <div class="encounterUnitsContainer" id="encounterUnitsContainer"></div> #}
+			</div>
+
+
+			<div class="unit-details">
+				<turbo-frame id="" src=""></turbo-frame>
+			</div>
+		</div>
+
+
+		<div class="row">
+			<div class="col-6"></div>
+			<div class="col-6">
+				<button class="btn btn-default" data-action="click->encounter-active#stopEncounter">End encounter</button>
+			</div>
+		</div>
+	</div>
+{% endblock %}
