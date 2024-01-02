@@ -8,30 +8,33 @@
 			<h1 class="main-title">Combat</h1>
 		</div>
 
-
 		<div class="index-container unit-index-container d-flex">
-			{# <div class="unit-index-list">
-				<div class="encounterUnitsContainer" id="encounterUnitsContainer"></div>
-				<div class="encounterUnitsContainer" id="encounterUnitsContainer"></div>
-			</div> #}
 
 			<section id="pannel-container"></section>
 
-			<section id="tracker-container">
-			</section>
-			
+			<section id="tracker-container"></section>
+
+
 			<section id="indices-container">
-				<div class="indices-container">
-					<div></div>
+				<div id="index-selection">
+					<button id="monster-index-button" class="toggle-button" data-target="monster-index">Monsters</button>
+					<button id="player-index-button" class="toggle-button" data-target="player-index">Players</button>
+					<button id="global-index-button" class="toggle-button" data-target="global-index">All</button>
+				</div>
+				<div id="index-display">
+					<div class="index view hidden" id="monster-index" style="background-color:white">monster index</div>
+					<div class="index view hidden" id="player-index" style="background-color:white">player index</div>
+					<div class="index view hidden" id="global-index" style="background-color:white">global index</div>
 				</div>
 			</section>
-			
+
+
 			<section id="turbo-container">
 				<div class="unit-details">
-					<turbo-frame id="" src=""></turbo-frame>
+					<turbo-frame id="" src="" loading="lazy"></turbo-frame>
 				</div>
 			</section>
-		
+
 		</div>
 
 

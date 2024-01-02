@@ -85,18 +85,14 @@ export default class extends Controller {
     /* ------------------------------------------------------------------------------------------- */
 
     displayEncounterData() {
-        // console.log('displayEncounterData');
         const unitsData = this.loadEncounterData();
 
-        // Sélectionnez le conteneur où vous souhaitez afficher les éléments
         const container = document.querySelector('#encounterUnitsContainer');
 
-        // Parcours des données des unités
         let isFirstUnit = true;
         for (const unitName in unitsData) {
             const unitData = unitsData[unitName];
 
-            // Création d'une nouvelle div pour chaque unité
             const unitDiv = document.createElement('div');
             unitDiv.classList.add('unit');
             unitDiv.classList.add('unit-parchment');
@@ -115,18 +111,13 @@ export default class extends Controller {
                 unitDiv.classList.add('KO');
             }
 
-            // Si c'est la première unité, ajouter la classe "active"
             if (isFirstUnit) {
                 unitDiv.classList.add('active');
                 isFirstUnit = false;
             }
 
-            // Ajout de la div de l'unité au conteneur
             container.appendChild(unitDiv);
-            // ScrollHeight();
 
-
-            // Ajout de l'écouteur d'événements sur les HP de l'unité
             const hpInput = unitDiv.querySelector('input[name="hp"]');
             hpInput.addEventListener('input', () => {
                 if (parseInt(hpInput.value) <= 0) {
