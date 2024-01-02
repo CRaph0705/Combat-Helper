@@ -70,6 +70,7 @@ export default class extends Controller {
     connect() {
         this.unitsData = this.loadEncounterData();
         this.initializeIndices();
+        // this.initializeTurboFrame();
 
         console.log(
             'this.unitsData', this.unitsData,
@@ -134,5 +135,55 @@ export default class extends Controller {
         this.playerIndex.sort((a, b) => (a.name > b.name) ? 1 : -1);
     }
 
+
+
+
+    updateTurboFrame(targetUnit) {
+        const turboFrame = document.querySelector("turbo-frame");
+        const unitId = targetUnit.dataset.id;
+        const unitSrc = targetUnit.dataset.src;
+        const unitIsMonster = targetUnit.dataset.isMonster;
+        const units = document.querySelectorAll(".unit");
+        units.forEach((u) => u.classList.remove("unit-selected"));
+        targetUnit.classList.add("unit-selected");
+
+        turboFrame.id = unitIsMonster === 'true' ? 'monster-details-content' : 'player-details-content';
+        turboFrame.src = unitSrc;
+        currentUnitId = unitId;
+        // console.log('currentUnitId :', currentUnitId);
+        return currentUnitId;
+    }
+
+    initializeTurboFrame() {
+
+        const turboFrame = document.querySelector("turbo-frame");
+        if (!turboFrame) {
+            return;
+        }
+
+        let defaultTargetUnit = null;
+
+        const units = document.querySelectorAll(".unit");
+        defaultTargetUnit = units[0];
+        this.updateTurboFrame(defaultTargetUnit);
+
+        units.forEach((unit) => {
+            unit.addEventListener("click", (event) => {
+                this.updateTurboFrame(event.currentTarget);
+            });
+        });
+
+    }
+
+
+    /* ------------------------------------------------------------------------------------------- */
+
+    // render(){
+    //     this.renderMonsterIndex();
+    //     this.renderPlayerIndex();
+    //     this.renderUnitIndex();
+    //     this.renderTracker();
+    //     this.renderShow();
+    // }
 
 }
