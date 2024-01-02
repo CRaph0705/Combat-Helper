@@ -52,9 +52,12 @@
 
 /* ------------------------------------------------------------------------------------------- */
 import { Controller } from '@hotwired/stimulus';
+import Unit from '../models/unit.js';
+import Monster from '../models/monster.js';
+import Player from '../models/player.js';
 
-let unitsData = null;
-console.log('unitsData', unitsData);
+let encounterData = null;
+console.log('unitsData', encounterData);
 export default class extends Controller {
 
     constructor() {
@@ -68,7 +71,7 @@ export default class extends Controller {
     /* ------------------------------------------------------------------------------------------- */
 
     connect() {
-        this.unitsData = this.loadEncounterData();
+        this.encounterData = this.loadEncounterData();
         this.initializeIndices();
         // this.initializeTurboFrame();
 
@@ -80,6 +83,10 @@ export default class extends Controller {
             'this.unitIndexInitiativeSorted', this.unitIndexInitiativeSorted
 
         );
+
+        this.displayIndices();
+
+
     }
 
     /* ------------------------------------------------------------------------------------------- */
@@ -107,37 +114,179 @@ export default class extends Controller {
     /* ------------------------------------------------------------------------------------------- */
 
     initializeIndices() {
-        for (const unitName in this.unitsData) {
-            const unitData = this.unitsData[unitName];
-
-            const unitWithKey = {...unitData, name: unitName};
-
-
-            if (unitData.isMonster) {
-                this.monsterIndex.push(unitWithKey);
-            } else {
-                this.playerIndex.push(unitWithKey);
-            }
+        for (const unitName in this.encounterData.monsters) {
+            const unitData = this.encounterData.monsters[unitName];
+            const unitWithKey = { ...unitData, name: unitName };
+            this.monsterIndex.push(unitWithKey);
             this.unitIndexAlphaSorted.push(unitWithKey);
             this.unitIndexInitiativeSorted.push(unitWithKey);
         }
 
-        //tri par ordre alphabétique
+        for (const unitName in this.encounterData.players) {
+            const unitData = this.encounterData.players[unitName];
+            const unitWithKey = { ...unitData, name: unitName };
+            this.playerIndex.push(unitWithKey);
+            this.unitIndexAlphaSorted.push(unitWithKey);
+            this.unitIndexInitiativeSorted.push(unitWithKey);
+        }
+
+        // Tri par ordre alphabétique
         this.unitIndexAlphaSorted.sort((a, b) => (a.name > b.name) ? 1 : -1);
 
-        //tri par initiative
-         this.unitIndexInitiativeSorted.sort((a, b) => (a.initiative > b.initiative) ? -1 : 1);
+        // Tri par initiative
+        this.unitIndexInitiativeSorted.sort((a, b) => (a.initiative > b.initiative) ? -1 : 1);
 
-        //tri par ordre alphabétique des monstres
+        // Tri par ordre alphabétique des monstres
         this.monsterIndex.sort((a, b) => (a.name > b.name) ? 1 : -1);
 
-        //tri par ordre alphabétique des players
+        // Tri par ordre alphabétique des joueurs
         this.playerIndex.sort((a, b) => (a.name > b.name) ? 1 : -1);
     }
 
 
 
+    /* ------------------------------------------------------------------------------------------- */
+    // 1- les index
 
+    // on récupère les index une fois initialisés. On les affiche tous, et on cache ceux qui ne sont pas sélectionnés.
+    // on affiche l'index des monstres par défaut.
+    // on affiche l'index des players au clic sur le bouton "players".
+    // on affiche l'index des unités au clic sur le bouton "all".
+
+
+
+    generateUnitElements(unitsData, container) {
+        for (const u in unitsData) {
+            const unitData = unitsData[u];
+
+
+            const unitDiv = document.createElement('div');
+
+            unitDiv.classList.add('unit');
+            unitDiv.classList.add('unit-parchment');
+            unitDiv.dataset.id = unitData.id;
+            unitDiv.dataset.src = unitData.unitSrc;
+            unitDiv.dataset.name = unitData.name;
+            unitDiv.dataset.isMonster = unitData.isMonster;
+
+            const unitNameP = document.createElement('p');
+            unitNameP.innerText = unitData.name;
+            unitDiv.appendChild(unitNameP);
+
+            const unitAcP = document.createElement('p');
+            unitAcP.innerText = `AC : ${unitData.ac}`;
+            unitDiv.appendChild(unitAcP);
+
+            const unitHpP = document.createElement('p');
+            unitHpP.innerText = 'HP : ';
+            unitDiv.appendChild(unitHpP);
+
+            const unitHpInput = document.createElement('input');
+            unitHpInput.type = 'number';
+            unitHpInput.name = 'hp';
+            unitHpInput.value = unitData.hp;
+            unitHpP.appendChild(unitHpInput);
+            unitHpInput.value <= 0 ? unitDiv.classList.add('KO') : unitDiv.classList.remove('KO');
+
+            unitHpInput.addEventListener('input', () => {
+                if (parseInt(unitHpInput.value) <= 0) {
+                    unitDiv.classList.add('KO');
+                } else {
+                    unitDiv.classList.remove('KO');
+                }
+            });
+
+            unitHpInput.addEventListener('change', () => {
+                const updatedHP = parseInt(unitHpInput.value);
+                this.updateUnitData(unitData.id, { hp: updatedHP });
+                this.refreshAllViews();
+            });
+
+            container.appendChild(unitDiv);
+        }
+    }
+
+    displayIndices() {
+        console.log('displayIndices');
+        const monsterIndexContainer = document.querySelector('#monster-index');
+        const playerIndexContainer = document.querySelector('#player-index');
+        const globalIndexContainer = document.querySelector('#global-index');
+
+        this.generateUnitElements(this.monsterIndex, monsterIndexContainer);
+        this.generateUnitElements(this.playerIndex, playerIndexContainer);
+        this.generateUnitElements(this.unitIndexAlphaSorted, globalIndexContainer);
+
+        const monsterButton = document.querySelector('#monster-index-button');
+        const playerButton = document.querySelector('#player-index-button');
+        const globalButton = document.querySelector('#global-index-button');
+
+        const buttons = [monsterButton, playerButton, globalButton];
+
+        buttons.forEach((button) => {
+            button.addEventListener('click', (event) => {
+                this.toggleView(event.currentTarget.dataset.target);
+            });
+        });
+    }
+
+    toggleView(targetViewId) {
+        const views = document.querySelectorAll('.view');
+
+        views.forEach((view) => {
+            if (view.id === targetViewId) {
+                view.classList.remove('hidden');
+            } else {
+                view.classList.add('hidden');
+            }
+
+        });
+
+    }
+
+    refreshMonsterIndexView() {}
+    
+    refreshPlayerIndexView() {}
+
+    refreshIndexView() {}
+
+    refreshAllViews() {
+        this.refreshMonsterIndexView();
+        this.refreshPlayerIndexView();
+        this.refreshIndexView();
+        this.refreshTrackerView();
+    }
+
+    updateUnitData(unitId, updatedUnitData) {
+        const unitToUpdate = this.monsterIndex.find(unit => unit.id === unitId) ||
+            this.playerIndex.find(unit => unit.id === unitId);
+    
+        if (unitToUpdate) {
+            Object.assign(unitToUpdate, updatedUnitData);
+    
+            const unitType = unitToUpdate.isMonster ? 'monsters' : 'players';
+    
+            this.encounterData[unitType][unitToUpdate.name] = unitToUpdate;
+    
+            localStorage.setItem('encounterData', JSON.stringify(this.encounterData));
+    
+            if (unitToUpdate.isMonster) {
+                this.refreshMonsterIndexView();
+            } else {
+                this.refreshPlayerIndexView();
+            }
+            this.refreshOtherViews(); // refresh tracker and global index
+        }
+    }
+    
+
+    /* ------------------------------------------------------------------------------------------- */
+    // 2- le tracker
+
+    refreshTrackerView() {}
+
+
+    /* ------------------------------------------------------------------------------------------- */
+    // 3- le turbo-frame
     updateTurboFrame(targetUnit) {
         const turboFrame = document.querySelector("turbo-frame");
         const unitId = targetUnit.dataset.id;
@@ -177,6 +326,11 @@ export default class extends Controller {
 
 
     /* ------------------------------------------------------------------------------------------- */
+    // 4- le panneau de navigation
+
+
+
+    /* ------------------------------------------------------------------------------------------- */
 
     // render(){
     //     this.renderMonsterIndex();
@@ -187,3 +341,7 @@ export default class extends Controller {
     // }
 
 }
+
+
+
+
