@@ -202,6 +202,11 @@ export default class extends Controller {
                 this.refreshAllViews();
             });
 
+            unitDiv.addEventListener('click', () => {
+                this.updateTurboFrame(unitDiv);
+            });
+
+
             container.appendChild(unitDiv);
         }
     }
@@ -243,11 +248,23 @@ export default class extends Controller {
 
     }
 
-    refreshMonsterIndexView() {}
+    refreshMonsterIndexView() {
+        const monsterIndexContainer = document.querySelector('#monster-index');
+        monsterIndexContainer.innerHTML = '';
+        this.generateUnitElements(this.monsterIndex, monsterIndexContainer);
+    }
     
-    refreshPlayerIndexView() {}
+    refreshPlayerIndexView() {
+        const playerIndexContainer = document.querySelector('#player-index');
+        playerIndexContainer.innerHTML = '';
+        this.generateUnitElements(this.playerIndex, playerIndexContainer);
+    }
 
-    refreshIndexView() {}
+    refreshIndexView() {
+        const globalIndexContainer = document.querySelector('#global-index');
+        globalIndexContainer.innerHTML = '';
+        this.generateUnitElements(this.unitIndexAlphaSorted, globalIndexContainer);
+    }
 
     refreshAllViews() {
         this.refreshMonsterIndexView();
@@ -269,12 +286,7 @@ export default class extends Controller {
     
             localStorage.setItem('encounterData', JSON.stringify(this.encounterData));
     
-            if (unitToUpdate.isMonster) {
-                this.refreshMonsterIndexView();
-            } else {
-                this.refreshPlayerIndexView();
-            }
-            this.refreshOtherViews(); // refresh tracker and global index
+            this.refreshAllViews();
         }
     }
     
@@ -289,18 +301,15 @@ export default class extends Controller {
     // 3- le turbo-frame
     updateTurboFrame(targetUnit) {
         const turboFrame = document.querySelector("turbo-frame");
-        const unitId = targetUnit.dataset.id;
         const unitSrc = targetUnit.dataset.src;
         const unitIsMonster = targetUnit.dataset.isMonster;
+
         const units = document.querySelectorAll(".unit");
         units.forEach((u) => u.classList.remove("unit-selected"));
         targetUnit.classList.add("unit-selected");
 
         turboFrame.id = unitIsMonster === 'true' ? 'monster-details-content' : 'player-details-content';
         turboFrame.src = unitSrc;
-        currentUnitId = unitId;
-        // console.log('currentUnitId :', currentUnitId);
-        return currentUnitId;
     }
 
     initializeTurboFrame() {
@@ -332,13 +341,6 @@ export default class extends Controller {
 
     /* ------------------------------------------------------------------------------------------- */
 
-    // render(){
-    //     this.renderMonsterIndex();
-    //     this.renderPlayerIndex();
-    //     this.renderUnitIndex();
-    //     this.renderTracker();
-    //     this.renderShow();
-    // }
 
 }
 
