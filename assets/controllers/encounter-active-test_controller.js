@@ -202,8 +202,11 @@ export default class extends Controller {
                 this.refreshAllViews();
             });
 
+            const turboId = unitData.isMonster ? 'monster-details-content' : 'player-details-content';
+            const turboSrc = unitData.unitSrc;
+
             unitDiv.addEventListener('click', () => {
-                this.updateTurboFrame(unitDiv);
+                this.updateTurboFrame(unitDiv, turboId, turboSrc);
             });
 
 
@@ -294,22 +297,28 @@ export default class extends Controller {
     /* ------------------------------------------------------------------------------------------- */
     // 2- le tracker
 
+
+    // cas où il y a moins de 3 unités
+    // cas où il y a 3 unités ou plus
+
+
     refreshTrackerView() {}
 
 
     /* ------------------------------------------------------------------------------------------- */
     // 3- le turbo-frame
-    updateTurboFrame(targetUnit) {
+    updateTurboFrame(targetUnitDiv, turboId, turboSrc) {
         const turboFrame = document.querySelector("turbo-frame");
-        const unitSrc = targetUnit.dataset.src;
-        const unitIsMonster = targetUnit.dataset.isMonster;
+        if (!turboFrame) {
+            return;
+        }
 
-        const units = document.querySelectorAll(".unit");
-        units.forEach((u) => u.classList.remove("unit-selected"));
-        targetUnit.classList.add("unit-selected");
+        const allUnitDiv = document.querySelectorAll(".unit");
+        allUnitDiv.forEach((u) => u.classList.remove("unit-selected"));
+        targetUnitDiv.classList.add("unit-selected");
 
-        turboFrame.id = unitIsMonster === 'true' ? 'monster-details-content' : 'player-details-content';
-        turboFrame.src = unitSrc;
+        turboFrame.id = turboId;
+        turboFrame.src = turboSrc;
     }
 
     initializeTurboFrame() {
