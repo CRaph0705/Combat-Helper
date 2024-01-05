@@ -7,36 +7,52 @@
 		<div>
 			<h1 class="main-title">Combat</h1>
 		</div>
+		<section id="top-section">
+			<div id="pannel-container"></div>
 
-		<div class="index-container unit-index-container d-flex">
+			<div id="active-unit-tracker-container">
+				<div class="view-toggle">
+					<button id="toggle-view-button" class="btn-default">
+						Change view :
+						<span id="view-mode"></span>
+					</button>
+				</div>
+				<div id="active-unit-tracker">
+					<div id="compact-view" class="swiper block">
 
-			<section id="pannel-container"></section>
+					</div>
+					<div id="full-view" class="hidden"></div>
+				</div>
+			</div>
 
-			<section id="tracker-container"></section>
+		</section>
+
+		<section
+			class="bottom-section index-container unit-index-container d-flex">
 
 
-			<section id="indices-container">
+			{# scss to change #}
+			<div id="indices-container">
 				<div id="index-selection">
-					<button id="monster-index-button" class="toggle-button" data-target="monster-index">Monsters</button>
-					<button id="player-index-button" class="toggle-button" data-target="player-index">Players</button>
-					<button id="global-index-button" class="toggle-button" data-target="global-index">All</button>
+					<button id="monster-index-button" class="toggle-button toggle-index-button" data-target="monster-index">Monsters</button>
+					<button id="player-index-button" class="toggle-button toggle-index-button" data-target="player-index">Players</button>
+					<button id="global-index-button" class="toggle-button toggle-index-button" data-target="global-index">All</button>
 				</div>
 				<div id="index-display">
 					<div class="index view hidden" id="monster-index" style="background-color:white">monster index</div>
 					<div class="index view hidden" id="player-index" style="background-color:white">player index</div>
 					<div class="index view hidden" id="global-index" style="background-color:white">global index</div>
 				</div>
-			</section>
+			</div>
 
-
-			<section id="turbo-container">
+			<div id="turbo-container">
 				<div class="unit-details">
 					<turbo-frame id="" src="" loading="eager"></turbo-frame>
-					{# <turbo-frame id="" src="" loading="lazy"></turbo-frame> #}
+					{# loading options : "lazy" || "eager" #}
 				</div>
-			</section>
+			</div>
 
-		</div>
+		</section>
 
 
 	</div>

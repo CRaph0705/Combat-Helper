@@ -55,6 +55,7 @@ import { Controller } from '@hotwired/stimulus';
 import Unit from '../models/unit.js';
 import Monster from '../models/monster.js';
 import Player from '../models/player.js';
+import Swiper from 'swiper';
 
 let encounterData = null;
 console.log('unitsData', encounterData);
@@ -66,6 +67,9 @@ export default class extends Controller {
         this.playerIndex = [];
         this.unitIndexAlphaSorted = [];
         this.unitIndexInitiativeSorted = [];
+        this.activeUnit = null;
+        this.turn = 1;
+        this.viewMode = 'compact' || 'full';
     }
 
     /* ------------------------------------------------------------------------------------------- */
@@ -74,7 +78,7 @@ export default class extends Controller {
         this.encounterData = this.loadEncounterData();
         this.initializeIndices();
         // this.initializeTurboFrame();
-
+        console.log('connect');
         console.log(
             'this.unitsData', this.unitsData,
             'this.monsterIndex', this.monsterIndex,
@@ -85,6 +89,73 @@ export default class extends Controller {
         );
 
         this.displayIndices();
+
+        this.displayActiveUnitTracker();
+
+
+        const toggleViewButton = document.querySelector('#toggle-view-button');
+        toggleViewButton.addEventListener('click', () => {
+            this.toggleTrackerView();
+        });
+        this.viewMode = 'compact';
+        const viewModeValue = document.querySelector('#view-mode');
+        viewModeValue.innerText = this.viewMode;
+
+
+        document.addEventListener('click', (event) => {
+            const target = event.target;
+            if (target.dataset.slide) {
+                this.handleUnitChange(target.dataset.slide);
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            switch (event.key) {
+                case 'ArrowRight':
+                case 'ArrowDown':
+                    this.handleUnitChange('next');
+                    break;
+                case 'ArrowLeft':
+                case 'ArrowUp':
+                    this.handleUnitChange('previous');
+                    break;
+            }
+        });
+
+        this.setActiveUnit(this.unitIndexInitiativeSorted[0]);
+
+
+
+        const swiper = new Swiper("#compact-view", {
+            slidesPerView: '2',
+            spaceBetween: 20,
+            centeredSlides: true,
+            loop: true,
+            initialSlide: 0,
+
+            navigation: {
+              nextEl: ".swiper-button-next",
+              prevEl: ".swiper-button-prev",
+            },
+            // pagination: {
+            //     el: ".swiper-pagination",
+            //     type: "bullets",
+            //     clickable: false,
+            // },
+        });
+
+        const nextButton = document.querySelector('.swiper-button-next');
+        const previousButton = document.querySelector('.swiper-button-prev');
+
+        nextButton.addEventListener('click', () => {
+            this.handleUnitChange('next');
+            swiper.slideNext();
+        });
+
+        previousButton.addEventListener('click', () => {
+            this.handleUnitChange('previous');
+            swiper.slidePrev();
+        });
 
 
     }
@@ -233,6 +304,9 @@ export default class extends Controller {
         buttons.forEach((button) => {
             button.addEventListener('click', (event) => {
                 this.toggleView(event.currentTarget.dataset.target);
+                buttons.forEach((b) => b.classList.remove('active'));
+                button.classList.add('active');
+
             });
         });
     }
@@ -256,7 +330,7 @@ export default class extends Controller {
         monsterIndexContainer.innerHTML = '';
         this.generateUnitElements(this.monsterIndex, monsterIndexContainer);
     }
-    
+
     refreshPlayerIndexView() {
         const playerIndexContainer = document.querySelector('#player-index');
         playerIndexContainer.innerHTML = '';
@@ -279,32 +353,156 @@ export default class extends Controller {
     updateUnitData(unitId, updatedUnitData) {
         const unitToUpdate = this.monsterIndex.find(unit => unit.id === unitId) ||
             this.playerIndex.find(unit => unit.id === unitId);
-    
+
+        if (!unitToUpdate) {
+            return;
+        }
+
         if (unitToUpdate) {
             Object.assign(unitToUpdate, updatedUnitData);
-    
+
             const unitType = unitToUpdate.isMonster ? 'monsters' : 'players';
-    
+
             this.encounterData[unitType][unitToUpdate.name] = unitToUpdate;
-    
+
             localStorage.setItem('encounterData', JSON.stringify(this.encounterData));
-    
+
             this.refreshAllViews();
         }
     }
-    
+
 
     /* ------------------------------------------------------------------------------------------- */
     // 2- le tracker
 
-
-    // cas où il y a moins de 3 unités
-    // cas où il y a 3 unités ou plus
-
-
-    refreshTrackerView() {}
+    // this.currentUnit = this.unitIndexInitiativeSorted[0];
+    // this.turn = 1;
 
 
+
+    handleUnitChange(action) {
+        switch (action) {
+            case 'next':
+                this.nextUnit();
+                break;
+            case 'previous':
+                this.previousUnit();
+                break;
+        }
+    }
+
+    toggleTrackerView() {
+        console.log('toggleTrackerView');
+        const compactViewContainer = document.querySelector('#compact-view');
+        const fullViewContainer = document.querySelector('#full-view');
+        const viewModeValue = document.querySelector('#view-mode');
+
+        this.viewMode === 'compact' ? this.viewMode = 'full' : this.viewMode = 'compact';
+        viewModeValue.innerText = this.viewMode;
+
+
+        compactViewContainer.classList.toggle('hidden');
+        compactViewContainer.classList.toggle('block');
+        fullViewContainer.classList.toggle('hidden');
+        fullViewContainer.classList.toggle('block');
+
+
+
+    }
+
+    generateCarouselUnitElement(unit) {
+        console.log(unit);
+        const swiperSlide = document.createElement('div');
+        swiperSlide.classList.add('swiper-slide');
+
+        const textContainer = document.createElement('div');
+        textContainer.classList.add('c-swiper__text');
+
+        const title = document.createElement('div');
+        title.classList.add('c-swiper__title');
+        title.textContent = unit.name;
+
+        const initiative = document.createElement('div');
+        initiative.textContent = `Initiative: ${unit.initiative}`;
+
+        const armorClass = document.createElement('div');
+        armorClass.textContent = `AC: ${unit.ac}`;
+
+        const hitPoints = document.createElement('div');
+        hitPoints.textContent = `HP: ${unit.hp}`;
+
+        textContainer.append(title, initiative, armorClass, hitPoints);
+        swiperSlide.appendChild(textContainer);
+        return swiperSlide;
+    }
+
+    generateUnitsCarousel(unitsData, container) {
+        const units = unitsData;
+
+        const swiperWrapper = document.createElement('div');
+        swiperWrapper.classList.add('swiper-wrapper');
+        container.appendChild(swiperWrapper);
+
+        units.forEach((unit) => {
+            const unitsElements = this.generateCarouselUnitElement(unit);
+            swiperWrapper.appendChild(unitsElements);
+        });
+
+        // const swiperPagination = document.createElement('div');
+        // swiperPagination.classList.add('swiper-pagination');
+
+        const swiperButtonPrev = document.createElement('div');
+        swiperButtonPrev.classList.add('swiper-button-prev');
+
+        const swiperButtonNext = document.createElement('div');
+        swiperButtonNext.classList.add('swiper-button-next');
+
+        // container.append(swiperPagination, swiperButtonPrev, swiperButtonNext);
+        container.append(swiperButtonPrev, swiperButtonNext);
+    }
+
+    generateCompactTrackerView(unitData, container) {
+        this.generateUnitsCarousel(unitData, container);
+    }
+
+    generateFullTrackerView(unitData, container) {
+        this.generateUnitElements(unitData, container);
+    }
+
+    refreshTrackerView() {
+        const compactViewContainer = document.querySelector('#compact-view');
+        const fullViewContainer = document.querySelector('#full-view');
+
+        compactViewContainer.innerHTML = '';
+        fullViewContainer.innerHTML = '';
+
+        this.generateFullTrackerView(this.unitIndexInitiativeSorted, fullViewContainer);
+        this.generateCompactTrackerView(this.unitIndexInitiativeSorted, compactViewContainer);
+    }
+
+    nextUnit() {
+        console.log('nextUnit function called');
+    }
+
+    previousUnit() {
+        console.log('previousUnit function called');
+    }
+
+
+    displayActiveUnitTracker() {
+        console.log('displayActiveUnitTracker');
+
+        const activeUnitTracker = document.querySelector('#active-unit-tracker');
+        const activeUnitTrackerContainer = document.querySelector('#active-unit-tracker-container');
+        const compactViewContainer = document.querySelector('#compact-view');
+        const fullViewContainer = document.querySelector('#full-view');
+        const viewModeValue = document.querySelector('#view-mode');
+
+
+        this.generateCompactTrackerView(this.unitIndexInitiativeSorted, compactViewContainer);
+        this.generateFullTrackerView(this.unitIndexInitiativeSorted, fullViewContainer);
+
+    }
     /* ------------------------------------------------------------------------------------------- */
     // 3- le turbo-frame
     updateTurboFrame(targetUnitDiv, turboId, turboSrc) {
@@ -344,8 +542,14 @@ export default class extends Controller {
 
 
     /* ------------------------------------------------------------------------------------------- */
-    // 4- le panneau de navigation
 
+    getActiveUnit() {
+        return this.activeUnit;
+    }
+
+    setActiveUnit(unit) {
+        this.activeUnit = unit;
+    }
 
 
     /* ------------------------------------------------------------------------------------------- */
