@@ -58,7 +58,7 @@ import Player from '../models/player.js';
 import Swiper from 'swiper';
 
 let encounterData = null;
-console.log('unitsData', encounterData);
+// console.log('unitsData', encounterData);
 export default class extends Controller {
 
     constructor() {
@@ -70,6 +70,7 @@ export default class extends Controller {
         this.activeUnit = null;
         this.turn = 1;
         this.viewMode = 'compact' || 'full';
+        this.swiper = null;
     }
 
     /* ------------------------------------------------------------------------------------------- */
@@ -79,14 +80,14 @@ export default class extends Controller {
         this.initializeIndices();
         // this.initializeTurboFrame();
         console.log('connect');
-        console.log(
-            'this.unitsData', this.unitsData,
-            'this.monsterIndex', this.monsterIndex,
-            'this.playerIndex', this.playerIndex,
-            'this.unitIndexAlphaSorted', this.unitIndexAlphaSorted,
-            'this.unitIndexInitiativeSorted', this.unitIndexInitiativeSorted
+        // console.log(
+        //     'this.unitsData', this.unitsData,
+        //     'this.monsterIndex', this.monsterIndex,
+        //     'this.playerIndex', this.playerIndex,
+        //     'this.unitIndexAlphaSorted', this.unitIndexAlphaSorted,
+        //     'this.unitIndexInitiativeSorted', this.unitIndexInitiativeSorted
 
-        );
+        // );
 
         this.displayIndices();
 
@@ -101,13 +102,6 @@ export default class extends Controller {
         const viewModeValue = document.querySelector('#view-mode');
         viewModeValue.innerText = this.viewMode;
 
-
-        document.addEventListener('click', (event) => {
-            const target = event.target;
-            if (target.dataset.slide) {
-                this.handleUnitChange(target.dataset.slide);
-            }
-        });
 
         document.addEventListener('keydown', (event) => {
             switch (event.key) {
@@ -124,9 +118,10 @@ export default class extends Controller {
 
         this.setActiveUnit(this.unitIndexInitiativeSorted[0]);
 
+        console.log('this.activeUnit', this.activeUnit);
 
 
-        const swiper = new Swiper("#compact-view", {
+        this.swiper = new Swiper("#compact-view", {
             slidesPerView: '2',
             spaceBetween: 20,
             centeredSlides: true,
@@ -136,25 +131,19 @@ export default class extends Controller {
             navigation: {
               nextEl: ".swiper-button-next",
               prevEl: ".swiper-button-prev",
-            },
-            // pagination: {
-            //     el: ".swiper-pagination",
-            //     type: "bullets",
-            //     clickable: false,
-            // },
+            }
         });
+
 
         const nextButton = document.querySelector('.swiper-button-next');
         const previousButton = document.querySelector('.swiper-button-prev');
 
         nextButton.addEventListener('click', () => {
             this.handleUnitChange('next');
-            swiper.slideNext();
         });
 
         previousButton.addEventListener('click', () => {
             this.handleUnitChange('previous');
-            swiper.slidePrev();
         });
 
 
@@ -286,7 +275,6 @@ export default class extends Controller {
     }
 
     displayIndices() {
-        console.log('displayIndices');
         const monsterIndexContainer = document.querySelector('#monster-index');
         const playerIndexContainer = document.querySelector('#player-index');
         const globalIndexContainer = document.querySelector('#global-index');
@@ -392,7 +380,7 @@ export default class extends Controller {
     }
 
     toggleTrackerView() {
-        console.log('toggleTrackerView');
+        // console.log('toggleTrackerView');
         const compactViewContainer = document.querySelector('#compact-view');
         const fullViewContainer = document.querySelector('#full-view');
         const viewModeValue = document.querySelector('#view-mode');
@@ -411,10 +399,9 @@ export default class extends Controller {
     }
 
     generateCarouselUnitElement(unit) {
-        console.log(unit);
         const swiperSlide = document.createElement('div');
         swiperSlide.classList.add('swiper-slide');
-
+        swiperSlide.dataset.name = unit.name;
         const textContainer = document.createElement('div');
         textContainer.classList.add('c-swiper__text');
 
@@ -429,6 +416,8 @@ export default class extends Controller {
         armorClass.textContent = `AC: ${unit.ac}`;
 
         const hitPoints = document.createElement('div');
+        // on donne l'id "#hp" à cette div pour pouvoir la cibler
+        hitPoints.id = 'hp';
         hitPoints.textContent = `HP: ${unit.hp}`;
 
         textContainer.append(title, initiative, armorClass, hitPoints);
@@ -482,15 +471,28 @@ export default class extends Controller {
 
     nextUnit() {
         console.log('nextUnit function called');
+        // on passe à l'unité suivante dans la liste, on met à jour l'unité active 
+        // this.activeUnit = this.unitIndexInitiativeSorted[this.unitIndexInitiativeSorted.indexOf(this.activeUnit) + 1];
+        // si l'unité active est KO, on passe à l'unité suivante
+        //si on retourne au début de la liste, on incrémente le nombre de tours this.turn++;
+
+        const activeSlide = document.querySelector('.swiper-slide-active');
+        const nextSlide = activeSlide.nextElementSibling;
+
+        console.log('activeSlide', activeSlide);
+        console.log('nextSlide', nextSlide);
+        this.swiper.slideNext();
+
     }
 
     previousUnit() {
         console.log('previousUnit function called');
+        this.swiper.slidePrev();
     }
 
 
     displayActiveUnitTracker() {
-        console.log('displayActiveUnitTracker');
+        // console.log('displayActiveUnitTracker');
 
         const activeUnitTracker = document.querySelector('#active-unit-tracker');
         const activeUnitTrackerContainer = document.querySelector('#active-unit-tracker-container');

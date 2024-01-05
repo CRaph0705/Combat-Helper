@@ -7,9 +7,10 @@ $font-principal: 'Montserrat', sans-serif;
 
 .swiper {
   width: 100%;
-  height: 600px;
+  height: 100%;
   margin-right: 0;
   align-items: center;
+  margin-bottom: 10%;
 }
 
 .swiper-wrapper {
@@ -75,7 +76,7 @@ $font-principal: 'Montserrat', sans-serif;
 .c-swiper__text {
   opacity: 0;
   width: 300px;
-  height: 250px;
+  height: 200px;
   color: white;
   // position: absolute;
   // top: 25%;
@@ -87,7 +88,7 @@ $font-principal: 'Montserrat', sans-serif;
   
   .c-swiper__title {
     max-height: 100%;
-    font-size: 64px;
+    font-size: 24px;
     font-weight: 600;
     text-shadow: 1px 1px 2px var(--color-dark);
     text-align: left;
