@@ -55,9 +55,10 @@ import { Controller } from '@hotwired/stimulus';
 import Unit from '../models/unit.js';
 import Monster from '../models/monster.js';
 import Player from '../models/player.js';
+import Swiper from 'swiper';
 
 let encounterData = null;
-console.log('unitsData', encounterData);
+// console.log('unitsData', encounterData);
 export default class extends Controller {
 
     constructor() {
@@ -66,6 +67,11 @@ export default class extends Controller {
         this.playerIndex = [];
         this.unitIndexAlphaSorted = [];
         this.unitIndexInitiativeSorted = [];
+        this.activeUnit = null;
+        this.turn = 1;
+        this.viewMode = 'compact' || 'full';
+        this.swiper = null;
+        this.activeUnitIndex = 0;
     }
 
     /* ------------------------------------------------------------------------------------------- */
@@ -74,17 +80,48 @@ export default class extends Controller {
         this.encounterData = this.loadEncounterData();
         this.initializeIndices();
         // this.initializeTurboFrame();
+        console.log('connect');
+        // console.log(
+        //     'this.unitsData', this.unitsData,
+        //     'this.monsterIndex', this.monsterIndex,
+        //     'this.playerIndex', this.playerIndex,
+        //     'this.unitIndexAlphaSorted', this.unitIndexAlphaSorted,
+        //     'this.unitIndexInitiativeSorted', this.unitIndexInitiativeSorted
 
-        console.log(
-            'this.unitsData', this.unitsData,
-            'this.monsterIndex', this.monsterIndex,
-            'this.playerIndex', this.playerIndex,
-            'this.unitIndexAlphaSorted', this.unitIndexAlphaSorted,
-            'this.unitIndexInitiativeSorted', this.unitIndexInitiativeSorted
-
-        );
+        // );
 
         this.displayIndices();
+
+        this.displayActiveUnitTracker();
+
+
+        const toggleViewButton = document.querySelector('#toggle-view-button');
+        toggleViewButton.addEventListener('click', () => {
+            this.toggleTrackerView();
+        });
+        this.viewMode = 'compact';
+        const viewModeValue = document.querySelector('#view-mode');
+        viewModeValue.innerText = this.viewMode;
+
+
+        document.addEventListener('keydown', (event) => {
+            switch (event.key) {
+                case 'ArrowRight':
+                case 'ArrowDown':
+                    this.handleUnitChange('next');
+                    break;
+                case 'ArrowLeft':
+                case 'ArrowUp':
+                    this.handleUnitChange('previous');
+                    break;
+            }
+        });
+
+        this.setActiveUnit(this.unitIndexInitiativeSorted[0]);
+
+        console.log('this.activeUnit', this.activeUnit);
+
+
 
 
     }
@@ -202,8 +239,11 @@ export default class extends Controller {
                 this.refreshAllViews();
             });
 
+            const turboId = unitData.isMonster ? 'monster-details-content' : 'player-details-content';
+            const turboSrc = unitData.unitSrc;
+
             unitDiv.addEventListener('click', () => {
-                this.updateTurboFrame(unitDiv);
+                this.updateTurboFrame(unitDiv, turboId, turboSrc);
             });
 
 
@@ -212,7 +252,6 @@ export default class extends Controller {
     }
 
     displayIndices() {
-        console.log('displayIndices');
         const monsterIndexContainer = document.querySelector('#monster-index');
         const playerIndexContainer = document.querySelector('#player-index');
         const globalIndexContainer = document.querySelector('#global-index');
@@ -230,6 +269,9 @@ export default class extends Controller {
         buttons.forEach((button) => {
             button.addEventListener('click', (event) => {
                 this.toggleView(event.currentTarget.dataset.target);
+                buttons.forEach((b) => b.classList.remove('active'));
+                button.classList.add('active');
+
             });
         });
     }
@@ -253,7 +295,7 @@ export default class extends Controller {
         monsterIndexContainer.innerHTML = '';
         this.generateUnitElements(this.monsterIndex, monsterIndexContainer);
     }
-    
+
     refreshPlayerIndexView() {
         const playerIndexContainer = document.querySelector('#player-index');
         playerIndexContainer.innerHTML = '';
@@ -276,40 +318,220 @@ export default class extends Controller {
     updateUnitData(unitId, updatedUnitData) {
         const unitToUpdate = this.monsterIndex.find(unit => unit.id === unitId) ||
             this.playerIndex.find(unit => unit.id === unitId);
-    
+
+        if (!unitToUpdate) {
+            return;
+        }
+
         if (unitToUpdate) {
             Object.assign(unitToUpdate, updatedUnitData);
-    
+
             const unitType = unitToUpdate.isMonster ? 'monsters' : 'players';
-    
+
             this.encounterData[unitType][unitToUpdate.name] = unitToUpdate;
-    
+
             localStorage.setItem('encounterData', JSON.stringify(this.encounterData));
-    
+
             this.refreshAllViews();
         }
     }
-    
+
 
     /* ------------------------------------------------------------------------------------------- */
     // 2- le tracker
 
-    refreshTrackerView() {}
+
+    handleUnitChange(action) {
+        switch (action) {
+            case 'next':
+                this.nextUnit();
+                break;
+            case 'previous':
+                this.previousUnit();
+                break;
+        }
+    }
+
+    toggleTrackerView() {
+        // console.log('toggleTrackerView');
+        const compactViewContainer = document.querySelector('#compact-view');
+        const fullViewContainer = document.querySelector('#full-view');
+        const viewModeValue = document.querySelector('#view-mode');
+
+        this.viewMode === 'compact' ? this.viewMode = 'full' : this.viewMode = 'compact';
+        viewModeValue.innerText = this.viewMode;
 
 
+        compactViewContainer.classList.toggle('hidden');
+        compactViewContainer.classList.toggle('block');
+        fullViewContainer.classList.toggle('hidden');
+        fullViewContainer.classList.toggle('block');
+
+
+
+    }
+
+    generateCarouselUnitElement(unit) {
+        const swiperSlide = document.createElement('div');
+        swiperSlide.classList.add('swiper-slide');
+        swiperSlide.dataset.name = unit.name;
+        const textContainer = document.createElement('div');
+        textContainer.classList.add('c-swiper__text');
+
+        const title = document.createElement('div');
+        title.classList.add('c-swiper__title');
+        title.textContent = unit.name;
+
+        const initiative = document.createElement('div');
+        initiative.textContent = `Initiative: ${unit.initiative}`;
+
+        const armorClass = document.createElement('div');
+        armorClass.textContent = `AC: ${unit.ac}`;
+
+        const hitPoints = document.createElement('div');
+        // on donne l'id "#hp" à cette div pour pouvoir la cibler
+        hitPoints.id = 'hp';
+        hitPoints.textContent = `HP: ${unit.hp}`;
+
+        textContainer.append(title, initiative, armorClass, hitPoints);
+        swiperSlide.appendChild(textContainer);
+        return swiperSlide;
+    }
+
+    generateUnitsCarousel(unitsData, container) {
+        const units = unitsData;
+        console.log('this.activeUnitIndex', this.activeUnitIndex);
+
+    
+        const swiperWrapper = document.createElement('div');
+        swiperWrapper.classList.add('swiper-wrapper');
+        container.appendChild(swiperWrapper);
+    
+    
+        units.forEach((unit, index) => {
+            const unitsElements = this.generateCarouselUnitElement(unit);
+            swiperWrapper.appendChild(unitsElements);
+    
+ 
+        });
+    
+        const swiperButtonPrev = document.createElement('div');
+        swiperButtonPrev.classList.add('swiper-button-prev');
+    
+        const swiperButtonNext = document.createElement('div');
+        swiperButtonNext.classList.add('swiper-button-next');
+    
+        container.append(swiperButtonPrev, swiperButtonNext);
+    
+        this.swiper = new Swiper("#compact-view", {
+            slidesPerView: '2',
+            spaceBetween: 20,
+            centeredSlides: true,
+            loop: true,
+            initialSlide: this.activeUnitIndex, 
+    
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            }
+        });
+    
+        const nextButton = document.querySelector('.swiper-button-next');
+        const previousButton = document.querySelector('.swiper-button-prev');
+    
+        nextButton.addEventListener('click', () => {
+            this.handleUnitChange('next');
+        });
+    
+        previousButton.addEventListener('click', () => {
+            this.handleUnitChange('previous');
+        });
+    }
+
+
+    generateCompactTrackerView(unitData, container) {
+        this.generateUnitsCarousel(unitData, container);
+    }
+
+    generateFullTrackerView(unitData, container) {
+        this.generateUnitElements(unitData, container);
+    }
+
+    refreshTrackerView() {
+        console.log('refreshTracker this.activeUnitIndex', this.activeUnitIndex);
+
+        const compactViewContainer = document.querySelector('#compact-view');
+        const fullViewContainer = document.querySelector('#full-view');
+
+        compactViewContainer.innerHTML = '';
+        fullViewContainer.innerHTML = '';
+
+        this.generateFullTrackerView(this.unitIndexInitiativeSorted, fullViewContainer);
+        this.generateCompactTrackerView(this.unitIndexInitiativeSorted, compactViewContainer);
+    }
+
+    nextUnit() {
+        console.log('nextUnit function called');
+        const activeSlide = document.querySelector('.swiper-slide-active');
+        const nextSlide = activeSlide.nextElementSibling;
+        console.log('this.activeUnitIndex', this.activeUnitIndex);
+        this.activeUnitIndex = this.unitIndexInitiativeSorted.indexOf(this.activeUnit);
+        console.log('activeSlide', activeSlide);
+        console.log('nextSlide', nextSlide);
+        this.swiper.slideNext();
+
+
+        // une unité est KO si elle est un monstre et que ses HP sont inférieurs ou égaux à 0, ou si elle est un player et ses hp sont à 0 et qu'il a échoué ses 3 jets de sauvegarde.
+        // si cette unité est KO
+        // if (this.activeUnit.isMonster && this.activeUnit.hp <= 0) {
+        //     this.nextUnit();
+        // }
+
+        this.activeUnitIndex = nextSlide.dataset.swiperSlideIndex;
+    }
+
+    previousUnit() {
+        console.log('previousUnit function called');
+        const activeSlide = document.querySelector('.swiper-slide-active');
+        const previousSlide = activeSlide.previousElementSibling;
+        console.log('this.activeUnitIndex', this.activeUnitIndex);
+        this.activeUnitIndex = this.unitIndexInitiativeSorted.indexOf(this.activeUnit);
+        console.log('activeSlide', activeSlide);
+        console.log('previousSlide', previousSlide);
+        this.swiper.slidePrev();
+
+        this.activeUnitIndex = previousSlide.dataset.swiperSlideIndex;
+    }
+
+
+    displayActiveUnitTracker() {
+        // console.log('displayActiveUnitTracker');
+
+        const activeUnitTracker = document.querySelector('#active-unit-tracker');
+        const activeUnitTrackerContainer = document.querySelector('#active-unit-tracker-container');
+        const compactViewContainer = document.querySelector('#compact-view');
+        const fullViewContainer = document.querySelector('#full-view');
+        const viewModeValue = document.querySelector('#view-mode');
+
+
+        this.generateCompactTrackerView(this.unitIndexInitiativeSorted, compactViewContainer);
+        this.generateFullTrackerView(this.unitIndexInitiativeSorted, fullViewContainer);
+
+    }
     /* ------------------------------------------------------------------------------------------- */
     // 3- le turbo-frame
-    updateTurboFrame(targetUnit) {
+    updateTurboFrame(targetUnitDiv, turboId, turboSrc) {
         const turboFrame = document.querySelector("turbo-frame");
-        const unitSrc = targetUnit.dataset.src;
-        const unitIsMonster = targetUnit.dataset.isMonster;
+        if (!turboFrame) {
+            return;
+        }
 
-        const units = document.querySelectorAll(".unit");
-        units.forEach((u) => u.classList.remove("unit-selected"));
-        targetUnit.classList.add("unit-selected");
+        const allUnitDiv = document.querySelectorAll(".unit");
+        allUnitDiv.forEach((u) => u.classList.remove("unit-selected"));
+        targetUnitDiv.classList.add("unit-selected");
 
-        turboFrame.id = unitIsMonster === 'true' ? 'monster-details-content' : 'player-details-content';
-        turboFrame.src = unitSrc;
+        turboFrame.id = turboId;
+        turboFrame.src = turboSrc;
     }
 
     initializeTurboFrame() {
@@ -335,8 +557,14 @@ export default class extends Controller {
 
 
     /* ------------------------------------------------------------------------------------------- */
-    // 4- le panneau de navigation
 
+    getActiveUnit() {
+        return this.activeUnit;
+    }
+
+    setActiveUnit(unit) {
+        this.activeUnit = unit;
+    }
 
 
     /* ------------------------------------------------------------------------------------------- */
