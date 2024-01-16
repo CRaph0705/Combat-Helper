@@ -71,6 +71,7 @@ export default class extends Controller {
         this.turn = 1;
         this.viewMode = 'compact' || 'full';
         this.swiper = null;
+        this.activeUnitIndex = 0;
     }
 
     /* ------------------------------------------------------------------------------------------- */
@@ -121,30 +122,6 @@ export default class extends Controller {
         console.log('this.activeUnit', this.activeUnit);
 
 
-        this.swiper = new Swiper("#compact-view", {
-            slidesPerView: '2',
-            spaceBetween: 20,
-            centeredSlides: true,
-            loop: true,
-            initialSlide: 0,
-
-            navigation: {
-              nextEl: ".swiper-button-next",
-              prevEl: ".swiper-button-prev",
-            }
-        });
-
-
-        const nextButton = document.querySelector('.swiper-button-next');
-        const previousButton = document.querySelector('.swiper-button-prev');
-
-        nextButton.addEventListener('click', () => {
-            this.handleUnitChange('next');
-        });
-
-        previousButton.addEventListener('click', () => {
-            this.handleUnitChange('previous');
-        });
 
 
     }
@@ -363,10 +340,6 @@ export default class extends Controller {
     /* ------------------------------------------------------------------------------------------- */
     // 2- le tracker
 
-    // this.currentUnit = this.unitIndexInitiativeSorted[0];
-    // this.turn = 1;
-
-
 
     handleUnitChange(action) {
         switch (action) {
@@ -427,28 +400,54 @@ export default class extends Controller {
 
     generateUnitsCarousel(unitsData, container) {
         const units = unitsData;
+        console.log('this.activeUnitIndex', this.activeUnitIndex);
 
+    
         const swiperWrapper = document.createElement('div');
         swiperWrapper.classList.add('swiper-wrapper');
         container.appendChild(swiperWrapper);
-
-        units.forEach((unit) => {
+    
+    
+        units.forEach((unit, index) => {
             const unitsElements = this.generateCarouselUnitElement(unit);
             swiperWrapper.appendChild(unitsElements);
+    
+ 
         });
-
-        // const swiperPagination = document.createElement('div');
-        // swiperPagination.classList.add('swiper-pagination');
-
+    
         const swiperButtonPrev = document.createElement('div');
         swiperButtonPrev.classList.add('swiper-button-prev');
-
+    
         const swiperButtonNext = document.createElement('div');
         swiperButtonNext.classList.add('swiper-button-next');
-
-        // container.append(swiperPagination, swiperButtonPrev, swiperButtonNext);
+    
         container.append(swiperButtonPrev, swiperButtonNext);
+    
+        this.swiper = new Swiper("#compact-view", {
+            slidesPerView: '2',
+            spaceBetween: 20,
+            centeredSlides: true,
+            loop: true,
+            initialSlide: this.activeUnitIndex, 
+    
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            }
+        });
+    
+        const nextButton = document.querySelector('.swiper-button-next');
+        const previousButton = document.querySelector('.swiper-button-prev');
+    
+        nextButton.addEventListener('click', () => {
+            this.handleUnitChange('next');
+        });
+    
+        previousButton.addEventListener('click', () => {
+            this.handleUnitChange('previous');
+        });
     }
+
 
     generateCompactTrackerView(unitData, container) {
         this.generateUnitsCarousel(unitData, container);
@@ -459,6 +458,8 @@ export default class extends Controller {
     }
 
     refreshTrackerView() {
+        console.log('refreshTracker this.activeUnitIndex', this.activeUnitIndex);
+
         const compactViewContainer = document.querySelector('#compact-view');
         const fullViewContainer = document.querySelector('#full-view');
 
@@ -471,23 +472,35 @@ export default class extends Controller {
 
     nextUnit() {
         console.log('nextUnit function called');
-        // on passe à l'unité suivante dans la liste, on met à jour l'unité active 
-        // this.activeUnit = this.unitIndexInitiativeSorted[this.unitIndexInitiativeSorted.indexOf(this.activeUnit) + 1];
-        // si l'unité active est KO, on passe à l'unité suivante
-        //si on retourne au début de la liste, on incrémente le nombre de tours this.turn++;
-
         const activeSlide = document.querySelector('.swiper-slide-active');
         const nextSlide = activeSlide.nextElementSibling;
-
+        console.log('this.activeUnitIndex', this.activeUnitIndex);
+        this.activeUnitIndex = this.unitIndexInitiativeSorted.indexOf(this.activeUnit);
         console.log('activeSlide', activeSlide);
         console.log('nextSlide', nextSlide);
         this.swiper.slideNext();
 
+
+        // une unité est KO si elle est un monstre et que ses HP sont inférieurs ou égaux à 0, ou si elle est un player et ses hp sont à 0 et qu'il a échoué ses 3 jets de sauvegarde.
+        // si cette unité est KO
+        // if (this.activeUnit.isMonster && this.activeUnit.hp <= 0) {
+        //     this.nextUnit();
+        // }
+
+        this.activeUnitIndex = nextSlide.dataset.swiperSlideIndex;
     }
 
     previousUnit() {
         console.log('previousUnit function called');
+        const activeSlide = document.querySelector('.swiper-slide-active');
+        const previousSlide = activeSlide.previousElementSibling;
+        console.log('this.activeUnitIndex', this.activeUnitIndex);
+        this.activeUnitIndex = this.unitIndexInitiativeSorted.indexOf(this.activeUnit);
+        console.log('activeSlide', activeSlide);
+        console.log('previousSlide', previousSlide);
         this.swiper.slidePrev();
+
+        this.activeUnitIndex = previousSlide.dataset.swiperSlideIndex;
     }
 
 
