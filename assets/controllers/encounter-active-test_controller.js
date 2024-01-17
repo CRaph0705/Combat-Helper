@@ -119,7 +119,7 @@ export default class extends Controller {
 
         this.setActiveUnit(this.unitIndexInitiativeSorted[0]);
 
-        console.log('this.activeUnit', this.activeUnit);
+        // console.log('this.activeUnit', this.activeUnit);
 
 
 
@@ -419,7 +419,7 @@ export default class extends Controller {
 
     generateUnitsCarousel(unitsData, container) {
         const units = unitsData;
-        console.log('this.activeUnitIndex', this.activeUnitIndex);
+        // console.log('this.activeUnitIndex', this.activeUnitIndex);
 
 
         const swiperWrapper = document.createElement('div');
@@ -477,7 +477,7 @@ export default class extends Controller {
     }
 
     refreshTrackerView() {
-        console.log('refreshTracker this.activeUnitIndex', this.activeUnitIndex);
+        // console.log('refreshTracker this.activeUnitIndex', this.activeUnitIndex);
 
         const compactViewContainer = document.querySelector('#compact-view');
         const fullViewContainer = document.querySelector('#full-view');
@@ -490,52 +490,68 @@ export default class extends Controller {
     }
 
     nextUnit() {
-        console.log('nextUnit function called');
-        const activeSlide = document.querySelector('.swiper-slide-active');
-        const nextSlide = activeSlide.nextElementSibling;
-        console.log('this.activeUnitIndex (previous)', this.activeUnitIndex);
-        this.activeUnitIndex = this.unitIndexInitiativeSorted.indexOf(this.activeUnit);
-        // console.log('activeSlide', activeSlide);
-        // console.log('nextSlide', nextSlide);
-        this.swiper.slideNext();
+        // console.log('nextUnit function called');
+        if (this.swiper && this.swiper.slideNext) {
 
-        this.activeUnitIndex = nextSlide.dataset.swiperSlideIndex;
-        this.activeUnit = this.unitIndexInitiativeSorted[this.activeUnitIndex];
-        console.log('this.activeUnitIndex (now)', this.activeUnitIndex);
-        console.log('this.activeUnit', this.activeUnit);
+            const activeSlide = document.querySelector('.swiper-slide-active');
+            if (!activeSlide) {
+                console.log('no active slide');
+                return;
+            }
+            const nextSlide = activeSlide.nextElementSibling;
+            if (!nextSlide) {
+                console.log('no next slide found');
+                return;
+            }
+            // console.log('this.activeUnitIndex (previous)', this.activeUnitIndex);
+            this.activeUnitIndex = this.unitIndexInitiativeSorted.indexOf(this.activeUnit);
+            // console.log('activeSlide', activeSlide);
+            // console.log('nextSlide', nextSlide);
+            this.swiper.slideNext();
 
-        activeSlide.classList.remove('swiper-slide-active');
-        nextSlide.classList.add('swiper-slide-active');
+            if (activeSlide.dataset && nextSlide.dataset) {
+                this.activeUnitIndex = nextSlide.dataset.swiperSlideIndex;
+                this.activeUnit = this.unitIndexInitiativeSorted[this.activeUnitIndex];
+                // console.log('this.activeUnitIndex (now)', this.activeUnitIndex);
+                // console.log('this.activeUnit', this.activeUnit);
 
-        if (this.activeUnit.isDead) {
-            console.log('this unit is dead, we skip it');
-            // timeout pour laisser le temps à l'animation de se terminer
-            setTimeout(() => {
-                this.nextUnit();
-            }, 350);
+                activeSlide.classList.remove('swiper-slide-active');
+                nextSlide.classList.add('swiper-slide-active');
+
+                if (this.activeUnit.isDead) {
+                    // console.log('this unit is dead, we skip it');
+                    // timeout pour laisser le temps à l'animation de se terminer
+                    setTimeout(() => {
+                        this.nextUnit();
+                    }, 350);
+                }
+            } else {
+                console.log('no dataset properties found in active or next slide');
+            }
         }
     }
 
+    
 
     previousUnit() {
-        console.log('previousUnit function called');
+        // console.log('previousUnit function called');
         const activeSlide = document.querySelector('.swiper-slide-active');
         const previousSlide = activeSlide.previousElementSibling;
-        console.log('this.activeUnitIndex (previous)', this.activeUnitIndex);
+        // console.log('this.activeUnitIndex (previous)', this.activeUnitIndex);
         this.activeUnitIndex = this.unitIndexInitiativeSorted.indexOf(this.activeUnit);
 
         this.swiper.slidePrev();
 
         this.activeUnitIndex = previousSlide.dataset.swiperSlideIndex;
         this.activeUnit = this.unitIndexInitiativeSorted[this.activeUnitIndex];
-        console.log('this.activeUnitIndex (now)', this.activeUnitIndex);
-        console.log('this.activeUnit', this.activeUnit);
+        // console.log('this.activeUnitIndex (now)', this.activeUnitIndex);
+        // console.log('this.activeUnit', this.activeUnit);
 
         activeSlide.classList.remove('swiper-slide-active');
         previousSlide.classList.add('swiper-slide-active');
 
         if (this.activeUnit.isDead) {
-            console.log('this unit is dead, we skip it');
+            // console.log('this unit is dead, we skip it');
             // comme pour next, timeout pour laisser le temps à l'animation de se terminer (sinon previousSlide est null)
             setTimeout(() => {
                 this.previousUnit();
