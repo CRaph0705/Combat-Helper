@@ -153,7 +153,17 @@ export default class extends Controller {
     initializeIndices() {
         for (const unitName in this.encounterData.monsters) {
             const unitData = this.encounterData.monsters[unitName];
-            const unitWithKey = { ...unitData, name: unitName };
+
+
+
+            const unitWithKey = {
+                ...unitData,
+                name: unitName,
+                isDead: false,
+            };
+
+            unitData.hp <= 0 ? unitWithKey.isDead = true : unitWithKey.isDead = false;
+
             this.monsterIndex.push(unitWithKey);
             this.unitIndexAlphaSorted.push(unitWithKey);
             this.unitIndexInitiativeSorted.push(unitWithKey);
@@ -161,7 +171,12 @@ export default class extends Controller {
 
         for (const unitName in this.encounterData.players) {
             const unitData = this.encounterData.players[unitName];
-            const unitWithKey = { ...unitData, name: unitName };
+            const unitWithKey = {
+                ...unitData,
+                name: unitName,
+                isDead: false,
+                isKO: false
+            };
             this.playerIndex.push(unitWithKey);
             this.unitIndexAlphaSorted.push(unitWithKey);
             this.unitIndexInitiativeSorted.push(unitWithKey);
@@ -330,6 +345,10 @@ export default class extends Controller {
 
             this.encounterData[unitType][unitToUpdate.name] = unitToUpdate;
 
+            if (unitToUpdate.isMonster) {
+                unitToUpdate.isDead = unitToUpdate.hp <= 0;
+            }
+
             localStorage.setItem('encounterData', JSON.stringify(this.encounterData));
 
             this.refreshAllViews();
@@ -402,47 +421,47 @@ export default class extends Controller {
         const units = unitsData;
         console.log('this.activeUnitIndex', this.activeUnitIndex);
 
-    
+
         const swiperWrapper = document.createElement('div');
         swiperWrapper.classList.add('swiper-wrapper');
         container.appendChild(swiperWrapper);
-    
-    
+
+
         units.forEach((unit, index) => {
             const unitsElements = this.generateCarouselUnitElement(unit);
             swiperWrapper.appendChild(unitsElements);
-    
- 
+
+
         });
-    
+
         const swiperButtonPrev = document.createElement('div');
         swiperButtonPrev.classList.add('swiper-button-prev');
-    
+
         const swiperButtonNext = document.createElement('div');
         swiperButtonNext.classList.add('swiper-button-next');
-    
+
         container.append(swiperButtonPrev, swiperButtonNext);
-    
+
         this.swiper = new Swiper("#compact-view", {
             slidesPerView: '2',
             spaceBetween: 20,
             centeredSlides: true,
             loop: true,
-            initialSlide: this.activeUnitIndex, 
-    
+            initialSlide: this.activeUnitIndex,
+
             navigation: {
                 nextEl: ".swiper-button-next",
                 prevEl: ".swiper-button-prev",
             }
         });
-    
+
         const nextButton = document.querySelector('.swiper-button-next');
         const previousButton = document.querySelector('.swiper-button-prev');
-    
+
         nextButton.addEventListener('click', () => {
             this.handleUnitChange('next');
         });
-    
+
         previousButton.addEventListener('click', () => {
             this.handleUnitChange('previous');
         });
@@ -474,33 +493,54 @@ export default class extends Controller {
         console.log('nextUnit function called');
         const activeSlide = document.querySelector('.swiper-slide-active');
         const nextSlide = activeSlide.nextElementSibling;
-        console.log('this.activeUnitIndex', this.activeUnitIndex);
+        console.log('this.activeUnitIndex (previous)', this.activeUnitIndex);
         this.activeUnitIndex = this.unitIndexInitiativeSorted.indexOf(this.activeUnit);
-        console.log('activeSlide', activeSlide);
-        console.log('nextSlide', nextSlide);
+        // console.log('activeSlide', activeSlide);
+        // console.log('nextSlide', nextSlide);
         this.swiper.slideNext();
 
-
-        // une unité est KO si elle est un monstre et que ses HP sont inférieurs ou égaux à 0, ou si elle est un player et ses hp sont à 0 et qu'il a échoué ses 3 jets de sauvegarde.
-        // si cette unité est KO
-        // if (this.activeUnit.isMonster && this.activeUnit.hp <= 0) {
-        //     this.nextUnit();
-        // }
-
         this.activeUnitIndex = nextSlide.dataset.swiperSlideIndex;
+        this.activeUnit = this.unitIndexInitiativeSorted[this.activeUnitIndex];
+        console.log('this.activeUnitIndex (now)', this.activeUnitIndex);
+        console.log('this.activeUnit', this.activeUnit);
+
+        activeSlide.classList.remove('swiper-slide-active');
+        nextSlide.classList.add('swiper-slide-active');
+
+        if (this.activeUnit.isDead) {
+            console.log('this unit is dead, we skip it');
+            // timeout pour laisser le temps à l'animation de se terminer
+            setTimeout(() => {
+                this.nextUnit();
+            }, 350);
+        }
     }
+
 
     previousUnit() {
         console.log('previousUnit function called');
         const activeSlide = document.querySelector('.swiper-slide-active');
         const previousSlide = activeSlide.previousElementSibling;
-        console.log('this.activeUnitIndex', this.activeUnitIndex);
+        console.log('this.activeUnitIndex (previous)', this.activeUnitIndex);
         this.activeUnitIndex = this.unitIndexInitiativeSorted.indexOf(this.activeUnit);
-        console.log('activeSlide', activeSlide);
-        console.log('previousSlide', previousSlide);
+
         this.swiper.slidePrev();
 
         this.activeUnitIndex = previousSlide.dataset.swiperSlideIndex;
+        this.activeUnit = this.unitIndexInitiativeSorted[this.activeUnitIndex];
+        console.log('this.activeUnitIndex (now)', this.activeUnitIndex);
+        console.log('this.activeUnit', this.activeUnit);
+
+        activeSlide.classList.remove('swiper-slide-active');
+        previousSlide.classList.add('swiper-slide-active');
+
+        if (this.activeUnit.isDead) {
+            console.log('this unit is dead, we skip it');
+            // comme pour next, timeout pour laisser le temps à l'animation de se terminer (sinon previousSlide est null)
+            setTimeout(() => {
+                this.previousUnit();
+            }, 350);
+        }
     }
 
 
@@ -565,6 +605,7 @@ export default class extends Controller {
     setActiveUnit(unit) {
         this.activeUnit = unit;
     }
+
 
 
     /* ------------------------------------------------------------------------------------------- */
