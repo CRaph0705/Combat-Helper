@@ -1,0 +1,55 @@
+<body>
+
+	<div class="carousel-container">
+		<div
+			class="carousel-track" id="carouselTrack">
+			<!-- Vos slides ici -->
+			<div class="carousel-slide">Slide 1</div>
+			<div class="carousel-slide">Slide 2</div>
+			<div class="carousel-slide">Slide 3</div>
+			<!-- Ajoutez autant de slides que nécessaire -->
+		</div>
+
+		<button class="carousel-btn prev-btn" onclick="prevSlide()">❮</button>
+		<button class="carousel-btn next-btn" onclick="nextSlide()">❯</button>
+	</div>
+
+	<script>
+		let currentSlide = 0;
+let tourCounter = 0;
+
+function nextSlide() {
+const track = document.getElementById('carouselTrack');
+const slides = document.querySelectorAll('.carousel-slide');
+const totalSlides = slides.length;
+
+if (currentSlide === totalSlides - 1) {
+currentSlide = 0;
+tourCounter++;
+} else {
+currentSlide++;
+} updateCarousel(track);
+}
+
+function prevSlide() {
+const track = document.getElementById('carouselTrack');
+const slides = document.querySelectorAll('.carousel-slide');
+const totalSlides = slides.length;
+
+if (currentSlide === 0 && tourCounter > 0) {
+currentSlide = totalSlides - 1;
+tourCounter--;
+} else if (currentSlide > 0) {
+currentSlide--;
+}
+
+updateCarousel(track);
+}
+
+function updateCarousel(track) {
+const slideWidth = document.querySelector('.carousel-slide').offsetWidth;
+const newPosition = - currentSlide * slideWidth;
+track.style.transform = `translateX(${newPosition}px)`;
+}
+	</script>
+</body>
