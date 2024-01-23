@@ -4,32 +4,43 @@
 
 {% block body %}
 	<div data-controller="encounter-active-test">
-		{# <div>
-			<h1 class="main-title">Combat</h1>
-		</div> #}
-
-		{# {% include "_parts/separator.html.twig" %} #}
 
 		<section id="top-section">
 			<div id="pannel-container"></div>
 
-			<div id="active-unit-tracker-container">
+			<div
+				id="active-unit-tracker-container">
 				{# <div class="view-toggle">
-					<button id="toggle-view-button" class="btn-default">
-						Change view :
-						<span id="view-mode"></span>
-					</button>
-				</div> #}
+									<button id="toggle-view-button" class="btn-default">
+										Change view :
+										<span id="view-mode"></span>
+									</button>
+								</div> #}
 				<div id="active-unit-tracker">
-					<div id="compact-view" class="swiper block"></div>
+					{# <div id="compact-view" class="swiper block"></div> #}
 					{# <div id="full-view" class="hidden"></div> #}
+						<div class="slider"> <div class="slider__nav">
+							<button data-action="click->encounter-active-test#previous" class="slider__nav__button slider__nav__button--prev hidden">
+								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+									<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/>
+								</svg>
+
+							</button>
+							<button data-action="click->encounter-active-test#next" class="slider__nav__button slider__nav__button--next">
+								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+									<path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/>
+								</svg>
+
+							</button>
+
+						</div>
+						<div class="slider__content">
+							{# <div class="slider__content__item"></div> #}
+						</div>
+					</div>
 				</div>
 
 
-
-
-
-				
 			</div>
 
 		</section>
