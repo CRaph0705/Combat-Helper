@@ -6,6 +6,7 @@ import Player from '../models/player.js';
 
 let encounterData = null;
 // console.log('unitsData', encounterData);
+
 export default class extends Controller {
 
     constructor() {
@@ -16,7 +17,6 @@ export default class extends Controller {
         this.unitIndexInitiativeSorted = [];
         this.activeUnit = null;
         this.turn = 1;
-        this.viewMode = 'compact' || 'full';
 
         this.activeUnitIndex = 0;
     }
@@ -28,28 +28,12 @@ export default class extends Controller {
         this.initializeIndices();
         // this.initializeTurboFrame();
         console.log('connect');
-        // console.log(
-        //     'this.unitsData', this.unitsData,
-        //     'this.monsterIndex', this.monsterIndex,
-        //     'this.playerIndex', this.playerIndex,
-        //     'this.unitIndexAlphaSorted', this.unitIndexAlphaSorted,
-        //     'this.unitIndexInitiativeSorted', this.unitIndexInitiativeSorted
 
-        // );
         this.displayIndices();
         this.generateCarousel();
-        // this.displayActiveUnitTracker();
 
 
-        // const toggleViewButton = document.querySelector('#toggle-view-button');
-        // toggleViewButton.addEventListener('click', () => {
-        //     this.toggleTrackerView();
-        // });
-        // this.viewMode = 'compact';
-        // const viewModeValue = document.querySelector('#view-mode');
-        // viewModeValue.innerText = this.viewMode;
-
-
+        console.log('this turn', this.turn);
         // document.addEventListener('keydown', (event) => {
         //     switch (event.key) {
         //         case 'ArrowRight':
@@ -63,9 +47,19 @@ export default class extends Controller {
         //     }
         // });
 
-        // this.setActiveUnit(this.unitIndexInitiativeSorted[0]);
 
-        // console.log('this.activeUnit', this.activeUnit);
+
+        document.addEventListener('keydown', (event) => {
+            switch (event.key) {
+                case 'ArrowRight':
+                case 'ArrowDown':
+                    this.next();
+                    break;
+                case 'ArrowLeft':
+                case 'ArrowUp':
+                    this.previous();
+            }
+        });
 
 
 
@@ -262,6 +256,10 @@ export default class extends Controller {
         this.generateUnitElements(this.unitIndexAlphaSorted, globalIndexContainer);
     }
 
+    refreshTrackerView() {
+
+    }
+
     refreshAllViews() {
         this.refreshMonsterIndexView();
         this.refreshPlayerIndexView();
@@ -298,35 +296,103 @@ export default class extends Controller {
     /* ------------------------------------------------------------------------------------------- */
     // 2- le tracker
 
+    // carousel
 
-    // handleUnitChange(action) {
-    //     switch (action) {
-    //         case 'next':
-    //             this.nextUnit();
-    //             break;
-    //         case 'previous':
-    //             this.previousUnit();
-    //             break;
-    //     }
-    // }
+    generateCarouselUnitElement(unit) {
 
-    // toggleTrackerView() {
-    //     // console.log('toggleTrackerView');
-    //     const compactViewContainer = document.querySelector('#compact-view');
-    //     const fullViewContainer = document.querySelector('#full-view');
-    //     const viewModeValue = document.querySelector('#view-mode');
+        const sliderItem = document.createElement('div');
+        sliderItem.classList.add('slider__content__item');
+        sliderItem.dataset.id = unit.id;
+        sliderItem.dataset.src = unit.unitSrc;
+        sliderItem.dataset.name = unit.name;
+        sliderItem.dataset.isMonster = unit.isMonster;
+        sliderItem.dataset.isDead = unit.isDead;
+        sliderItem.dataset.isKo = unit.isKO;
+        sliderItem.dataset.initiative = unit.initiative;
 
-    //     this.viewMode === 'compact' ? this.viewMode = 'full' : this.viewMode = 'compact';
-    //     viewModeValue.innerText = this.viewMode;
+        const unitNameP = document.createElement('h3');
+        unitNameP.innerText = unit.name;
+        sliderItem.appendChild(unitNameP);
+
+        return sliderItem;
+    }
+
+    generateCarousel() {
+        console.log('generateCarousel function called');
+        const carousel = document.querySelector('.slider__content');
+        // pour chaque unité on génère un slider__content__item avec la fonction generateCarouselUnitElement
+        this.unitIndexInitiativeSorted.forEach((unit) => {
+            const sliderItem = this.generateCarouselUnitElement(unit);
+            carousel.appendChild(sliderItem);
+        });
+    }
+
+    // navigation du carousel
+    previous() {
+        console.log('previous function called');
+
+        const prevButton = document.querySelector('.slider__nav__button--prev');
+        // on cache le bouton prev le temps que l'animation se fasse
+        prevButton.classList.add('hidden');
+        setTimeout(() => {
+            if (scrollLeft == widthSlider && this.turn == 1) {
+                return;
+            }
+            prevButton.classList.remove('hidden');
+        }, 400);
+
+        const slider = document.querySelector('.slider');
+        const sliderContent = document.querySelector('.slider__content');
+        const widthSlider = slider.offsetWidth; // largeur du slider
+        sliderContent.scrollLeft -= widthSlider;
+
+        const scrollLeft = sliderContent.scrollLeft;
+        const itemsSlider = document.querySelectorAll('.slider__content__item');
+
+        // Revenir à la fin du slider
+        if (sliderContent.scrollLeft === 0) {
+            sliderContent.scrollLeft = (itemsSlider.length - 1) * widthSlider;
+
+            // on diminue le tour de 1
+            this.turn--;
+            console.log('turn', this.turn);
+
+        }
+
+    }
+
+    next() {
+        console.log('next function called');
+        if (document.querySelector('.slider__nav__button--prev').classList.contains('hidden')) {
+            document.querySelector('.slider__nav__button--prev').classList.remove('hidden');
+        }
+
+        const nextButton = document.querySelector('.slider__nav__button--next');
+        // on cache le bouton next le temps que l'animation se fasse
+
+        nextButton.classList.add('hidden');
+        setTimeout(() => {
+            nextButton.classList.remove('hidden');
+        }, 400);
 
 
-    //     compactViewContainer.classList.toggle('hidden');
-    //     compactViewContainer.classList.toggle('block');
-    //     fullViewContainer.classList.toggle('hidden');
-    //     fullViewContainer.classList.toggle('block');
 
-    // }
+        const slider = document.querySelector('.slider');
+        const sliderContent = document.querySelector('.slider__content');
+        const widthSlider = slider.offsetWidth; // largeur du slider
+        sliderContent.scrollLeft += widthSlider;
+        const scrollLeft = sliderContent.scrollLeft;
+        const itemsSlider = document.querySelectorAll('.slider__content__item');
 
+        //Revenir au début du slider
+        if (sliderContent.scrollLeft === (itemsSlider.length - 1) * widthSlider) {
+            sliderContent.scrollLeft = 0;
+
+            // on augmente le tour de 1
+            this.turn++;
+            console.log('turn', this.turn);
+        }
+    }
     /* ------------------------------------------------------------------------------------------- */
     // 3- le turbo-frame
     updateTurboFrame(targetUnitDiv, turboId, turboSrc) {
@@ -368,99 +434,4 @@ export default class extends Controller {
     /* ------------------------------------------------------------------------------------------- */
 
 
-    // carousel
-
-
-
-    generateCarouselUnitElement(unit) {
-        console.log('generateCarouselUnitElement function called');
-        console.log('unit', unit);
-        const sliderItem = document.createElement('div');
-        sliderItem.classList.add('slider__content__item');
-        sliderItem.dataset.id = unit.id;
-        sliderItem.dataset.src = unit.unitSrc;
-        sliderItem.dataset.name = unit.name;
-        sliderItem.dataset.isMonster = unit.isMonster;
-        sliderItem.dataset.isDead = unit.isDead;
-        sliderItem.dataset.isKO = unit.isKO;
-        sliderItem.dataset.hp = unit.hp;
-        sliderItem.dataset.ac = unit.ac;
-        sliderItem.dataset.initiative = unit.initiative;
-
-        const unitNameP = document.createElement('h3');
-        unitNameP.innerText = unit.name;
-        sliderItem.appendChild(unitNameP);
-
-        const unitAcP = document.createElement('p');
-        unitAcP.innerText = `AC : ${unit.ac}`;
-        sliderItem.appendChild(unitAcP);
-
-        const unitHpP = document.createElement('p');
-        unitHpP.innerText = `HP : ${unit.hp}`;
-        sliderItem.appendChild(unitHpP);
-
-        return sliderItem;
-    }
-
-    generateCarousel(){
-        console.log('generateCarousel function called');
-        const carousel = document.querySelector('.slider__content');
-        // pour chaque unité on génère un slider__content__item avec la fonction generateCarouselUnitElement
-        this.unitIndexInitiativeSorted.forEach((unit) => {
-            const sliderItem = this.generateCarouselUnitElement(unit);
-            carousel.appendChild(sliderItem);
-        });
-    }
-
-    previous() {
-        console.log('previous function called');
-        const slider = document.querySelector('.slider');
-        const sliderContent = document.querySelector('.slider__content');
-        const widthSlider = slider.offsetWidth; // largeur du slider
-        sliderContent.scrollLeft -= widthSlider;
-
-        const scrollLeft = sliderContent.scrollLeft;
-
-        //Revenir à la fin du slider
-        // if (sliderContent.scrollLeft === 0) {
-        //     sliderContent.scrollLeft = (itemsSlider.length - 1) * widthSlider;
-        // }
-
-        //cacher la flèche
-        if (scrollLeft == widthSlider) {
-            document.querySelector('.slider__nav__button--prev').classList.add('hidden');
-        } else {
-            document.querySelector('.slider__nav__button--next').classList.remove('hidden');
-        }
-
-    }
-
-    next() {
-        console.log('next function called');
-        const slider = document.querySelector('.slider');
-        const sliderContent = document.querySelector('.slider__content');
-        const widthSlider = slider.offsetWidth; // largeur du slider
-        sliderContent.scrollLeft += widthSlider;
-        const scrollLeft = sliderContent.scrollLeft;
-
-        const itemsSlider = document.querySelectorAll('.slider__content__item');
-
-        //Revenir au début du slider
-        // if (sliderContent.scrollLeft === (itemsSlider.length - 1) * widthSlider) {
-        //     sliderContent.scrollLeft = 0;
-        // }
-
-        //cacher la flèche
-        if (scrollLeft == widthSlider * (itemsSlider.length - 2)) {
-            document.querySelector('.slider__nav__button--next').classList.add('hidden');
-        } else {
-            document.querySelector('.slider__nav__button--prev').classList.remove('hidden');
-        }
-
-    }
-
 }
-
-
-
-
