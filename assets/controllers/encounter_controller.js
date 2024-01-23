@@ -60,7 +60,7 @@ export default class extends Controller {
             return initiativeB - initiativeA;
         });
 
-        const sortedUnits = [...unitsWithInitiative, ...unitsWithoutInitiative];
+        const sortedUnits = [...unitsWithoutInitiative, ...unitsWithInitiative];
 
 
         // Vider le conteneur et ajouter les unités triées
