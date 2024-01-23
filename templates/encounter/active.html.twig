@@ -4,28 +4,37 @@
 
 {% block body %}
 	<div data-controller="encounter-active-test">
-		<div>
+		{# <div>
 			<h1 class="main-title">Combat</h1>
-		</div>
+		</div> #}
+
+		{# {% include "_parts/separator.html.twig" %} #}
+
 		<section id="top-section">
 			<div id="pannel-container"></div>
 
 			<div id="active-unit-tracker-container">
-				<div class="view-toggle">
+				{# <div class="view-toggle">
 					<button id="toggle-view-button" class="btn-default">
 						Change view :
 						<span id="view-mode"></span>
 					</button>
-				</div>
+				</div> #}
 				<div id="active-unit-tracker">
-					<div id="compact-view" class="swiper block">
-
-					</div>
-					<div id="full-view" class="hidden"></div>
+					<div id="compact-view" class="swiper block"></div>
+					{# <div id="full-view" class="hidden"></div> #}
 				</div>
+
+
+
+
+
+				
 			</div>
 
 		</section>
+
+		{% include "_parts/separator.html.twig" %}
 
 		<section
 			class="bottom-section index-container unit-index-container d-flex">
@@ -56,4 +65,5 @@
 
 
 	</div>
+	{% include "_parts/separator.html.twig" %}
 {% endblock %}
