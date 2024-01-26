@@ -56,10 +56,12 @@ export default class extends Controller {
         // stopButton.addEventListener('click', this.stopEncounter);
 
         const nextButton = document.getElementById('next-button');
-        console.log('nextButton', nextButton);
         nextButton.addEventListener('click', this.next);
+
+
+        console.log('nextButton', nextButton);
         console.log('this.next', this.next);
-        console.log('this.unitIndexInitiativeSorted', this.unitIndexInitiativeSorted);
+
 
         const prevButton = document.getElementById('prev-button');
         prevButton.addEventListener('click', this.previous);
@@ -319,7 +321,8 @@ export default class extends Controller {
         const carousel = document.getElementById('carousel');
         carousel.innerHTML = ''; // Vider le carousel pour la nouvelle unité
         let unit = this.unitIndexInitiativeSorted[this.currentUnitIndex];
-        carousel.appendChild(this.createUnitElement(unit));
+        const unitElement = this.createUnitElement(unit);
+        carousel.appendChild(unitElement);
     }
 
 

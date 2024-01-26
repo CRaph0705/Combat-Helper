@@ -5,6 +5,9 @@
     position: relative;
     // left: 50%;
 
+
+    // overflow: hidden;
+
 }
 
 .slider__nav__button--next {
@@ -23,6 +26,11 @@
     transform: translateY(-50%);
     cursor: pointer;
     transition: all 0.3s ease-in-out;
+
+
+    // &:hover {
+    //     transform: scale(1.1) translateY(-50%);
+    // }
 }
 
 .slider__nav__button:hover {
@@ -51,7 +59,8 @@
     width: 100%;
     display: flex;
     overflow: hidden;
-    // scroll-behavior: smooth;
+    // transition: transform 0.5s ease-in-out;
+    // will-change: transform;
 }
 
 .slider__content__item {
@@ -62,7 +71,9 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    // transition: transform 0.5s ease-in-out;
 }
+
 
 .hidden {
     display: none;
@@ -72,18 +83,16 @@
 #carousel-container {
     display: flex;
     align-items: center;
+    // overflow: hidden;
 }
 
 #carousel {
     overflow: hidden;
     color: #fff;
+    // transition: transform 0.5s ease-in-out;
+    // display: flex;
+    // will-change: transform;
 }
-
-// .unit {
-//     transition: transform 0.5s ease; /* Animation de slide */
-// }
-
-
 
 #turn-counter {
     display: flex;
