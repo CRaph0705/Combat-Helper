@@ -159,6 +159,10 @@ export default class extends Controller {
             unitNameP.innerText = unitData.name;
             unitDiv.appendChild(unitNameP);
 
+            const unitInitiativeP = document.createElement('p');
+            unitInitiativeP.innerText = `Initiative : ${unitData.initiative}`;
+            unitDiv.appendChild(unitInitiativeP);
+
             const unitAcP = document.createElement('p');
             unitAcP.innerText = `AC : ${unitData.ac}`;
             unitDiv.appendChild(unitAcP);
@@ -254,7 +258,8 @@ export default class extends Controller {
     refreshIndexView() {
         const globalIndexContainer = document.querySelector('#global-index');
         globalIndexContainer.innerHTML = '';
-        this.generateUnitElements(this.unitIndexAlphaSorted, globalIndexContainer);
+        // this.generateUnitElements(this.unitIndexAlphaSorted, globalIndexContainer);
+        this.generateUnitElements(this.unitIndexInitiativeSorted, globalIndexContainer);
     }
 
     refreshTrackerView() {
