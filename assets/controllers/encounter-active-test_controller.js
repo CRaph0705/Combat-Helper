@@ -325,8 +325,12 @@ export default class extends Controller {
 
     createUnitElement(unit) {
         let element = document.createElement('div');
-        element.className = 'unit';
-        element.textContent = unit.name;
+        element.className = 'slider__content__item';
+
+        let unitNameP = document.createElement('p');
+        unitNameP.innerText = unit.name;
+        element.appendChild(unitNameP);
+
         return element;
     }
 
@@ -347,6 +351,11 @@ export default class extends Controller {
         } while (units[this.currentUnitIndex].isDead);
 
         this.updateCarousel();
+        //on affiche le bouton previous
+        const prevButton = document.getElementById('prev-button');
+        if (prevButton.classList.contains('hidden')){
+            prevButton.classList.remove('hidden');
+        }
     }
 
     previous() {
@@ -370,7 +379,14 @@ export default class extends Controller {
             this.updateTurnCounter();
         } while (units[this.currentUnitIndex].isDead);
 
+
         this.updateCarousel();
+
+        if (this.turn === 1 && this.currentUnitIndex === 0) {
+            //on masque le bouton previous
+            const prevButton = document.getElementById('prev-button');
+            prevButton.classList.add('hidden');
+        }
     }
 
 

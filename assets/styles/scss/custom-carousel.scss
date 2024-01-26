@@ -1,72 +1,72 @@
-// .slider {
-//     height: 100px;
-//     // max-width: 600px;
-//     max-width: 100%;
-//     position: relative;
-//     // left: 50%;
+.slider {
+    height: 100px;
+    // max-width: 600px;
+    max-width: 100%;
+    position: relative;
+    // left: 50%;
 
-// }
+}
 
-// .slider__nav__button--next {
-//     right: 20px;
-// }
+.slider__nav__button--next {
+    right: 20px;
+}
 
-// .slider__nav__button--prev {
-//     left: 20px;
-// }
+.slider__nav__button--prev {
+    left: 20px;
+}
 
-// .slider__nav__button {
-//     background-color: transparent;
-//     border: none;
-//     position: absolute;
-//     top: 50%;
-//     transform: translateY(-50%);
-//     cursor: pointer;
-//     transition: all 0.3s ease-in-out;
-// }
+.slider__nav__button {
+    background-color: transparent;
+    border: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
 
-// .slider__nav__button:hover {
-//     transform: scale(1.1) translateY(-50%);
-// }
-
-
-// .slider__nav__button svg {
-//     width: 50px;
-//     height: 50px;
-// }
-
-// .slider__nav__button path {
-//     stroke: #fff;
-// }
+.slider__nav__button:hover {
+    transform: scale(1.1) translateY(-50%);
+}
 
 
-// .slider__nav {
-//     position: absolute;
-//     width: 100%;
-//     height: 100%;
-// }
+.slider__nav__button svg {
+    width: 50px;
+    height: 50px;
+}
 
-// .slider__content {
-//     height: 100%;
-//     width: 100%;
-//     display: flex;
-//     overflow: hidden;
-//     scroll-behavior: smooth;
-// }
+.slider__nav__button path {
+    stroke: #fff;
+}
 
-// .slider__content__item {
-//     height: 100%;
-//     min-width: 100%;
-//     color: #fff;
-//     display: flex;
-//     flex-direction: column;
-//     justify-content: center;
-//     align-items: center;
-// }
 
-// .hidden {
-//     display: none;
-// }
+.slider__nav {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.slider__content {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    overflow: hidden;
+    // scroll-behavior: smooth;
+}
+
+.slider__content__item {
+    height: 100%;
+    min-width: 100%;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.hidden {
+    display: none;
+}
 
 
 #carousel-container {
@@ -76,21 +76,13 @@
 
 #carousel {
     overflow: hidden;
-    width: 600px; /* Ajustez selon vos besoins */
+    color: #fff;
 }
 
-.unit {
-    transition: transform 0.5s ease; /* Animation de slide */
-}
+// .unit {
+//     transition: transform 0.5s ease; /* Animation de slide */
+// }
 
-#carousel-container .btn svg {
-    width: 50px;
-    height: 50px;
-}
-
-#carousel-container .btn path {
-    stroke: #fff;
-}
 
 
 #turn-counter {
