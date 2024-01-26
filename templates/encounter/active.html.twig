@@ -4,64 +4,40 @@
 
 {% block body %}
 	<div data-controller="encounter-active-test">
+		{% include "_parts/separator.html.twig" %}
 
 		<section id="top-section">
-			<div id="pannel-container"></div>
-
-			<div
-				id="active-unit-tracker-container">
-
+			<div id="active-unit-tracker-container">
 				<div id="active-unit-tracker">
-
-					<div id="carousel-container">
-						<button id="prev-button" class="btn">
-							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-								<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/>
-							</svg>
-						</button>
-						<div id="carousel" style="color:white">
-							<!-- Les unités seront générées ici par JavaScript -->
-						</div>
-						<button id="next-button" class="btn">
-							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-								<path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/>
-							</svg>
-						</button>
-					</div>
-					<div id="turn-counter">Tour: <span id="turn-number">1</span></div>
-
-{# 
-						<div class="slider"> <div class="slider__nav">
-							<button data-action="click->encounter-active-test#previous" class="slider__nav__button slider__nav__button--prev hidden">
+					<div id="carousel-container" class="slider">
+						<div class="slider__nav">
+							<button id="prev-button" class="btn slider__nav__button slider__nav__button--prev hidden">
 								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
 									<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/>
 								</svg>
-
 							</button>
-							<button data-action="click->encounter-active-test#next" class="slider__nav__button slider__nav__button--next">
+							<button id="next-button" class="btn slider__nav__button slider__nav__button--next">
 								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
 									<path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/>
 								</svg>
-
 							</button>
-
 						</div>
-						<div class="slider__content">
+						<div id="carousel" class="slider__content">
+							{# items générés par le js #}
+							{# <div class="slider__content__item"></div> #}
 						</div>
-					</div> #}
+					</div>
 				</div>
-
-
+			</div>
+			<div id="turn-counter">
+				Tour: <span id="turn-number">1</span>
 			</div>
 
 		</section>
 
-		{% include "_parts/separator.html.twig" %}
 
 		<section
 			class="bottom-section index-container unit-index-container d-flex">
-
-
 			{# scss to change #}
 			<div id="indices-container">
 				<div id="index-selection">
@@ -75,17 +51,13 @@
 					<div class="index view hidden" id="global-index">global index</div>
 				</div>
 			</div>
-
 			<div id="turbo-container">
 				<div class="unit-details">
 					<turbo-frame id="" src="" loading="eager"></turbo-frame>
 					{# loading options : "lazy" || "eager" #}
 				</div>
 			</div>
-
 		</section>
-
-
 	</div>
 	{% include "_parts/separator.html.twig" %}
 {% endblock %}

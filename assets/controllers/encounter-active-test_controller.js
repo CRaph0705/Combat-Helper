@@ -21,6 +21,8 @@ export default class extends Controller {
 
         this.currentUnitIndex = null;
 
+        // les méthodes next et previous étaient mal bindées, on perdait la référence à this
+        // donc on doit les bind dans le constructeur :
         this.next = this.next.bind(this);
         this.previous = this.previous.bind(this);
     }
@@ -54,10 +56,12 @@ export default class extends Controller {
         // stopButton.addEventListener('click', this.stopEncounter);
 
         const nextButton = document.getElementById('next-button');
-        console.log('nextButton', nextButton);
         nextButton.addEventListener('click', this.next);
+
+
+        console.log('nextButton', nextButton);
         console.log('this.next', this.next);
-        console.log('this.unitIndexInitiativeSorted', this.unitIndexInitiativeSorted);
+
 
         const prevButton = document.getElementById('prev-button');
         prevButton.addEventListener('click', this.previous);
@@ -321,14 +325,19 @@ export default class extends Controller {
         const carousel = document.getElementById('carousel');
         carousel.innerHTML = ''; // Vider le carousel pour la nouvelle unité
         let unit = this.unitIndexInitiativeSorted[this.currentUnitIndex];
-        carousel.appendChild(this.createUnitElement(unit));
+        const unitElement = this.createUnitElement(unit);
+        carousel.appendChild(unitElement);
     }
 
 
     createUnitElement(unit) {
         let element = document.createElement('div');
-        element.className = 'unit';
-        element.textContent = unit.name;
+        element.className = 'slider__content__item';
+
+        let unitNameP = document.createElement('p');
+        unitNameP.innerText = unit.name;
+        element.appendChild(unitNameP);
+
         return element;
     }
 
@@ -349,6 +358,11 @@ export default class extends Controller {
         } while (units[this.currentUnitIndex].isDead);
 
         this.updateCarousel();
+        //on affiche le bouton previous
+        const prevButton = document.getElementById('prev-button');
+        if (prevButton.classList.contains('hidden')){
+            prevButton.classList.remove('hidden');
+        }
     }
 
     previous() {
@@ -372,7 +386,14 @@ export default class extends Controller {
             this.updateTurnCounter();
         } while (units[this.currentUnitIndex].isDead);
 
+
         this.updateCarousel();
+
+        if (this.turn === 1 && this.currentUnitIndex === 0) {
+            //on masque le bouton previous
+            const prevButton = document.getElementById('prev-button');
+            prevButton.classList.add('hidden');
+        }
     }
 
 
