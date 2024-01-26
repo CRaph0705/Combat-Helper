@@ -17,6 +17,7 @@ export default class extends Controller {
         this.unitIndexInitiativeSorted = [];
         this.activeUnit = null;
         this.turn = 1;
+        this.isAnimating = false;
 
         this.activeUnitIndex = 0;
     }
@@ -329,28 +330,41 @@ export default class extends Controller {
 
     // navigation du carousel
     previous() {
-        console.log('previous function called');
+        if (this.isAnimating) {
+            console.log('return, this is animating', this.isAnimating);
+            return;
+        } else {
+            this.isAnimating = true;
+        }
+
+        if (document.querySelector('.slider__nav__button--next').classList.contains('hidden')) {
+            document.querySelector('.slider__nav__button--next').classList.remove('hidden');
+        }
 
         const prevButton = document.querySelector('.slider__nav__button--prev');
         // on cache le bouton prev le temps que l'animation se fasse
         prevButton.classList.add('hidden');
-        setTimeout(() => {
-            if (scrollLeft == widthSlider && this.turn == 1) {
-                return;
-            }
-            prevButton.classList.remove('hidden');
-        }, 400);
-
         const slider = document.querySelector('.slider');
         const sliderContent = document.querySelector('.slider__content');
         const widthSlider = slider.offsetWidth; // largeur du slider
-        sliderContent.scrollLeft -= widthSlider;
 
+        // Déplacer le sliderContent avec une animation
+        sliderContent.scrollLeft -= widthSlider;
+        
+        // Utiliser une fonction de rappel pour réafficher le bouton une fois le défilement terminé
+        setTimeout(() => {
+            if (scrollLeft == widthSlider && this.turn == 1) {
+                this.isAnimating = false;
+                return;
+            }
+            this.isAnimating = false;
+            prevButton.classList.remove('hidden');
+        }, 700);
         const scrollLeft = sliderContent.scrollLeft;
         const itemsSlider = document.querySelectorAll('.slider__content__item');
 
         // Revenir à la fin du slider
-        if (sliderContent.scrollLeft === 0) {
+        if ((sliderContent.scrollLeft === 0)|| (sliderContent.scrollLeft < widthSlider)) {
             sliderContent.scrollLeft = (itemsSlider.length - 1) * widthSlider;
 
             // on diminue le tour de 1
@@ -358,41 +372,50 @@ export default class extends Controller {
             console.log('turn', this.turn);
 
         }
-
     }
 
     next() {
-        console.log('next function called');
+
+        if (this.isAnimating) {
+            console.log('return, this is animating', this.isAnimating);
+            return; 
+        } else {
+            this.isAnimating = true;
+        }
+
         if (document.querySelector('.slider__nav__button--prev').classList.contains('hidden')) {
             document.querySelector('.slider__nav__button--prev').classList.remove('hidden');
         }
 
         const nextButton = document.querySelector('.slider__nav__button--next');
         // on cache le bouton next le temps que l'animation se fasse
-
         nextButton.classList.add('hidden');
-        setTimeout(() => {
-            nextButton.classList.remove('hidden');
-        }, 400);
-
-
-
         const slider = document.querySelector('.slider');
         const sliderContent = document.querySelector('.slider__content');
         const widthSlider = slider.offsetWidth; // largeur du slider
+
+        // Déplacer le sliderContent avec une animation
         sliderContent.scrollLeft += widthSlider;
-        const scrollLeft = sliderContent.scrollLeft;
+    
+        // Utiliser une fonction de rappel pour réafficher le bouton une fois le défilement terminé
+        setTimeout(() => {
+            this.isAnimating = false;
+            nextButton.classList.remove('hidden');
+        }, 700);
+    
         const itemsSlider = document.querySelectorAll('.slider__content__item');
-
+    
         //Revenir au début du slider
-        if (sliderContent.scrollLeft === (itemsSlider.length - 1) * widthSlider) {
-            sliderContent.scrollLeft = 0;
 
-            // on augmente le tour de 1
+        if ((sliderContent.scrollLeft === (itemsSlider.length - 1) * widthSlider)|| (sliderContent.scrollLeft > (itemsSlider.length - 2) * widthSlider)){
+            sliderContent.scrollLeft = 0;
             this.turn++;
             console.log('turn', this.turn);
         }
     }
+    
+
+
     /* ------------------------------------------------------------------------------------------- */
     // 3- le turbo-frame
     updateTurboFrame(targetUnitDiv, turboId, turboSrc) {
@@ -435,3 +458,8 @@ export default class extends Controller {
 
 
 }
+
+// loop effect instead of back to the beginning of the carousel when we reach the end of it (and vice versa) 
+
+
+// reference : https://codepen.io/supah/pen/VwegJwV
