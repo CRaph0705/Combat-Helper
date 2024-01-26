@@ -1,0 +1,110 @@
+@import "/node_modules/swiper/swiper-bundle.css";
+
+// on set les variables :
+$color-primary: #ff6f00;
+$color-dark: #212121;
+$font-principal: 'Montserrat', sans-serif;
+
+.swiper {
+  width: 100%;
+  height: 100%;
+  margin-right: 0;
+  align-items: center;
+  margin-bottom: 10%;
+}
+
+.swiper-wrapper {
+  display: flex;
+  align-items: center;
+  counter-reset: list-slider;
+}
+
+.swiper-slide {
+  position: relative;
+  height: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  counter-increment: list-slider;
+  font-size: 18px;
+  opacity: 1;
+  transition: opacity 600ms ease;
+  
+  &::before {
+    // content: "0" counter(list-slider);
+    display: block;
+    // position: absolute;
+    width: 100px;
+    left: 0;
+    top: 0;
+    font-size: 120px;
+    font-weight: 600;
+    line-height: .8;
+    font-family: var(--font-principal);
+    color: var(--color-primary);
+    transform: scale(0.5);
+    opacity: 0;
+    z-index: -1;
+    pointer-events: none;
+    transition: all 350ms ease;
+  }
+  
+  &-active {
+    &::before {
+      opacity: .4;
+      transform: scale(1);
+    }
+    
+    .c-swiper__text {
+      opacity: 1;
+      color: white;
+      .c-swiper__title {
+        transform: translateY(0);
+      }
+    }
+  }
+  
+  &-prev {
+    opacity: 0;
+  }
+  
+  &-next {
+    opacity: .5;
+  }
+}
+
+.c-swiper__text {
+  opacity: 0;
+  width: 300px;
+  height: 200px;
+  color: white;
+  // position: absolute;
+  // top: 25%;
+  // left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  transition: opacity 350ms ease;
+  
+  .c-swiper__title {
+    max-height: 100%;
+    font-size: 24px;
+    font-weight: 600;
+    text-shadow: 1px 1px 2px var(--color-dark);
+    text-align: left;
+    pointer-events: none;
+    transition: transform 500ms ease;
+    transition-delay: 100ms;
+    transform: translateY(-25%);
+    z-index: 1;
+  }
+ 
+}
+
+.swiper-pagination-bullet {
+  width: 36px;
+  height: 3px;
+  background-color: var(--color-primary);
+  border-radius: 0;
+}
+

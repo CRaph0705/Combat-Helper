@@ -61,6 +61,7 @@
     justify-items: center;
     align-items: center;
     border: 1px solid $button-border-color;
+    padding: 0.5%;
     &:hover {
         background-color: $button-bg;
         color: $button-color-hover;
@@ -102,4 +103,24 @@
     // padding: 10px;
     border-radius: 5px;
     z-index: 1000;
+}
+
+
+
+.toggle-index-button {
+    color: $button-color;
+    background-color: $button-bg;
+    padding: $button-padding;
+    margin-bottom: 1%;
+    
+    &:hover {
+        background-color: $button-bg;
+        color: $button-color-hover;
+        border: 1px solid $button-border-color-hover;
+    }
+    &.active {
+        background-color: $button-bg;
+        color: $button-color-hover;
+        border: 1px solid $button-border-color-hover;
+    }
 }

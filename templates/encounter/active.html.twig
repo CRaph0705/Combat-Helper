@@ -1,52 +1,74 @@
 {% extends 'base.html.twig' %}
 {% block title %}Fight !
 {% endblock %}
+
 {% block body %}
-	<div data-controller="encounter-active">
-		<div>
-			<h1 class="main-title">Combat</h1>
-		</div>
+	<div data-controller="encounter-active-test">
 
-		<div class="controlPannel d-flex">
-			<div class="controlPannel-item">
-				<button class="btn btn-default" data-action="click->encounter-active#previousUnit">
-					<-
-				</button>
-				<button class="btn btn-default" data-action="click->encounter-active#nextUnit">
-					->
-				</button>
-			</div>
-		</div>
-		
+		<section id="top-section">
+			<div id="pannel-container"></div>
 
-		<div class="unit-tracker">
-			<div class="previous-unit">
-				<!-- Insérer les informations de l'unité précédente ici -->
-			</div>
-			
-			<div class="active-unit">
-				<!-- Insérer les informations de l'unité active ici -->
-			</div>
-			
-			<div class="next-unit">
-				<!-- Insérer les informations de l'unité suivante ici -->
-			</div>
-		</div>
+			<div
+				id="active-unit-tracker-container">
+
+				<div id="active-unit-tracker">
+						<div class="slider"> <div class="slider__nav">
+							{# <button data-action="click->encounter-active-test#previous" class="slider__nav__button slider__nav__button--prev"> #}
+							<button data-action="click->encounter-active-test#previous" class="slider__nav__button slider__nav__button--prev hidden">
+								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+									<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/>
+								</svg>
+
+							</button>
+							<button data-action="click->encounter-active-test#next" class="slider__nav__button slider__nav__button--next">
+								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+									<path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/>
+								</svg>
+
+							</button>
+
+						</div>
+						<div class="slider__content">
+							{# <div class="slider__content__item"></div> #}
+						</div>
+					</div>
+				</div>
 
 
-		<div class="unit-index-container d-flex">
-			<div class="unit-index-list">
-				<div class="encounterUnitsContainer" id="encounterUnitsContainer"></div>
 			</div>
-			<div class="unit-details">
-				<turbo-frame id="" src=""></turbo-frame>
+
+		</section>
+
+		{% include "_parts/separator.html.twig" %}
+
+		<section
+			class="bottom-section index-container unit-index-container d-flex">
+
+
+			{# scss to change #}
+			<div id="indices-container">
+				<div id="index-selection">
+					<button id="monster-index-button" class="toggle-button toggle-index-button active" data-target="monster-index">Monsters</button>
+					<button id="player-index-button" class="toggle-button toggle-index-button" data-target="player-index">Players</button>
+					<button id="global-index-button" class="toggle-button toggle-index-button" data-target="global-index">All</button>
+				</div>
+				<div id="index-display">
+					<div class="index view" id="monster-index">monster index</div>
+					<div class="index view hidden" id="player-index">player index</div>
+					<div class="index view hidden" id="global-index">global index</div>
+				</div>
 			</div>
-		</div>
-		<div class="row">
-			<div class="col-6"></div>
-			<div class="col-6">
-				<button class="btn btn-default" data-action="click->encounter-active#stopEncounter">End encounter</button>
+
+			<div id="turbo-container">
+				<div class="unit-details">
+					<turbo-frame id="" src="" loading="eager"></turbo-frame>
+					{# loading options : "lazy" || "eager" #}
+				</div>
 			</div>
-		</div>
+
+		</section>
+
+
 	</div>
+	{% include "_parts/separator.html.twig" %}
 {% endblock %}

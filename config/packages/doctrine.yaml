@@ -1,7 +1,11 @@
 doctrine:
     dbal:
         url: '%env(resolve:DATABASE_URL)%'
-
+        # Spécification explicite du type de base de données
+        # Si DATABASE_URL ne contient pas déjà le type
+        # url: '%env(resolve:DATABASE_URL)%'
+        # driver: 'pdo_mysql
+        
         # IMPORTANT: You MUST configure your server version,
         # either here or in the DATABASE_URL env var (see .env file)
         #server_version: '15'

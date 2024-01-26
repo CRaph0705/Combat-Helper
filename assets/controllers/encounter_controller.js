@@ -1,6 +1,7 @@
 import { Controller } from '@hotwired/stimulus';
 // import { is } from 'core-js/core/object';
 
+const usedIds = new Set();
 
 export default class extends Controller {
     static targets = ["unitContainer"];
@@ -59,7 +60,7 @@ export default class extends Controller {
             return initiativeB - initiativeA;
         });
 
-        const sortedUnits = [...unitsWithInitiative, ...unitsWithoutInitiative];
+        const sortedUnits = [...unitsWithoutInitiative, ...unitsWithInitiative];
 
 
         // Vider le conteneur et ajouter les unités triées
@@ -120,15 +121,23 @@ export default class extends Controller {
         this.sortAndUpdate();
     }
 
-    collectUnitsData() {
-        // var isEncounterValid = false;
+    generateUniqueID() {
+        let id;
+        do {
+            id = 'id_' + Math.random().toString(36).substring(2, 11);
+        } while (usedIds.has(id));
+        usedIds.add(id);
+        return id;
+    }
+
+    collectEncounterData() {
         const units = Array.from(this.unitContainer.querySelectorAll('.unit'));
         const initiatives = Array.from(this.unitContainer.querySelectorAll('.initiative'));
         const hps = Array.from(this.unitContainer.querySelectorAll('.hp'));
         const acs = Array.from(this.unitContainer.querySelectorAll('.ac'));
         
 
-        // Récupérer les valeurs des HP et AC
+        // Récupérer les valeurs des HP, AC et initiatives
         const hpValues = hps.map(hpElement => parseInt(hpElement.value));
         const acValues = acs.map(acElement => parseInt(acElement.value));
         const initiativeValues = initiatives.map(initiativeElement => parseInt(initiativeElement.value));
@@ -141,50 +150,54 @@ export default class extends Controller {
         if (!isInitiativeValid || !isHpValid || !isAcValid) {
             //on affiche un message d'erreur
             alert('Les valeurs d\'initiative, de points de vie et de classe d\'armure doivent être des nombres supérieurs ou égaux à 0');
-            //et on redirige vers la page d'encounter/init
-
-            //on return à l'encounter/init            
+            //et on redirige vers la page d'encounter/init           
             window.location.href = `/encounter/${encounterId}/init`;
         } else {
-            // isEncounterValid = true;
-            //récupérer valeur de tous les inputs et les mettre en tableaux 
-            // les clefs sont les initiatives, ac et hp des unités
-            const unitsData = {};
+       
+            const monsters = {};
+            const players = {};
+
+
+            // const unitsData = {};
 
             units.forEach((unit, index) => {
-                const unitName = unit.dataset.unitName; 
+                const unitName = unit.dataset.unitName;
                 const initiative = parseInt(initiativeValues[index]);
                 const hp = parseInt(hpValues[index]);
                 const ac = parseInt(acValues[index]);
-                //monster or player
                 const isMonster = unit.dataset.monster === 'true';
-
-                const unitId = unit.dataset.unitId;
-
+                const unitId = this.generateUniqueID();
                 const unitSrc = unit.dataset.src;
 
-                unitsData[unitName] = {
-                    initiative: initiative,
-                    hp: hp,
-                    ac: ac,
-                    //on ajoute cette propriété pour pouvoir différencier les monstres des joueurs dans le controller encounter-active_controller.js
-                    // ça permettra d'afficher le show de l'unité dans le turbo frame
-                    isMonster: isMonster,
+
+                const unitObject = {
                     id: unitId,
+                    name: unitName,
+                    isMonster: isMonster,
+                    ac: ac,
+                    hp: hp,
+                    initiative: initiative,
                     unitSrc: unitSrc,
-                    
                 };
+
+                if (isMonster) {
+                    monsters[unitName] = unitObject;
+                } else {
+                    players[unitName] = unitObject;
+                }
             });
-            //ICI ON A DES TABLEAUX D'UNITS AVEC LEURS INITIATIVES, AC ET HP DES UNITES RESPECTIVES
-            // console.log(unitsData);
-            return unitsData;
+
+            const encounterData = {
+                monsters: monsters,
+                players: players,
+            };
+            return encounterData;
         }
     }
 
     //store the data in local storage
-    saveEncounterData() {
-        const unitsData = this.collectUnitsData();
-        localStorage.setItem('encounterData', JSON.stringify(unitsData));
+    saveEncounterData(encounterData) {
+        localStorage.setItem('encounterData', JSON.stringify(encounterData));
     }
 
 
@@ -201,11 +214,7 @@ export default class extends Controller {
     }
 
     startEncounter() {
-        // console.log('startEncounter');
-        //si toutes les unités ont une initiative, des hp et une ac on peut commencer l'encounter
-        //sinon on affiche un message d'erreur
-        // d'abord la vérification :
-        const unitsData = this.collectUnitsData();
+        const unitsData = this.collectEncounterData();
         if (!unitsData) {
             return;
         }
@@ -214,14 +223,13 @@ export default class extends Controller {
         this.deleteEncounterData();
 
         // ensuite on récupère les données des unités
-        const encounterUnitsData = this.collectUnitsData();
+        const encounterData = this.collectEncounterData();
 
         // on les stocke dans le local storage
-        this.saveEncounterData(encounterUnitsData);
+        this.saveEncounterData(encounterData);
 
         const encounterId = this.element.dataset.id;
         window.location.href = `/encounter/${encounterId}/active`;
 
     }
-    //export the function to be used in the encounter-active_controller.js
 }

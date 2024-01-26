@@ -76,11 +76,14 @@
     color: black;
 }
 
-.unit-details,
+.unit-details {
+    width: 100%;
+}
+
+
 .monster-details,
 .player-details {
     width: 50%;
-    margin-left: 5%;
 }
 
 .unit-details-card,
@@ -95,6 +98,7 @@
 .player-index-container {
     display: flex;
     justify-content: space-between;
+    width: 100%;
 
     .unit-index-list,
     .unit-index-details,
@@ -142,4 +146,31 @@
     padding-top: 10%;
     padding-bottom: 10% ;
     padding-left: 10%;
+}
+
+
+.hidden {
+    display: none;
+    // visibility: hidden;
+}
+
+.block {
+    display: block;
+    // visibility: visible;
+}
+
+
+#turbo-container,
+#indices-container {
+    width: 50%;
+    margin-left: 5%;
+}
+
+
+#active-unit-tracker-container {
+    width: 100%;
+}
+
+#active-unit-tracker {
+    width: 100%;
 }
