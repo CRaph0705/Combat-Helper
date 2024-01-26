@@ -21,6 +21,8 @@ export default class extends Controller {
 
         this.currentUnitIndex = null;
 
+        // les méthodes next et previous étaient mal bindées, on perdait la référence à this
+        // donc on doit les bind dans le constructeur :
         this.next = this.next.bind(this);
         this.previous = this.previous.bind(this);
     }

@@ -76,7 +76,7 @@
 
 #carousel {
     overflow: hidden;
-    width: 200px; /* Ajustez selon vos besoins */
+    width: 600px; /* Ajustez selon vos besoins */
 }
 
 .unit {
@@ -90,4 +90,13 @@
 
 #carousel-container .btn path {
     stroke: #fff;
+}
+
+
+#turn-counter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    color: #fff;
 }
