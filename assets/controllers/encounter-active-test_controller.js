@@ -15,11 +15,14 @@ export default class extends Controller {
         this.playerIndex = [];
         this.unitIndexAlphaSorted = [];
         this.unitIndexInitiativeSorted = [];
-        this.activeUnit = null;
-        this.turn = 1;
-        this.isAnimating = false;
+        this.currentUnit = null;
+        this.turn = null;
+        // this.isAnimating = false;
 
-        this.activeUnitIndex = 0;
+        this.currentUnitIndex = null;
+
+        this.next = this.next.bind(this);
+        this.previous = this.previous.bind(this);
     }
 
     /* ------------------------------------------------------------------------------------------- */
@@ -27,27 +30,37 @@ export default class extends Controller {
     connect() {
         this.encounterData = this.loadEncounterData();
         this.initializeIndices();
-        // this.initializeTurboFrame();
+        console.log('this.unitIndexInitiativeSorted', this.unitIndexInitiativeSorted);
+
         console.log('connect');
 
-        this.displayIndices();
-        this.generateCarousel();
+        this.currentUnitIndex = 0;
+        this.currentUnit = this.unitIndexInitiativeSorted[this.currentUnitIndex];
+        this.turn = 1;
 
+
+        this.displayIndices();
+
+
+        console.log('this.currentUnitIndex', this.currentUnitIndex);
+        console.log('this.unitIndexInitiativeSorted', this.unitIndexInitiativeSorted);
 
         console.log('this turn', this.turn);
-        // document.addEventListener('keydown', (event) => {
-        //     switch (event.key) {
-        //         case 'ArrowRight':
-        //         case 'ArrowDown':
-        //             this.handleUnitChange('next');
-        //             break;
-        //         case 'ArrowLeft':
-        //         case 'ArrowUp':
-        //             this.handleUnitChange('previous');
-        //             break;
-        //     }
-        // });
 
+        this.updateCarousel(); // Initialisation du carousel
+
+
+        // const stopButton = document.getElementById('stop-button');
+        // stopButton.addEventListener('click', this.stopEncounter);
+
+        const nextButton = document.getElementById('next-button');
+        console.log('nextButton', nextButton);
+        nextButton.addEventListener('click', this.next);
+        console.log('this.next', this.next);
+        console.log('this.unitIndexInitiativeSorted', this.unitIndexInitiativeSorted);
+
+        const prevButton = document.getElementById('prev-button');
+        prevButton.addEventListener('click', this.previous);
 
 
         document.addEventListener('keydown', (event) => {
@@ -254,11 +267,11 @@ export default class extends Controller {
     refreshIndexView() {
         const globalIndexContainer = document.querySelector('#global-index');
         globalIndexContainer.innerHTML = '';
-        this.generateUnitElements(this.unitIndexAlphaSorted, globalIndexContainer);
+        this.generateUnitElements(this.unitIndexInitiativeSorted, globalIndexContainer);
     }
 
     refreshTrackerView() {
-
+        this.updateCarousel();
     }
 
     refreshAllViews() {
@@ -299,121 +312,69 @@ export default class extends Controller {
 
     // carousel
 
-    generateCarouselUnitElement(unit) {
+    updateCarousel() {
 
-        const sliderItem = document.createElement('div');
-        sliderItem.classList.add('slider__content__item');
-        sliderItem.dataset.id = unit.id;
-        sliderItem.dataset.src = unit.unitSrc;
-        sliderItem.dataset.name = unit.name;
-        sliderItem.dataset.isMonster = unit.isMonster;
-        sliderItem.dataset.isDead = unit.isDead;
-        sliderItem.dataset.isKo = unit.isKO;
-        sliderItem.dataset.initiative = unit.initiative;
-
-        const unitNameP = document.createElement('h3');
-        unitNameP.innerText = unit.name;
-        sliderItem.appendChild(unitNameP);
-
-        return sliderItem;
+        const carousel = document.getElementById('carousel');
+        carousel.innerHTML = ''; // Vider le carousel pour la nouvelle unité
+        let unit = this.unitIndexInitiativeSorted[this.currentUnitIndex];
+        carousel.appendChild(this.createUnitElement(unit));
     }
 
-    generateCarousel() {
-        console.log('generateCarousel function called');
-        const carousel = document.querySelector('.slider__content');
-        // pour chaque unité on génère un slider__content__item avec la fonction generateCarouselUnitElement
-        this.unitIndexInitiativeSorted.forEach((unit) => {
-            const sliderItem = this.generateCarouselUnitElement(unit);
-            carousel.appendChild(sliderItem);
-        });
-    }
 
-    // navigation du carousel
-    previous() {
-        if (this.isAnimating) {
-            console.log('return, this is animating', this.isAnimating);
-            return;
-        } else {
-            this.isAnimating = true;
-        }
-
-        if (document.querySelector('.slider__nav__button--next').classList.contains('hidden')) {
-            document.querySelector('.slider__nav__button--next').classList.remove('hidden');
-        }
-
-        const prevButton = document.querySelector('.slider__nav__button--prev');
-        // on cache le bouton prev le temps que l'animation se fasse
-        prevButton.classList.add('hidden');
-        const slider = document.querySelector('.slider');
-        const sliderContent = document.querySelector('.slider__content');
-        const widthSlider = slider.offsetWidth; // largeur du slider
-
-        // Déplacer le sliderContent avec une animation
-        sliderContent.scrollLeft -= widthSlider;
-        
-        // Utiliser une fonction de rappel pour réafficher le bouton une fois le défilement terminé
-        setTimeout(() => {
-            if (scrollLeft == widthSlider && this.turn == 1) {
-                this.isAnimating = false;
-                return;
-            }
-            this.isAnimating = false;
-            prevButton.classList.remove('hidden');
-        }, 700);
-        const scrollLeft = sliderContent.scrollLeft;
-        const itemsSlider = document.querySelectorAll('.slider__content__item');
-
-        // Revenir à la fin du slider
-        if ((sliderContent.scrollLeft === 0)|| (sliderContent.scrollLeft < widthSlider)) {
-            sliderContent.scrollLeft = (itemsSlider.length - 1) * widthSlider;
-
-            // on diminue le tour de 1
-            this.turn--;
-            console.log('turn', this.turn);
-
-        }
+    createUnitElement(unit) {
+        let element = document.createElement('div');
+        element.className = 'unit';
+        element.textContent = unit.name;
+        return element;
     }
 
     next() {
+        console.log('next');
 
-        if (this.isAnimating) {
-            console.log('return, this is animating', this.isAnimating);
-            return; 
-        } else {
-            this.isAnimating = true;
+        if (!this.unitIndexInitiativeSorted) {
+            console.error('unitIndexInitiativeSorted is undefined');
+            return;
         }
-
-        if (document.querySelector('.slider__nav__button--prev').classList.contains('hidden')) {
-            document.querySelector('.slider__nav__button--prev').classList.remove('hidden');
-        }
-
-        const nextButton = document.querySelector('.slider__nav__button--next');
-        // on cache le bouton next le temps que l'animation se fasse
-        nextButton.classList.add('hidden');
-        const slider = document.querySelector('.slider');
-        const sliderContent = document.querySelector('.slider__content');
-        const widthSlider = slider.offsetWidth; // largeur du slider
-
-        // Déplacer le sliderContent avec une animation
-        sliderContent.scrollLeft += widthSlider;
     
-        // Utiliser une fonction de rappel pour réafficher le bouton une fois le défilement terminé
-        setTimeout(() => {
-            this.isAnimating = false;
-            nextButton.classList.remove('hidden');
-        }, 700);
+        const units = this.unitIndexInitiativeSorted;
     
-        const itemsSlider = document.querySelectorAll('.slider__content__item');
-    
-        //Revenir au début du slider
+        do {
+            this.currentUnitIndex = (this.currentUnitIndex + 1) % units.length;
+            if (this.currentUnitIndex === 0) this.turn++;
+            this.updateTurnCounter();
+        } while (units[this.currentUnitIndex].isDead);
 
-        if ((sliderContent.scrollLeft === (itemsSlider.length - 1) * widthSlider)|| (sliderContent.scrollLeft > (itemsSlider.length - 2) * widthSlider)){
-            sliderContent.scrollLeft = 0;
-            this.turn++;
-            console.log('turn', this.turn);
-        }
+        this.updateCarousel();
     }
-    
+
+    previous() {
+        console.log('previous');
+
+        if (!this.unitIndexInitiativeSorted) {
+            console.error('unitIndexInitiativeSorted is undefined');
+            return;
+        }
+
+        const units = this.unitIndexInitiativeSorted;
+        if (this.turn === 1 && this.currentUnitIndex === 0) {
+            console.log('Tour 1, première unité, pas de retour en arrière possible');
+            return;
+        }
+
+
+        do {
+            this.currentUnitIndex = (this.currentUnitIndex - 1 + units.length) % units.length;
+            if (this.currentUnitIndex === units.length - 1) this.turn--;
+            this.updateTurnCounter();
+        } while (units[this.currentUnitIndex].isDead);
+
+        this.updateCarousel();
+    }
+
+
+    updateTurnCounter() {
+        document.getElementById('turn-number').textContent = this.turn;
+    }
 
 
     /* ------------------------------------------------------------------------------------------- */
@@ -458,8 +419,3 @@ export default class extends Controller {
 
 
 }
-
-// loop effect instead of back to the beginning of the carousel when we reach the end of it (and vice versa) 
-
-
-// reference : https://codepen.io/supah/pen/VwegJwV

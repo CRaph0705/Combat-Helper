@@ -12,8 +12,26 @@
 				id="active-unit-tracker-container">
 
 				<div id="active-unit-tracker">
+
+					<div id="carousel-container">
+						<button id="prev-button" class="btn">
+							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+								<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/>
+							</svg>
+						</button>
+						<div id="carousel" style="color:white">
+							<!-- Les unités seront générées ici par JavaScript -->
+						</div>
+						<button id="next-button" class="btn">
+							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+								<path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/>
+							</svg>
+						</button>
+					</div>
+					<div id="turn-counter">Tour: <span id="turn-number">1</span></div>
+
+{# 
 						<div class="slider"> <div class="slider__nav">
-							{# <button data-action="click->encounter-active-test#previous" class="slider__nav__button slider__nav__button--prev"> #}
 							<button data-action="click->encounter-active-test#previous" class="slider__nav__button slider__nav__button--prev hidden">
 								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
 									<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/>
@@ -29,9 +47,8 @@
 
 						</div>
 						<div class="slider__content">
-							{# <div class="slider__content__item"></div> #}
 						</div>
-					</div>
+					</div> #}
 				</div>
 
 
