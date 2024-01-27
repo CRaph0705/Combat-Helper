@@ -3,10 +3,16 @@
 {% endblock %}
 
 {% block body %}
-	<div data-controller="encounter-active-test">
+	<div data-controller="encounter-active">
 		{% include "_parts/separator.html.twig" %}
 
 		<section id="top-section">
+		<div id="end-button-container">
+			<button id="end_encounter_button" class="btn btn-default" data-action="click->encounter-active#stopEncounter">
+				End
+			</button>
+		</div>
+
 			<div id="active-unit-tracker-container">
 				<div id="active-unit-tracker">
 					<div id="carousel-container" class="slider">

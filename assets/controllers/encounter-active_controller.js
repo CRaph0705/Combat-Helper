@@ -442,5 +442,19 @@ export default class extends Controller {
 
     /* ------------------------------------------------------------------------------------------- */
 
+    //stop encounter function
+    stopEncounter() {
+        // console.log('stopEncounter');
+        // fenêtre de confirmation
+        if (!confirm('Attention, toute progression sera perdue, souhaitez-vous quitter ?')) {
+            return;
+        }
+
+
+        //on supprime les données de l'encounter
+        localStorage.removeItem('encounterData');
+        //on redirige vers la page d'accueil
+        window.location.href = '/';
+    }
 
 }
