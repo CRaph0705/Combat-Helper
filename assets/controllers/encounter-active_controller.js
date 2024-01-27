@@ -1,224 +1,442 @@
 import { Controller } from '@hotwired/stimulus';
+import Unit from '../models/unit.js';
+import Monster from '../models/monster.js';
+import Player from '../models/player.js';
 
-let currentUnitId = null;
+
+let encounterData = null;
+// console.log('unitsData', encounterData);
+
 export default class extends Controller {
+
+    constructor() {
+        super();
+        this.monsterIndex = [];
+        this.playerIndex = [];
+        this.unitIndexAlphaSorted = [];
+        this.unitIndexInitiativeSorted = [];
+        this.currentUnit = null;
+        this.turn = null;
+        // this.isAnimating = false;
+
+        this.currentUnitIndex = null;
+
+        // les méthodes next et previous étaient mal bindées, on perdait la référence à this
+        // donc on doit les bind dans le constructeur :
+        this.next = this.next.bind(this);
+        this.previous = this.previous.bind(this);
+    }
+
+    /* ------------------------------------------------------------------------------------------- */
+
     connect() {
-        // console.log('encounter-active_controller connected');
+        this.encounterData = this.loadEncounterData();
+        this.initializeIndices();
+        console.log('this.unitIndexInitiativeSorted', this.unitIndexInitiativeSorted);
 
-        //on récupère les données de l'encounter
-        const unitsData = this.loadEncounterData();
-        console.log('unitsData', unitsData);
+        console.log('connect');
 
-        
-        this.displayEncounterData();
-        this.displayActiveUnitTracker();
+        this.currentUnitIndex = 0;
+        this.currentUnit = this.unitIndexInitiativeSorted[this.currentUnitIndex];
+        this.turn = 1;
+
+
+        this.displayIndices();
+
+
+        console.log('this.currentUnitIndex', this.currentUnitIndex);
+        console.log('this.unitIndexInitiativeSorted', this.unitIndexInitiativeSorted);
+
+        console.log('this turn', this.turn);
+
+        this.updateCarousel(); // Initialisation du carousel
+
+
+        // const stopButton = document.getElementById('stop-button');
+        // stopButton.addEventListener('click', this.stopEncounter);
+
+        const nextButton = document.getElementById('next-button');
+        nextButton.addEventListener('click', this.next);
+
+
+        console.log('nextButton', nextButton);
+        console.log('this.next', this.next);
+
+
+        const prevButton = document.getElementById('prev-button');
+        prevButton.addEventListener('click', this.previous);
+
 
         document.addEventListener('keydown', (event) => {
             switch (event.key) {
-                case 'e':
                 case 'ArrowRight':
                 case 'ArrowDown':
-                    this.nextUnit();
+                    this.next();
                     break;
-                case 'a':
                 case 'ArrowLeft':
                 case 'ArrowUp':
-                    this.previousUnit();
-                    break;
+                    this.previous();
             }
         });
 
-        // ----------------- TURBO FRAME ----------------- //
+
+
+
+    }
+
+    /* ------------------------------------------------------------------------------------------- */
+
+    loadEncounterData() {
+        const unitsData = JSON.parse(localStorage.getItem('encounterData'));
+
+        if (!unitsData) {
+            return;
+        }
+        return unitsData || {};
+    }
+
+    /* ------------------------------------------------------------------------------------------- */
+
+    stopEncounter() {
+        if (!confirm('Attention, toute progression sera perdue, souhaitez-vous quitter ?')) {
+            return;
+        }
+        localStorage.removeItem('encounterData');
+        //on redirige vers la page d'accueil
+        window.location.href = '/';
+    }
+
+    /* ------------------------------------------------------------------------------------------- */
+
+    initializeIndices() {
+        for (const unitName in this.encounterData.monsters) {
+            const unitData = this.encounterData.monsters[unitName];
+
+
+
+            const unitWithKey = {
+                ...unitData,
+                name: unitName,
+                isDead: false,
+            };
+
+            unitData.hp <= 0 ? unitWithKey.isDead = true : unitWithKey.isDead = false;
+
+            this.monsterIndex.push(unitWithKey);
+            this.unitIndexAlphaSorted.push(unitWithKey);
+            this.unitIndexInitiativeSorted.push(unitWithKey);
+        }
+
+        for (const unitName in this.encounterData.players) {
+            const unitData = this.encounterData.players[unitName];
+            const unitWithKey = {
+                ...unitData,
+                name: unitName,
+                isDead: false,
+                isKO: false
+            };
+            this.playerIndex.push(unitWithKey);
+            this.unitIndexAlphaSorted.push(unitWithKey);
+            this.unitIndexInitiativeSorted.push(unitWithKey);
+        }
+
+        // Tri par ordre alphabétique
+        this.unitIndexAlphaSorted.sort((a, b) => (a.name > b.name) ? 1 : -1);
+
+        // Tri par initiative
+        this.unitIndexInitiativeSorted.sort((a, b) => (a.initiative > b.initiative) ? -1 : 1);
+
+        // Tri par ordre alphabétique des monstres
+        this.monsterIndex.sort((a, b) => (a.name > b.name) ? 1 : -1);
+
+        // Tri par ordre alphabétique des joueurs
+        this.playerIndex.sort((a, b) => (a.name > b.name) ? 1 : -1);
+    }
+
+
+
+    /* ------------------------------------------------------------------------------------------- */
+    // 1- les index
+
+    generateUnitElements(unitsData, container) {
+        for (const u in unitsData) {
+            const unitData = unitsData[u];
+
+
+            const unitDiv = document.createElement('div');
+
+            unitDiv.classList.add('unit');
+            unitDiv.classList.add('unit-parchment');
+            unitDiv.dataset.id = unitData.id;
+            unitDiv.dataset.src = unitData.unitSrc;
+            unitDiv.dataset.name = unitData.name;
+            unitDiv.dataset.isMonster = unitData.isMonster;
+
+            const unitNameP = document.createElement('p');
+            unitNameP.innerText = unitData.name;
+            unitDiv.appendChild(unitNameP);
+
+            const unitInitiativeP = document.createElement('p');
+            unitInitiativeP.innerText = `Initiative : ${unitData.initiative}`;
+            unitDiv.appendChild(unitInitiativeP);
+
+            const unitAcP = document.createElement('p');
+            unitAcP.innerText = `AC : ${unitData.ac}`;
+            unitDiv.appendChild(unitAcP);
+
+            const unitHpP = document.createElement('p');
+            unitHpP.innerText = 'HP : ';
+            unitDiv.appendChild(unitHpP);
+
+            const unitHpInput = document.createElement('input');
+            unitHpInput.type = 'number';
+            unitHpInput.name = 'hp';
+            unitHpInput.value = unitData.hp;
+            unitHpP.appendChild(unitHpInput);
+            unitHpInput.value <= 0 ? unitDiv.classList.add('KO') : unitDiv.classList.remove('KO');
+
+            unitHpInput.addEventListener('input', () => {
+                if (parseInt(unitHpInput.value) <= 0) {
+                    unitDiv.classList.add('KO');
+                } else {
+                    unitDiv.classList.remove('KO');
+                }
+            });
+
+            unitHpInput.addEventListener('change', () => {
+                const updatedHP = parseInt(unitHpInput.value);
+                this.updateUnitData(unitData.id, { hp: updatedHP });
+                this.refreshAllViews();
+            });
+
+            const turboId = unitData.isMonster ? 'monster-details-content' : 'player-details-content';
+            const turboSrc = unitData.unitSrc;
+
+            unitDiv.addEventListener('click', () => {
+                this.updateTurboFrame(unitDiv, turboId, turboSrc);
+            });
+
+
+            container.appendChild(unitDiv);
+        }
+    }
+
+    displayIndices() {
+        const monsterIndexContainer = document.querySelector('#monster-index');
+        const playerIndexContainer = document.querySelector('#player-index');
+        const globalIndexContainer = document.querySelector('#global-index');
+
+        this.generateUnitElements(this.monsterIndex, monsterIndexContainer);
+        this.generateUnitElements(this.playerIndex, playerIndexContainer);
+        this.generateUnitElements(this.unitIndexInitiativeSorted, globalIndexContainer);
+
+        const monsterButton = document.querySelector('#monster-index-button');
+        const playerButton = document.querySelector('#player-index-button');
+        const globalButton = document.querySelector('#global-index-button');
+
+        const buttons = [monsterButton, playerButton, globalButton];
+
+        buttons.forEach((button) => {
+            button.addEventListener('click', (event) => {
+                this.toggleView(event.currentTarget.dataset.target);
+                buttons.forEach((b) => b.classList.remove('active'));
+                button.classList.add('active');
+
+            });
+        });
+    }
+
+    toggleView(targetViewId) {
+        const views = document.querySelectorAll('.view');
+
+        views.forEach((view) => {
+            if (view.id === targetViewId) {
+                view.classList.remove('hidden');
+            } else {
+                view.classList.add('hidden');
+            }
+
+        });
+
+    }
+
+    refreshMonsterIndexView() {
+        const monsterIndexContainer = document.querySelector('#monster-index');
+        monsterIndexContainer.innerHTML = '';
+        this.generateUnitElements(this.monsterIndex, monsterIndexContainer);
+    }
+
+    refreshPlayerIndexView() {
+        const playerIndexContainer = document.querySelector('#player-index');
+        playerIndexContainer.innerHTML = '';
+        this.generateUnitElements(this.playerIndex, playerIndexContainer);
+    }
+
+    refreshIndexView() {
+        const globalIndexContainer = document.querySelector('#global-index');
+        globalIndexContainer.innerHTML = '';
+        this.generateUnitElements(this.unitIndexInitiativeSorted, globalIndexContainer);
+    }
+
+    refreshTrackerView() {
+        this.updateCarousel();
+    }
+
+    refreshAllViews() {
+        this.refreshMonsterIndexView();
+        this.refreshPlayerIndexView();
+        this.refreshIndexView();
+        this.refreshTrackerView();
+    }
+
+    updateUnitData(unitId, updatedUnitData) {
+        const unitToUpdate = this.monsterIndex.find(unit => unit.id === unitId) ||
+            this.playerIndex.find(unit => unit.id === unitId);
+
+        if (!unitToUpdate) {
+            return;
+        }
+
+        if (unitToUpdate) {
+            Object.assign(unitToUpdate, updatedUnitData);
+
+            const unitType = unitToUpdate.isMonster ? 'monsters' : 'players';
+
+            this.encounterData[unitType][unitToUpdate.name] = unitToUpdate;
+
+            if (unitToUpdate.isMonster) {
+                unitToUpdate.isDead = unitToUpdate.hp <= 0;
+            }
+
+            localStorage.setItem('encounterData', JSON.stringify(this.encounterData));
+
+            this.refreshAllViews();
+        }
+    }
+
+
+    /* ------------------------------------------------------------------------------------------- */
+    // 2- le tracker
+
+    // carousel
+
+    updateCarousel() {
+
+        const carousel = document.getElementById('carousel');
+        carousel.innerHTML = ''; // Vider le carousel pour la nouvelle unité
+        let unit = this.unitIndexInitiativeSorted[this.currentUnitIndex];
+        const unitElement = this.createUnitElement(unit);
+        carousel.appendChild(unitElement);
+    }
+
+
+    createUnitElement(unit) {
+        let element = document.createElement('div');
+        element.className = 'slider__content__item';
+
+        let unitNameP = document.createElement('p');
+        unitNameP.innerText = unit.name;
+        element.appendChild(unitNameP);
+
+        return element;
+    }
+
+    next() {
+        console.log('next');
+
+        if (!this.unitIndexInitiativeSorted) {
+            console.error('unitIndexInitiativeSorted is undefined');
+            return;
+        }
+    
+        const units = this.unitIndexInitiativeSorted;
+    
+        do {
+            this.currentUnitIndex = (this.currentUnitIndex + 1) % units.length;
+            if (this.currentUnitIndex === 0) this.turn++;
+            this.updateTurnCounter();
+        } while (units[this.currentUnitIndex].isDead);
+
+        this.updateCarousel();
+        //on affiche le bouton previous
+        const prevButton = document.getElementById('prev-button');
+        if (prevButton.classList.contains('hidden')){
+            prevButton.classList.remove('hidden');
+        }
+    }
+
+    previous() {
+        console.log('previous');
+
+        if (!this.unitIndexInitiativeSorted) {
+            console.error('unitIndexInitiativeSorted is undefined');
+            return;
+        }
+
+        const units = this.unitIndexInitiativeSorted;
+        if (this.turn === 1 && this.currentUnitIndex === 0) {
+            console.log('Tour 1, première unité, pas de retour en arrière possible');
+            return;
+        }
+
+
+        do {
+            this.currentUnitIndex = (this.currentUnitIndex - 1 + units.length) % units.length;
+            if (this.currentUnitIndex === units.length - 1) this.turn--;
+            this.updateTurnCounter();
+        } while (units[this.currentUnitIndex].isDead);
+
+
+        this.updateCarousel();
+
+        if (this.turn === 1 && this.currentUnitIndex === 0) {
+            //on masque le bouton previous
+            const prevButton = document.getElementById('prev-button');
+            prevButton.classList.add('hidden');
+        }
+    }
+
+
+    updateTurnCounter() {
+        document.getElementById('turn-number').textContent = this.turn;
+    }
+
+
+    /* ------------------------------------------------------------------------------------------- */
+    // 3- le turbo-frame
+    updateTurboFrame(targetUnitDiv, turboId, turboSrc) {
         const turboFrame = document.querySelector("turbo-frame");
         if (!turboFrame) {
             return;
         }
 
-        let currentUnitId = null;
-        let currentUnitType = null;
+        const allUnitDiv = document.querySelectorAll(".unit");
+        allUnitDiv.forEach((u) => u.classList.remove("unit-selected"));
+        targetUnitDiv.classList.add("unit-selected");
+
+        turboFrame.id = turboId;
+        turboFrame.src = turboSrc;
+    }
+
+    initializeTurboFrame() {
+
+        const turboFrame = document.querySelector("turbo-frame");
+        if (!turboFrame) {
+            return;
+        }
+
+        let defaultTargetUnit = null;
 
         const units = document.querySelectorAll(".unit");
-        // console.log('units :', units);
-        units[0].classList.add("unit-selected");
-        turboFrame.id = units[0].dataset.isMonster === 'true' ? 'monster-details-content' : 'player-details-content';
-        turboFrame.src = units[0].dataset.src;
-        currentUnitId = units[0].dataset.id;
-        currentUnitType = units[0].dataset.isMonster === true ? 'monster' : 'player';
-        // console.log('currentUnitType :', currentUnitType);
+        defaultTargetUnit = units[0];
+        this.updateTurboFrame(defaultTargetUnit);
 
         units.forEach((unit) => {
             unit.addEventListener("click", (event) => {
                 this.updateTurboFrame(event.currentTarget);
             });
         });
-    }
 
-    updateTurboFrame(targetUnit) {
-        const turboFrame = document.querySelector("turbo-frame");
-        const unitId = targetUnit.dataset.id;
-        const unitSrc = targetUnit.dataset.src;
-        const unitIsMonster = targetUnit.dataset.isMonster;
-        const units = document.querySelectorAll(".unit");
-        units.forEach((u) => u.classList.remove("unit-selected"));
-        targetUnit.classList.add("unit-selected");
-
-        turboFrame.id = unitIsMonster === 'true' ? 'monster-details-content' : 'player-details-content';
-        turboFrame.src = unitSrc;
-        currentUnitId = unitId;
-        // console.log('currentUnitId :', currentUnitId);
-        return currentUnitId;
-    }
-
-    //load the data from local storage
-    loadEncounterData() {
-        // console.log('loadEncounterData');
-        const unitsData = JSON.parse(localStorage.getItem('encounterData'));
-        // console.log('unitsData', unitsData);
-
-        if (!unitsData) {
-            // console.log('no unitsData');
-            return;
-        }
-        return unitsData;
-    }
-
-    /* ------------------------------------------------------------------------------------------- */
-
-    displayEncounterData() {
-        const unitsData = this.loadEncounterData();
-
-        const container = document.querySelector('#encounterUnitsContainer');
-
-        let isFirstUnit = true;
-        for (const unitName in unitsData) {
-            const unitData = unitsData[unitName];
-
-            const unitDiv = document.createElement('div');
-            unitDiv.classList.add('unit');
-            unitDiv.classList.add('unit-parchment');
-            unitDiv.dataset.id = unitData.id;
-            unitDiv.dataset.src = unitData.unitSrc;
-            unitDiv.dataset.unitName = unitName;
-            unitDiv.dataset.isMonster = unitData.isMonster;
-            unitDiv.innerHTML = `
-            <p>${unitName}</p>
-            <p>AC : ${unitData.ac}</p>
-            <p>HP : <input type="number" id="hp" name="hp" value="${unitData.hp}">
-            </p>
-            `;
-
-            if (unitData.hp <= 0) {
-                unitDiv.classList.add('KO');
-            }
-
-            if (isFirstUnit) {
-                unitDiv.classList.add('active');
-                isFirstUnit = false;
-            }
-
-            container.appendChild(unitDiv);
-
-            const hpInput = unitDiv.querySelector('input[name="hp"]');
-            hpInput.addEventListener('input', () => {
-                if (parseInt(hpInput.value) <= 0) {
-                    unitDiv.classList.add('KO');
-                } else {
-                    unitDiv.classList.remove('KO');
-                }
-            });
-        }
-
-    }
-
-    /* ------------------------------------------------------------------------------------------- */
-    nextUnit() {
-        const unitsData = this.loadEncounterData();
-        const currentUnit = document.querySelector('.unit.active');
-
-        if (!currentUnit) {
-            // Si aucune unité n'est active, initialiser avec la première unité du tableau
-            const firstUnit = document.querySelector('.unit');
-            firstUnit.classList.add('active');
-            this.updateActiveUnitTracker();
-            return;
-        }
-
-        // Trouver l'index de l'unité actuelle en parcourant les clés de l'objet
-        let currentIndex = 0;
-        for (const unitName in unitsData) {
-            if (unitName === currentUnit.dataset.unitName) {
-                break;
-            }
-            currentIndex++;
-        }
-
-        // Rechercher la prochaine unité sans la classe KO
-        let nextIndex = (currentIndex + 1) % Object.keys(unitsData).length;
-        while (nextIndex !== currentIndex) {
-            const nextUnitName = Object.keys(unitsData)[nextIndex];
-            const nextUnit = document.querySelector(`.unit[data-unit-name="${nextUnitName}"]`);
-
-            if (!nextUnit.classList.contains('KO')) {
-                // Supprimer la classe active de l'unité actuelle
-                currentUnit.classList.remove('active');
-                // Ajouter la classe active à l'unité suivante
-                nextUnit.classList.add('active');
-                // this.updateTurboFrame(nextUnit);
-                this.updateActiveUnitTracker();
-
-                nextUnit.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                return;
-            }
-            nextIndex = (nextIndex + 1) % Object.keys(unitsData).length;
-        }
-    }
-
-
-    /* ------------------------------------------------------------------------------------------- */
-
-    previousUnit() {
-        const unitsData = this.loadEncounterData();
-        const currentUnit = document.querySelector('.unit.active');
-
-        if (!currentUnit) {
-            // Si aucune unité n'est active, initialiser avec la dernière unité du tableau
-            const unitNames = Object.keys(unitsData);
-            const lastUnitName = unitNames[unitNames.length - 1];
-            const lastUnit = document.querySelector(`.unit[data-unit-name="${lastUnitName}"]`);
-            lastUnit.classList.add('active');
-            return;
-        }
-
-        // Trouver l'index de l'unité actuelle en parcourant les clés de l'objet
-        let currentIndex = 0;
-        const unitNames = Object.keys(unitsData);
-        for (const unitName of unitNames) {
-            if (unitName === currentUnit.dataset.unitName) {
-                break;
-            }
-            currentIndex++;
-        }
-
-        // Rechercher l'unité précédente sans la classe KO
-        let previousIndex = (currentIndex - 1 + unitNames.length) % unitNames.length;
-        while (previousIndex !== currentIndex) {
-            const previousUnitName = unitNames[previousIndex];
-            const previousUnit = document.querySelector(`.unit[data-unit-name="${previousUnitName}"]`);
-
-            if (!previousUnit.classList.contains('KO')) {
-                // Supprimer la classe active de l'unité actuelle
-                currentUnit.classList.remove('active');
-                // Ajouter la classe active à l'unité précédente
-                previousUnit.classList.add('active');
-                // this.updateTurboFrame(previousUnit);
-                this.updateActiveUnitTracker();
-
-                previousUnit.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                return;
-            }
-
-            previousIndex = (previousIndex - 1 + unitNames.length) % unitNames.length;
-        }
     }
 
 
@@ -227,7 +445,7 @@ export default class extends Controller {
     //stop encounter function
     stopEncounter() {
         // console.log('stopEncounter');
-        //on fait apparaître une fenêtre de confirmation
+        // fenêtre de confirmation
         if (!confirm('Attention, toute progression sera perdue, souhaitez-vous quitter ?')) {
             return;
         }
@@ -238,86 +456,5 @@ export default class extends Controller {
         //on redirige vers la page d'accueil
         window.location.href = '/';
     }
-
-
-    /* -------------------------------------------- ACTIVE UNIT TRACKER -------------------------------------------- */
-    displayActiveUnitTracker() {
-        const unitsData = this.loadEncounterData();
-        const activeUnit = document.querySelector('.unit.active');
-    
-        if (!activeUnit) {
-            return;
-        }
-    
-        const activeUnitContainer = document.querySelector('.active-unit');
-        const previousUnitContainer = document.querySelector('.previous-unit');
-        const nextUnitContainer = document.querySelector('.next-unit');
-    
-        activeUnitContainer.innerHTML = activeUnit.innerHTML;
-    
-        const unitNames = Object.keys(unitsData);
-        const currentIndex = unitNames.findIndex(unitName => unitName === activeUnit.dataset.unitName);
-    
-        let previousIndex = (currentIndex - 1 + unitNames.length) % unitNames.length;
-        let nextIndex = (currentIndex + 1) % unitNames.length;
-    
-        const previousUnit = document.querySelector(`.unit[data-unit-name="${unitNames[previousIndex]}"]`);
-        const nextUnit = document.querySelector(`.unit[data-unit-name="${unitNames[nextIndex]}"]`);
-    
-        if (previousUnit) {
-            previousUnitContainer.innerHTML = previousUnit.innerHTML;
-        } else {
-            // Si c'est la première unité, afficher la dernière
-            const lastUnit = document.querySelector('.unit:last-child');
-            previousUnitContainer.innerHTML = lastUnit.innerHTML;
-        }
-    
-        if (nextUnit) {
-            nextUnitContainer.innerHTML = nextUnit.innerHTML;
-        } else {
-            // Si c'est la dernière unité, afficher la première
-            const firstUnit = document.querySelector('.unit:first-child');
-            nextUnitContainer.innerHTML = firstUnit.innerHTML;
-        }
-    }
-    
-    updateActiveUnitTracker() {
-        const unitsData = this.loadEncounterData();
-        const activeUnit = document.querySelector('.unit.active');
-    
-        if (!activeUnit) {
-            return;
-        }
-    
-        const activeUnitContainer = document.querySelector('.active-unit');
-        const previousUnitContainer = document.querySelector('.previous-unit');
-        const nextUnitContainer = document.querySelector('.next-unit');
-    
-        const unitNames = Object.keys(unitsData);
-        const currentIndex = unitNames.findIndex(unitName => unitName === activeUnit.dataset.unitName);
-    
-        let previousIndex = (currentIndex - 1 + unitNames.length) % unitNames.length;
-        let nextIndex = (currentIndex + 1) % unitNames.length;
-    
-        const previousUnit = document.querySelector(`.unit[data-unit-name="${unitNames[previousIndex]}"]`);
-        const nextUnit = document.querySelector(`.unit[data-unit-name="${unitNames[nextIndex]}"]`);
-    
-        if (previousUnit) {
-            previousUnitContainer.innerHTML = previousUnit.innerHTML;
-        } else {
-            const lastUnit = document.querySelector('.unit:last-child');
-            previousUnitContainer.innerHTML = lastUnit.innerHTML;
-        }
-    
-        if (nextUnit) {
-            nextUnitContainer.innerHTML = nextUnit.innerHTML;
-        } else {
-            const firstUnit = document.querySelector('.unit:first-child');
-            nextUnitContainer.innerHTML = firstUnit.innerHTML;
-        }
-    
-        activeUnitContainer.innerHTML = activeUnit.innerHTML; // Ajout de cette ligne pour mettre à jour l'unité active dans le tracker
-    }
-    
 
 }

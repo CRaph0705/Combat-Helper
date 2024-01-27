@@ -167,6 +167,13 @@
 }
 
 
+#top-section {
+    display: flex;
+    //columns
+    flex-direction: column;
+}
+
+
 #active-unit-tracker-container {
     width: 100%;
 }
