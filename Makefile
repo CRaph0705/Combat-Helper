@@ -33,4 +33,4 @@ build : ## Build the project
 	npm run build
 
 watch : ## Watch the project
-	npm run watch
+	npm run build --watch

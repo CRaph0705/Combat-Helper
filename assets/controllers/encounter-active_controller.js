@@ -320,15 +320,36 @@ export default class extends Controller {
 
     // carousel
 
-    updateCarousel() {
+    // updateCarousel() {
+    //     const carousel = document.getElementById('carousel');
+    //     carousel.innerHTML = ''; // Vider le carousel pour la nouvelle unité
+    //     let unit = this.unitIndexInitiativeSorted[this.currentUnitIndex];
+    //     const unitElement = this.createUnitElement(unit);
+    //     carousel.appendChild(unitElement);
+    // }
 
+    updateCarousel(direction) {
         const carousel = document.getElementById('carousel');
-        carousel.innerHTML = ''; // Vider le carousel pour la nouvelle unité
-        let unit = this.unitIndexInitiativeSorted[this.currentUnitIndex];
+        const unit = this.unitIndexInitiativeSorted[this.currentUnitIndex];
         const unitElement = this.createUnitElement(unit);
-        carousel.appendChild(unitElement);
-    }
 
+        // en fonction de la direction, on ajoute la classe correspondante
+        if (direction === 'next') {
+            unitElement.classList.add('slider__content--slide-left');
+        } else if (direction === 'prev') {
+            unitElement.classList.add('slider__content--slide-right');
+        }
+
+        // on met un timeout pour que la transition se fasse
+        setTimeout(() => {
+            carousel.innerHTML = '';
+            carousel.appendChild(unitElement);
+            carousel.classList.remove('slider__content--slide-left');
+            carousel.classList.remove('slider__content--slide-right');
+        }, 50);
+
+    }
+   
 
     createUnitElement(unit) {
         let element = document.createElement('div');
@@ -357,7 +378,7 @@ export default class extends Controller {
             this.updateTurnCounter();
         } while (units[this.currentUnitIndex].isDead);
 
-        this.updateCarousel();
+        this.updateCarousel('next');
         //on affiche le bouton previous
         const prevButton = document.getElementById('prev-button');
         if (prevButton.classList.contains('hidden')){
@@ -387,7 +408,7 @@ export default class extends Controller {
         } while (units[this.currentUnitIndex].isDead);
 
 
-        this.updateCarousel();
+        this.updateCarousel('prev');
 
         if (this.turn === 1 && this.currentUnitIndex === 0) {
             //on masque le bouton previous

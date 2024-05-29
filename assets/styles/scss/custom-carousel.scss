@@ -52,6 +52,7 @@
     position: absolute;
     width: 100%;
     height: 100%;
+    // background-color: purple;
 }
 
 .slider__content {
@@ -60,6 +61,7 @@
     display: flex;
     overflow: hidden;
     // transition: transform 0.5s ease-in-out;
+    transition: transform 0.5s ease;
     // will-change: transform;
 }
 
@@ -72,6 +74,15 @@
     justify-content: center;
     align-items: center;
     // transition: transform 0.5s ease-in-out;
+    flex: 0 0 100%;
+}
+
+.slider__content--slide-left {
+    transform: translateX(-100%);
+}
+
+.slider__content--slide-right {
+    transform: translateX(100%);
 }
 
 

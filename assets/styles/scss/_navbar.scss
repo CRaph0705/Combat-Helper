@@ -9,22 +9,14 @@
 }
 
 .logo {
+    width: 50px;
+    height: autp;
     color: $primary;
 
     &:hover {
         color: $accent;
     }
 }
-
-// .sticky {
-//     position: fixed;
-//     top: 0;
-//     width: 100%;
-// }
-
-// .sticky+.content {
-//     padding-top: $navbar-height;
-// }
 
 
 .nav-menu-area {
@@ -100,8 +92,3 @@
         left: 0;
     }
 }
-
-
-// #navbar-placeholder {
-//     height: $navbar-height;
-// }
