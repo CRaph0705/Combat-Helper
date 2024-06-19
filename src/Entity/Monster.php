@@ -27,9 +27,6 @@ class Monster
     #[ORM\Column(nullable: true)]
     private ?int $initiative = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $speed = null;
-
     #[ORM\Column(nullable: true)]
     private ?int $strength = null;
 
@@ -50,6 +47,21 @@ class Monster
 
     #[ORM\Column(length: 10, nullable: true)]
     private ?string $challenge = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $groundspeed = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $climbspeed = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $flyspeed = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $burrowspeed = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $swimspeed = null;
 
     public function __construct()
     {
@@ -231,5 +243,65 @@ class Monster
             'wisdom' => $this->wisdom,
             'charisma' => $this->charisma,
         ];
+    }
+
+    public function getGroundspeed(): ?int
+    {
+        return $this->groundspeed;
+    }
+
+    public function setGroundspeed(?int $groundspeed): static
+    {
+        $this->groundspeed = $groundspeed;
+
+        return $this;
+    }
+
+    public function getClimbspeed(): ?int
+    {
+        return $this->climbspeed;
+    }
+
+    public function setClimbspeed(?int $climbspeed): static
+    {
+        $this->climbspeed = $climbspeed;
+
+        return $this;
+    }
+
+    public function getFlyspeed(): ?int
+    {
+        return $this->flyspeed;
+    }
+
+    public function setFlyspeed(?int $flyspeed): static
+    {
+        $this->flyspeed = $flyspeed;
+
+        return $this;
+    }
+
+    public function getBurrowspeed(): ?int
+    {
+        return $this->burrowspeed;
+    }
+
+    public function setBurrowspeed(?int $burrowspeed): static
+    {
+        $this->burrowspeed = $burrowspeed;
+
+        return $this;
+    }
+
+    public function getSwimspeed(): ?int
+    {
+        return $this->swimspeed;
+    }
+
+    public function setSwimspeed(?int $swimspeed): static
+    {
+        $this->swimspeed = $swimspeed;
+
+        return $this;
     }
 }
