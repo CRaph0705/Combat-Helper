@@ -49,7 +49,7 @@ class Monster
     private ?int $charisma = null;
 
     #[ORM\Column(length: 10, nullable: true)]
-    private ?string $difficulty = null;
+    private ?string $challenge = null;
 
     public function __construct()
     {
@@ -197,14 +197,14 @@ class Monster
         return $this;
     }
 
-    public function getDifficulty(): ?string
+    public function getChallenge(): ?string
     {
-        return $this->difficulty;
+        return $this->challenge;
     }
 
-    public function setDifficulty(?string $difficulty): self
+    public function setChallenge(?string $challenge): self
     {
-        $this->difficulty = $difficulty;
+        $this->challenge = $challenge;
 
         return $this;
     }
