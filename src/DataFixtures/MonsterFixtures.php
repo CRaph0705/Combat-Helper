@@ -21,7 +21,7 @@ class MonsterFixtures extends Fixture
         $rat->setIntelligence(2);
         $rat->setWisdom(10);
         $rat->setCharisma(4);
-        $rat->setDifficulty('0');
+        $rat->setChallenge('0');
         $manager->persist($rat);
 
         $goblin = new Monster();
@@ -35,7 +35,7 @@ class MonsterFixtures extends Fixture
         $goblin->setIntelligence(10);
         $goblin->setWisdom(8);
         $goblin->setCharisma(8);
-        $goblin->setDifficulty('1/4');
+        $goblin->setChallenge('1/4');
         $manager->persist($goblin);
 
         $wolf = new Monster();
@@ -49,7 +49,7 @@ class MonsterFixtures extends Fixture
         $wolf->setIntelligence(3);
         $wolf->setWisdom(12);
         $wolf->setCharisma(6);
-        $wolf->setDifficulty('1/4');
+        $wolf->setChallenge('1/4');
         $manager->persist($wolf);
 
         $giantSpider = new Monster();
@@ -63,7 +63,7 @@ class MonsterFixtures extends Fixture
         $giantSpider->setIntelligence(2);
         $giantSpider->setWisdom(11);
         $giantSpider->setCharisma(4);
-        $giantSpider->setDifficulty('1');
+        $giantSpider->setChallenge('1');
         $manager->persist($giantSpider);
 
         $pseudodragon = new Monster();
@@ -77,7 +77,7 @@ class MonsterFixtures extends Fixture
         $pseudodragon->setIntelligence(10);
         $pseudodragon->setWisdom(12);
         $pseudodragon->setCharisma(10);
-        $pseudodragon->setDifficulty('1/4');
+        $pseudodragon->setChallenge('1/4');
         $manager->persist($pseudodragon);
 
         $troll = new Monster();
@@ -91,7 +91,7 @@ class MonsterFixtures extends Fixture
         $troll->setIntelligence(7);
         $troll->setWisdom(9);
         $troll->setCharisma(7);
-        $troll->setDifficulty('5');
+        $troll->setChallenge('5');
         $manager->persist($troll);
 
         $fireGiant = new Monster();
@@ -105,7 +105,7 @@ class MonsterFixtures extends Fixture
         $fireGiant->setIntelligence(10);
         $fireGiant->setWisdom(14);
         $fireGiant->setCharisma(13);
-        $fireGiant->setDifficulty('9');
+        $fireGiant->setChallenge('9');
         $manager->persist($fireGiant);
 
         $shadowDemon = new Monster();
@@ -119,7 +119,7 @@ class MonsterFixtures extends Fixture
         $shadowDemon->setIntelligence(14);
         $shadowDemon->setWisdom(13);
         $shadowDemon->setCharisma(14);
-        $shadowDemon->setDifficulty('4');
+        $shadowDemon->setChallenge('4');
         $manager->persist($shadowDemon);
 
         $ghost = new Monster();
@@ -133,7 +133,7 @@ class MonsterFixtures extends Fixture
         $ghost->setIntelligence(10);
         $ghost->setWisdom(12);
         $ghost->setCharisma(17);
-        $ghost->setDifficulty('4');
+        $ghost->setChallenge('4');
         $manager->persist($ghost);
 
         $zombie = new Monster();
@@ -147,7 +147,7 @@ class MonsterFixtures extends Fixture
         $zombie->setIntelligence(3);
         $zombie->setWisdom(6);
         $zombie->setCharisma(5);
-        $zombie->setDifficulty('1/4');
+        $zombie->setChallenge('1/4');
         $manager->persist($zombie);
 
         $skeleton = new Monster();
@@ -161,7 +161,7 @@ class MonsterFixtures extends Fixture
         $skeleton->setIntelligence(6);
         $skeleton->setWisdom(8);
         $skeleton->setCharisma(5);
-        $skeleton->setDifficulty('1/4');
+        $skeleton->setChallenge('1/4');
         $manager->persist($skeleton);
 
         $vampire = new Monster();
@@ -175,7 +175,7 @@ class MonsterFixtures extends Fixture
         $vampire->setIntelligence(17);
         $vampire->setWisdom(15);
         $vampire->setCharisma(18);
-        $vampire->setDifficulty('13');
+        $vampire->setChallenge('13');
         $manager->persist($vampire);
 
         $lich = new Monster();
@@ -189,7 +189,7 @@ class MonsterFixtures extends Fixture
         $lich->setIntelligence(20);
         $lich->setWisdom(14);
         $lich->setCharisma(16);
-        $lich->setDifficulty('21');
+        $lich->setChallenge('21');
         $manager->persist($lich);
         
         $manager->flush();
