@@ -84,7 +84,7 @@ class MonsterType extends AbstractType
                 'class' => 'form-control',
             ],
         ])
-        ->add('difficulty', TextType::class, [
+        ->add('challenge', TextType::class, [
             'required' => false,
             'label' => 'FP',
             'attr' => [
@@ -92,13 +92,44 @@ class MonsterType extends AbstractType
                 'class' => 'form-control',
             ],
         ])
-        ->add('speed', TextType::class, [
+        ->add('groundspeed', IntegerType::class, [
             'required' => false,
-            'label' => 'SPD',
+            'label' => 'Au sol',
             'attr' => [
                 'class' => 'form-control',
             ],
         ])
+        ->add('climbspeed', IntegerType::class, [
+            'required' => false,
+            'label' => 'Escalade',
+            'attr' => [
+                'class' => 'form-control',
+            ],
+        ])
+        ->add('burrowspeed', IntegerType::class, [
+        'required' => false,
+        'label' => 'Fouissement',
+        'attr' => [
+            'class' => 'form-control',
+        ],
+        ])
+
+        ->add('swimspeed', IntegerType::class, [
+            'required' => false,
+            'label' => 'Nage',
+            'attr' => [
+                'class' => 'form-control',
+            ],
+        ])
+        ->add('flyspeed', IntegerType::class, [
+            'required' => false,
+            'label' => 'Vol',
+            'attr' => [
+                'class' => 'form-control',
+            ],
+        ])
+        
+
         ;
         $monster = $options['data'] ?? null;
         if ($monster instanceof Monster) {
