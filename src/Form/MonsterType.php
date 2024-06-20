@@ -92,7 +92,7 @@ class MonsterType extends AbstractType
         ])
         ->add('challenge', EntityType::class, [
             'required' => false,
-            'label' => 'FP',
+            'label' => 'Dangerosité',
             'class' => Challenge::class,
             'attr' => [
                 'class' => 'form-control',
