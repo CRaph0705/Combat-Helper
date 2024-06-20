@@ -72,6 +72,9 @@ class Monster
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $subtype = null;
 
+    #[ORM\ManyToOne(inversedBy: 'monsters')]
+    private ?Alignment $alignment = null;
+
     public function __construct()
     {
     }
@@ -346,6 +349,18 @@ class Monster
     public function setSubtype(?string $subtype): static
     {
         $this->subtype = $subtype;
+
+        return $this;
+    }
+
+    public function getAlignment(): ?Alignment
+    {
+        return $this->alignment;
+    }
+
+    public function setAlignment(?Alignment $alignment): static
+    {
+        $this->alignment = $alignment;
 
         return $this;
     }
