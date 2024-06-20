@@ -10,6 +10,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\Entity\Size;
 use App\Entity\Type;
+use App\Entity\Alignment;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 
@@ -151,6 +152,14 @@ class MonsterType extends AbstractType
         ->add('subtype', TextType::class, [
             'required' => false,
             'label' => 'Sous-type',
+            'attr' => [
+                'class' => 'form-control',
+            ],
+        ])
+        ->add('alignment', EntityType::class, [
+            'class' => Alignment::class,
+            'required' => false,
+            'label' => 'Alignement',
             'attr' => [
                 'class' => 'form-control',
             ],
