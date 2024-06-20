@@ -12,11 +12,7 @@
 		<div class="col-4">{{ form_row(form.alignment) }}</div>
 	</div>
 
-	<div class="row">
-		<div class="col-4"></div>
-		<div class="col-4"></div>
-		<div class="col-4"></div>
-	</div>
+
 
 	<div class="row">
 		<div class="col-3">{{ form_row(form.hp) }}</div>
@@ -27,7 +23,7 @@
 
 	<br>
 
-	<div class="row"><div class="col-12"><h4>Caractéristiques</h3></div>
+	<div class="row"><div class="col-12"><h4>Caractéristiques</h4></div>
 		<div class="col-2">
 			{{ form_row(form.strength) }}
 		</div>
@@ -66,9 +62,16 @@
 			{{ form_row(form.flyspeed) }}
 		</div>
 	</div>
-
-	<div class="row">
-        
+	<div class="row"><h4>Sens</h4>
+		<div class="col-3">{{ form_row(form.tremorsense) }}</div>
+		<div class="col-3">{{ form_row(form.blindsight) }}</div>
+		<div class="col-3">{{ form_row(form.darkvision) }}</div>
+		<div class="col-3">{{ form_row(form.truesight) }}</div>
+	</div>
+	<div class="row"><h4>Langues et communication</h4>
+        <div class="col-3">{{ form_row(form.language) }}</div>
+        {# <div class="col-3">{{ form_row(form.customLanguage) }}</div> #}
+		{# <div class="col-3">{{ form_row(form.telepathy) }}</div> #}
 	</div>
 </div>
 <div class="button-container">

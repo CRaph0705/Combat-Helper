@@ -9,11 +9,13 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 use App\Entity\Size;
 use App\Entity\Type;
 use App\Entity\Alignment;
 use App\Entity\Challenge;
+use App\Entity\Language;
 
 class MonsterType extends AbstractType
 {
@@ -165,6 +167,50 @@ class MonsterType extends AbstractType
                 'class' => 'form-control',
             ],
         ])
+        ->add('tremorsense', IntegerType::class, [
+            'required' => false,
+            'label' => 'Perception des vibrations',
+            'attr' => [
+                'class' => 'form-control',
+            ],
+        ])
+        ->add('blindsight', IntegerType::class, [
+            'required' => false,
+            'label' => 'Vision aveugle',
+            'attr' => [
+                'class' => 'form-control',
+            ],
+        ])
+        ->add('darkvision', IntegerType::class, [
+            'required' => false,
+            'label' => 'Vision dans le noir',
+            'attr' => [
+                'class' => 'form-control',
+            ],
+        ])
+        ->add('truesight', IntegerType::class, [
+            'required' => false,
+            'label' => 'Vision parfaite',
+            'attr' => [
+                'class' => 'form-control',
+            ],
+        ])
+        ->add('language', EntityType::class, [
+            'class' => Language::class,
+            'multiple' => true,
+            // 'expanded' => true,
+            'required' => false,
+            'label' => 'Langues',
+            'attr' => [
+                'class' => 'checkbox-container',
+            ],
+            // 'choice_attr' => function() {
+            //     return [
+            //         'class' => 'form-check-input'
+            //     ];
+            // },  
+        ])
+
 
         ;
         $monster = $options['data'] ?? null;

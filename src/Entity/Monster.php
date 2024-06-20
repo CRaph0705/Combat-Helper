@@ -87,8 +87,18 @@ class Monster
     #[ORM\Column(nullable: true)]
     private ?int $truesight = null;
 
+    #[ORM\ManyToMany(targetEntity: Language::class, inversedBy: 'monsters', cascade: ['persist'])]
+    private Collection $language;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $telepathy = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $customLanguage = null;
+
     public function __construct()
     {
+        $this->language = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -421,6 +431,54 @@ class Monster
     public function setTruesight(?int $truesight): static
     {
         $this->truesight = $truesight;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Language>
+     */
+    public function getLanguage(): Collection
+    {
+        return $this->language;
+    }
+
+    public function addLanguage(Language $language): static
+    {
+        if (!$this->language->contains($language)) {
+            $this->language->add($language);
+        }
+
+        return $this;
+    }
+
+    public function removeLanguage(Language $language): static
+    {
+        $this->language->removeElement($language);
+
+        return $this;
+    }
+
+    public function getTelepathy(): ?int
+    {
+        return $this->telepathy;
+    }
+
+    public function setTelepathy(?int $telepathy): static
+    {
+        $this->telepathy = $telepathy;
+
+        return $this;
+    }
+
+    public function getCustomLanguage(): ?string
+    {
+        return $this->customLanguage;
+    }
+
+    public function setCustomLanguage(?string $customLanguage): static
+    {
+        $this->customLanguage = $customLanguage;
 
         return $this;
     }
