@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\DamageTypeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: DamageTypeRepository::class)]
@@ -15,6 +17,13 @@ class DamageType
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
+
+    public function __construct()
+    {
+        $this->immuneMonsters = new ArrayCollection();
+        $this->vulnerableMonsters = new ArrayCollection();
+        $this->resistantMonsters = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -32,4 +41,5 @@ class DamageType
 
         return $this;
     }
+
 }
