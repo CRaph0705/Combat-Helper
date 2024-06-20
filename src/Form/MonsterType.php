@@ -16,6 +16,9 @@ use App\Entity\Type;
 use App\Entity\Alignment;
 use App\Entity\Challenge;
 use App\Entity\Language;
+use App\Entity\Resistance;
+use App\Entity\Immunity;
+use App\Entity\Vulnerability;
 
 class MonsterType extends AbstractType
 {
@@ -224,6 +227,42 @@ class MonsterType extends AbstractType
             'label' => 'Télépathie',
             'attr' => [
                 'class' => 'form-control',
+            ],
+        ])
+        ->add('stateImmunity', EntityType::class, [
+            'class' => Immunity::class,
+            'multiple' => true,
+            'required' => false,
+            'label' => 'Immunités aux états',
+            'attr' => [
+                'class' => 'checkbox-container',
+            ],
+        ])
+        ->add('damageImmunity', EntityType::class, [
+            'class' => Immunity::class,
+            'multiple' => true,
+            'required' => false,
+            'label' => 'Immunités aux dommages',
+            'attr' => [
+                'class' => 'checkbox-container',
+            ],
+        ])
+        ->add('damageResistance', EntityType::class, [
+            'class' => Resistance::class,
+            'multiple' => true,
+            'required' => false,
+            'label' => 'Résistances aux dommages',
+            'attr' => [
+                'class' => 'checkbox-container',
+            ],
+        ])
+        ->add('damageVulnerability', EntityType::class, [
+            'class' => Vulnerability::class,
+            'multiple' => true,
+            'required' => false,
+            'label' => 'Vulnérabilités aux dommages',
+            'attr' => [
+                'class' => 'checkbox-container',
             ],
         ])
 
