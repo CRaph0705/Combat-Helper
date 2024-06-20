@@ -106,7 +106,7 @@ class Monster
     private Collection $damageImmunity;
 
     #[ORM\ManyToMany(targetEntity: Resistance::class, inversedBy: 'resistantMonsters')]
-    private Collection $resistance;
+    private Collection $damageResistance;
 
     public function __construct()
     {
@@ -114,7 +114,7 @@ class Monster
         $this->stateImmunity = new ArrayCollection();
         $this->damageTypeImmunity = new ArrayCollection();
         $this->damageTypeVulnerability = new ArrayCollection();
-        $this->resistance = new ArrayCollection();
+        $this->damageResistance = new ArrayCollection();
         $this->damageVulnerability = new ArrayCollection();
         $this->damageImmunity = new ArrayCollection();
     }
@@ -576,23 +576,23 @@ class Monster
     /**
      * @return Collection<int, Resistance>
      */
-    public function getResistance(): Collection
+    public function getDamageResistance(): Collection
     {
-        return $this->resistance;
+        return $this->damageResistance;
     }
 
-    public function addResistance(Resistance $resistance): static
+    public function addDamageResistance(Resistance $damageResistance): static
     {
-        if (!$this->resistance->contains($resistance)) {
-            $this->resistance->add($resistance);
+        if (!$this->damageResistance->contains($damageResistance)) {
+            $this->damageResistance->add($damageResistance);
         }
 
         return $this;
     }
 
-    public function removeResistance(Resistance $resistance): static
+    public function removeDamageResistance(Resistance $damageResistance): static
     {
-        $this->resistance->removeElement($resistance);
+        $this->damageResistance->removeElement($damageResistance);
 
         return $this;
     }

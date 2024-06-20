@@ -73,6 +73,14 @@
         <div class="col-3">{{ form_row(form.customLanguage) }}</div>
 		<div class="col-3">{{ form_row(form.telepathy) }}</div>
 	</div>
+
+	<div class="row"><h4>Résistances et vulnérabilités</h4>
+		<div class="col-3">{{ form_row(form.stateImmunity) }}</div>
+		<div class="col-3">{{ form_row(form.damageResistance) }}</div>
+		<div class="col-3">{{ form_row(form.damageVulnerability) }}</div>
+		<div class="col-3">{{ form_row(form.damageImmunity) }}</div>
+	</div>
+		
 </div>
 <div class="button-container">
 	<button class="btn btn-default btn-save">{{ button_label|default('Save') }}</button>
