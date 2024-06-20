@@ -99,8 +99,14 @@ class Monster
     #[ORM\ManyToMany(targetEntity: State::class, inversedBy: 'monsters')]
     private Collection $stateImmunity;
 
-    #[ORM\ManyToMany(targetEntity: DamageType::class, inversedBy: 'immuneMonsters')]
-    private Collection $damageTypeImmunity;
+    #[ORM\ManyToMany(targetEntity: Vulnerability::class, inversedBy: 'vulnerableMonsters')]
+    private Collection $damageVulnerability;
+
+    #[ORM\ManyToMany(targetEntity: Immunity::class, inversedBy: 'immuneMonsters')]
+    private Collection $damageImmunity;
+
+    #[ORM\ManyToMany(targetEntity: Resistance::class, inversedBy: 'resistantMonsters')]
+    private Collection $resistance;
 
     public function __construct()
     {
@@ -109,6 +115,8 @@ class Monster
         $this->damageTypeImmunity = new ArrayCollection();
         $this->damageTypeVulnerability = new ArrayCollection();
         $this->resistance = new ArrayCollection();
+        $this->damageVulnerability = new ArrayCollection();
+        $this->damageImmunity = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -518,25 +526,73 @@ class Monster
     }
 
     /**
-     * @return Collection<int, DamageType>
+     * @return Collection<int, Vulnerability>
      */
-    public function getDamageTypeImmunity(): Collection
+    public function getDamageVulnerability(): Collection
     {
-        return $this->damageTypeImmunity;
+        return $this->damageVulnerability;
     }
 
-    public function addDamageTypeImmunity(DamageType $damageTypeImmunity): static
+    public function addDamageVulnerability(Vulnerability $damageVulnerability): static
     {
-        if (!$this->damageTypeImmunity->contains($damageTypeImmunity)) {
-            $this->damageTypeImmunity->add($damageTypeImmunity);
+        if (!$this->damageVulnerability->contains($damageVulnerability)) {
+            $this->damageVulnerability->add($damageVulnerability);
         }
 
         return $this;
     }
 
-    public function removeDamageTypeImmunity(DamageType $damageTypeImmunity): static
+    public function removeDamageVulnerability(Vulnerability $damageVulnerability): static
     {
-        $this->damageTypeImmunity->removeElement($damageTypeImmunity);
+        $this->damageVulnerability->removeElement($damageVulnerability);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Immunity>
+     */
+    public function getDamageImmunity(): Collection
+    {
+        return $this->damageImmunity;
+    }
+
+    public function addDamageImmunity(Immunity $damageImmunity): static
+    {
+        if (!$this->damageImmunity->contains($damageImmunity)) {
+            $this->damageImmunity->add($damageImmunity);
+        }
+
+        return $this;
+    }
+
+    public function removeDamageImmunity(Immunity $damageImmunity): static
+    {
+        $this->damageImmunity->removeElement($damageImmunity);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Resistance>
+     */
+    public function getResistance(): Collection
+    {
+        return $this->resistance;
+    }
+
+    public function addResistance(Resistance $resistance): static
+    {
+        if (!$this->resistance->contains($resistance)) {
+            $this->resistance->add($resistance);
+        }
+
+        return $this;
+    }
+
+    public function removeResistance(Resistance $resistance): static
+    {
+        $this->resistance->removeElement($resistance);
 
         return $this;
     }

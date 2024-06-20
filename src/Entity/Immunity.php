@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\DamageTypeRepository;
+use App\Repository\ImmunityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: DamageTypeRepository::class)]
-class DamageType
+#[ORM\Entity(repositoryClass: ImmunityRepository::class)]
+class Immunity
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -18,14 +18,12 @@ class DamageType
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\ManyToMany(targetEntity: Monster::class, mappedBy: 'damageTypeImmunity')]
+    #[ORM\ManyToMany(targetEntity: Monster::class, mappedBy: 'damageImmunity')]
     private Collection $immuneMonsters;
 
     public function __construct()
     {
         $this->immuneMonsters = new ArrayCollection();
-        $this->vulnerableMonsters = new ArrayCollection();
-        $this->resistantMonsters = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -57,7 +55,7 @@ class DamageType
     {
         if (!$this->immuneMonsters->contains($immuneMonster)) {
             $this->immuneMonsters->add($immuneMonster);
-            $immuneMonster->addDamageTypeImmunity($this);
+            $immuneMonster->addDamageImmunity($this);
         }
 
         return $this;
@@ -66,10 +64,9 @@ class DamageType
     public function removeImmuneMonster(Monster $immuneMonster): static
     {
         if ($this->immuneMonsters->removeElement($immuneMonster)) {
-            $immuneMonster->removeDamageTypeImmunity($this);
+            $immuneMonster->removeDamageImmunity($this);
         }
 
         return $this;
     }
-
 }
