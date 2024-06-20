@@ -48,6 +48,7 @@ class MonsterType extends AbstractType
                 'class' => 'form-control',
             ],
         ])
+        //caractéristiques
         ->add('strength', IntegerType::class, [
             'required' => false,
             'label' => 'Force',
@@ -104,6 +105,7 @@ class MonsterType extends AbstractType
                 'class' => 'form-control',
             ],
         ])
+        //déplacements
         ->add('groundspeed', IntegerType::class, [
             'required' => false,
             'label' => 'Au sol',
@@ -171,6 +173,7 @@ class MonsterType extends AbstractType
                 'class' => 'form-control',
             ],
         ])
+        // sens
         ->add('tremorsense', IntegerType::class, [
             'required' => false,
             'label' => 'Perception des vibrations',
@@ -199,6 +202,7 @@ class MonsterType extends AbstractType
                 'class' => 'form-control',
             ],
         ])
+        //Langues & communication
         ->add('language', EntityType::class, [
             'class' => Language::class,
             'multiple' => true,
@@ -230,6 +234,7 @@ class MonsterType extends AbstractType
                 'class' => 'form-control',
             ],
         ])
+        //Résistances & vulnérabilités
         ->add('stateImmunity', EntityType::class, [
             'class' => State::class,
             'multiple' => true,
@@ -264,6 +269,35 @@ class MonsterType extends AbstractType
             'label' => 'Vulnérabilités aux dommages',
             'attr' => [
                 'class' => 'checkbox-container',
+            ],
+        ])
+        //capacités, actions, actions légendaires
+        ->add('capacities', TextType::class, [
+            'required' => false,
+            'label' => 'Capacités',
+            'attr' => [
+                'class' => 'form-control',
+            ],
+        ])
+        ->add('actions', TextType::class, [
+            'required' => false,
+            'label' => 'Actions',
+            'attr' => [
+                'class' => 'form-control',
+            ],
+        ])
+        ->add('reactions', TextType::class, [
+            'required' => false,
+            'label' => 'Réactions',
+            'attr' => [
+                'class' => 'form-control',
+            ],
+        ])
+        ->add('legendaryActions', TextType::class, [
+            'required' => false,
+            'label' => 'Actions légendaires',
+            'attr' => [
+                'class' => 'form-control',
             ],
         ])
 
