@@ -16,6 +16,7 @@ use App\Entity\Type;
 use App\Entity\Alignment;
 use App\Entity\Challenge;
 use App\Entity\Language;
+use App\Entity\State;
 use App\Entity\Resistance;
 use App\Entity\Immunity;
 use App\Entity\Vulnerability;
@@ -230,7 +231,7 @@ class MonsterType extends AbstractType
             ],
         ])
         ->add('stateImmunity', EntityType::class, [
-            'class' => Immunity::class,
+            'class' => State::class,
             'multiple' => true,
             'required' => false,
             'label' => 'Immunités aux états',
