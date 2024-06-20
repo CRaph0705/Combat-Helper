@@ -99,6 +99,9 @@ class Monster
     #[ORM\ManyToMany(targetEntity: State::class, inversedBy: 'monsters')]
     private Collection $stateImmunity;
 
+    #[ORM\ManyToMany(targetEntity: DamageType::class, inversedBy: 'immuneMonsters')]
+    private Collection $damageTypeImmunity;
+
     public function __construct()
     {
         $this->language = new ArrayCollection();
@@ -510,6 +513,30 @@ class Monster
     public function removeStateImmunity(State $stateImmunity): static
     {
         $this->stateImmunity->removeElement($stateImmunity);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, DamageType>
+     */
+    public function getDamageTypeImmunity(): Collection
+    {
+        return $this->damageTypeImmunity;
+    }
+
+    public function addDamageTypeImmunity(DamageType $damageTypeImmunity): static
+    {
+        if (!$this->damageTypeImmunity->contains($damageTypeImmunity)) {
+            $this->damageTypeImmunity->add($damageTypeImmunity);
+        }
+
+        return $this;
+    }
+
+    public function removeDamageTypeImmunity(DamageType $damageTypeImmunity): static
+    {
+        $this->damageTypeImmunity->removeElement($damageTypeImmunity);
 
         return $this;
     }

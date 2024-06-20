@@ -18,6 +18,9 @@ class DamageType
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[ORM\ManyToMany(targetEntity: Monster::class, mappedBy: 'damageTypeImmunity')]
+    private Collection $immuneMonsters;
+
     public function __construct()
     {
         $this->immuneMonsters = new ArrayCollection();
@@ -38,6 +41,33 @@ class DamageType
     public function setName(string $name): static
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Monster>
+     */
+    public function getImmuneMonsters(): Collection
+    {
+        return $this->immuneMonsters;
+    }
+
+    public function addImmuneMonster(Monster $immuneMonster): static
+    {
+        if (!$this->immuneMonsters->contains($immuneMonster)) {
+            $this->immuneMonsters->add($immuneMonster);
+            $immuneMonster->addDamageTypeImmunity($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImmuneMonster(Monster $immuneMonster): static
+    {
+        if ($this->immuneMonsters->removeElement($immuneMonster)) {
+            $immuneMonster->removeDamageTypeImmunity($this);
+        }
 
         return $this;
     }
