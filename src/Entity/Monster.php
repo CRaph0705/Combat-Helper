@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\MonsterRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MonsterRepository::class)]
@@ -107,6 +108,18 @@ class Monster
 
     #[ORM\ManyToMany(targetEntity: Resistance::class, inversedBy: 'resistantMonsters')]
     private Collection $damageResistance;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $capacities = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $actions = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $legendaryActions = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $reactions = null;
 
     public function __construct()
     {
@@ -593,6 +606,54 @@ class Monster
     public function removeDamageResistance(Resistance $damageResistance): static
     {
         $this->damageResistance->removeElement($damageResistance);
+
+        return $this;
+    }
+
+    public function getCapacities(): ?string
+    {
+        return $this->capacities;
+    }
+
+    public function setCapacities(?string $capacities): static
+    {
+        $this->capacities = $capacities;
+
+        return $this;
+    }
+
+    public function getActions(): ?string
+    {
+        return $this->actions;
+    }
+
+    public function setActions(?string $actions): static
+    {
+        $this->actions = $actions;
+
+        return $this;
+    }
+
+    public function getLegendaryActions(): ?string
+    {
+        return $this->legendaryActions;
+    }
+
+    public function setLegendaryActions(?string $legendaryActions): static
+    {
+        $this->legendaryActions = $legendaryActions;
+
+        return $this;
+    }
+
+    public function getReactions(): ?string
+    {
+        return $this->reactions;
+    }
+
+    public function setReactions(?string $reactions): static
+    {
+        $this->reactions = $reactions;
 
         return $this;
     }
