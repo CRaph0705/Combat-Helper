@@ -10,7 +10,7 @@
 
 			<p><strong>Classe d'armure</strong> {{ monster.ac }}</p>
 			<p><strong>Points de vie</strong> {{ monster.hp }}</p>
-			<p><strong>Vitesse</strong> {{ monster.speed }}</p>
+			<p><strong>Vitesse</strong> {{ monster.groundspeed }}</p>
 			{# <p><strong>Alignement</strong> {{ monster.alignment }}</p> #}
 
 			<hr class="mb-2 mt-2">
@@ -42,7 +42,7 @@
 			</div>
 
 			<hr class="mb-2 mt-2">
-			<p><strong>Puissance</strong> {{ monster.difficulty }}</p>
+			<p><strong>Puissance</strong> {{ monster.challenge }}</p>
 		</div>
 	</turbo-frame>
 	{# <a href="{{ path('app_monster_edit', {'id': monster.id}) }}">edit</a> #}
