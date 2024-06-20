@@ -75,6 +75,18 @@ class Monster
     #[ORM\ManyToOne(inversedBy: 'monsters')]
     private ?Alignment $alignment = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $tremorsense = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $blindsight = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $darkvision = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $truesight = null;
+
     public function __construct()
     {
     }
@@ -361,6 +373,54 @@ class Monster
     public function setAlignment(?Alignment $alignment): static
     {
         $this->alignment = $alignment;
+
+        return $this;
+    }
+
+    public function getTremorsense(): ?int
+    {
+        return $this->tremorsense;
+    }
+
+    public function setTremorsense(?int $tremorsense): static
+    {
+        $this->tremorsense = $tremorsense;
+
+        return $this;
+    }
+
+    public function getBlindsight(): ?int
+    {
+        return $this->blindsight;
+    }
+
+    public function setBlindsight(?int $blindsight): static
+    {
+        $this->blindsight = $blindsight;
+
+        return $this;
+    }
+
+    public function getDarkvision(): ?int
+    {
+        return $this->darkvision;
+    }
+
+    public function setDarkvision(?int $darkvision): static
+    {
+        $this->darkvision = $darkvision;
+
+        return $this;
+    }
+
+    public function getTruesight(): ?int
+    {
+        return $this->truesight;
+    }
+
+    public function setTruesight(?int $truesight): static
+    {
+        $this->truesight = $truesight;
 
         return $this;
     }
