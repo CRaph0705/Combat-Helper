@@ -211,6 +211,21 @@ class MonsterType extends AbstractType
             // },  
         ])
 
+        ->add('customLanguage', TextType::class, [
+            'required' => false,
+            'label' => 'Langue personnalisée',
+            'attr' => [
+                'class' => 'form-control',
+            ],
+        ])
+
+        ->add('telepathy', IntegerType::class, [
+            'required' => false,
+            'label' => 'Télépathie',
+            'attr' => [
+                'class' => 'form-control',
+            ],
+        ])
 
         ;
         $monster = $options['data'] ?? null;
