@@ -8,6 +8,9 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use App\Entity\Size;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+
 
 class MonsterType extends AbstractType
 {
@@ -124,6 +127,14 @@ class MonsterType extends AbstractType
         ->add('flyspeed', IntegerType::class, [
             'required' => false,
             'label' => 'Vol',
+            'attr' => [
+                'class' => 'form-control',
+            ],
+        ])
+        ->add('size', EntityType::class, [
+            'class' => Size::class,
+            'label' => 'Size',
+            'required' => false,
             'attr' => [
                 'class' => 'form-control',
             ],

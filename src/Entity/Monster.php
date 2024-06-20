@@ -63,6 +63,9 @@ class Monster
     #[ORM\Column(nullable: true)]
     private ?int $swimspeed = null;
 
+    #[ORM\ManyToOne(inversedBy: 'monsters')]
+    private ?Size $size = null;
+
     public function __construct()
     {
     }
@@ -301,6 +304,18 @@ class Monster
     public function setSwimspeed(?int $swimspeed): static
     {
         $this->swimspeed = $swimspeed;
+
+        return $this;
+    }
+
+    public function getSize(): ?Size
+    {
+        return $this->size;
+    }
+
+    public function setSize(?Size $size): static
+    {
+        $this->size = $size;
 
         return $this;
     }

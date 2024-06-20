@@ -1,19 +1,20 @@
 {{ form_start(form) }}
 <div class="container">
 	<div class="row">
-		<div class="col-6">{{ form_row(form.name) }}</div>
+		<div class="col-4">{{ form_row(form.name) }}</div>
+		<div class="col-4">{{ form_row(form.size) }}</div>
+		{# <div class="col-4">{{ form_row(form.challenge) }}</div> #}
 	</div>
 	<div class="row">
 		<div class="col-3">{{ form_row(form.hp) }}</div>
 		<div class="col-3">{{ form_row(form.ac) }}</div>
-        <div class="col-3">{{ form_row(form.groundspeed) }}</div>
 		<div class="col-3">
 			{{ form_row(form.challenge) }}
 		</div>
 	</div>
 	<br>
 
-	<div class="row">
+	<div class="row"><div class="col-12"><h4>Caractéristiques</h3></div>
 		<div class="col-2">
 			{{ form_row(form.strength) }}
 		</div>
@@ -34,6 +35,24 @@
 		</div>
 	</div>
 <br>
+	<div class="row"><div class="col-12"><h4>Déplacements</h3></div>
+	{# label déplacements #}
+		<div class="col-2">
+			{{ form_row(form.groundspeed) }}
+		</div>
+		<div class="col-2">
+			{{ form_row(form.climbspeed) }}
+		</div>
+		<div class="col-2">
+			{{ form_row(form.burrowspeed) }}
+		</div>		
+		<div class="col-2">
+			{{ form_row(form.swimspeed) }}
+		</div>
+		<div class="col-2">
+			{{ form_row(form.flyspeed) }}
+		</div>
+	</div>
 
 	<div class="row">
         
