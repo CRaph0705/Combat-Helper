@@ -8,11 +8,12 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+
 use App\Entity\Size;
 use App\Entity\Type;
 use App\Entity\Alignment;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-
+use App\Entity\Challenge;
 
 class MonsterType extends AbstractType
 {
@@ -89,11 +90,11 @@ class MonsterType extends AbstractType
                 'class' => 'form-control',
             ],
         ])
-        ->add('challenge', TextType::class, [
+        ->add('challenge', EntityType::class, [
             'required' => false,
             'label' => 'FP',
+            'class' => Challenge::class,
             'attr' => [
-                'min' => 0,
                 'class' => 'form-control',
             ],
         ])

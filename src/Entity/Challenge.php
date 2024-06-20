@@ -27,6 +27,11 @@ class Challenge
         return $this->id;
     }
 
+    public function __toString(): string
+    {
+        return $this->name;
+    }
+
     public function getReward(): ?int
     {
         return $this->reward;
