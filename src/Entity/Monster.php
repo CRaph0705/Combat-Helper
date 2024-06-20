@@ -96,9 +96,16 @@ class Monster
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $customLanguage = null;
 
+    #[ORM\ManyToMany(targetEntity: State::class, inversedBy: 'monsters')]
+    private Collection $stateImmunity;
+
     public function __construct()
     {
         $this->language = new ArrayCollection();
+        $this->stateImmunity = new ArrayCollection();
+        $this->damageTypeImmunity = new ArrayCollection();
+        $this->damageTypeVulnerability = new ArrayCollection();
+        $this->resistance = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -482,4 +489,29 @@ class Monster
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, State>
+     */
+    public function getStateImmunity(): Collection
+    {
+        return $this->stateImmunity;
+    }
+
+    public function addStateImmunity(State $stateImmunity): static
+    {
+        if (!$this->stateImmunity->contains($stateImmunity)) {
+            $this->stateImmunity->add($stateImmunity);
+        }
+
+        return $this;
+    }
+
+    public function removeStateImmunity(State $stateImmunity): static
+    {
+        $this->stateImmunity->removeElement($stateImmunity);
+
+        return $this;
+    }
+
 }
