@@ -66,6 +66,12 @@ class Monster
     #[ORM\ManyToOne(inversedBy: 'monsters')]
     private ?Size $size = null;
 
+    #[ORM\ManyToOne(inversedBy: 'monsters')]
+    private ?Type $type = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $subtype = null;
+
     public function __construct()
     {
     }
@@ -316,6 +322,30 @@ class Monster
     public function setSize(?Size $size): static
     {
         $this->size = $size;
+
+        return $this;
+    }
+
+    public function getType(): ?Type
+    {
+        return $this->type;
+    }
+
+    public function setType(?Type $type): static
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getSubtype(): ?string
+    {
+        return $this->subtype;
+    }
+
+    public function setSubtype(?string $subtype): static
+    {
+        $this->subtype = $subtype;
 
         return $this;
     }

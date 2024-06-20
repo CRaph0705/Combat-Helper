@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\Entity\Size;
+use App\Entity\Type;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 
@@ -19,7 +20,7 @@ class MonsterType extends AbstractType
 
     $builder
         ->add('name', TextType::class, [
-            'label' => 'Name',
+            'label' => 'Nom',
             'attr' => [
                 'class' => 'form-control',
             ],
@@ -41,7 +42,7 @@ class MonsterType extends AbstractType
         ])
         ->add('strength', IntegerType::class, [
             'required' => false,
-            'label' => 'STR',
+            'label' => 'Force',
             'attr' => [
                 'min' => 0,
                 'class' => 'form-control',
@@ -49,7 +50,7 @@ class MonsterType extends AbstractType
         ])
         ->add('dexterity', IntegerType::class, [
             'required' => false,
-            'label' => 'DEX',
+            'label' => 'Dextérité',
             'attr' => [
                 'min' => 0,
                 'class' => 'form-control',
@@ -57,7 +58,7 @@ class MonsterType extends AbstractType
         ])
         ->add('constitution', IntegerType::class, [
             'required' => false,
-            'label' => 'CON',
+            'label' => 'Constitution',
             'attr' => [
                 'min' => 0,
                 'class' => 'form-control',
@@ -65,7 +66,7 @@ class MonsterType extends AbstractType
         ])
         ->add('intelligence', IntegerType::class, [
             'required' => false,
-            'label' => 'INT',
+            'label' => 'Intelligence',
             'attr' => [
                 'min' => 0,
                 'class' => 'form-control',
@@ -73,7 +74,7 @@ class MonsterType extends AbstractType
         ])
         ->add('wisdom', IntegerType::class, [
             'required' => false,
-            'label' => 'WIS',
+            'label' => 'Sagesse',
             'attr' => [
                 'min' => 0,
                 'class' => 'form-control',
@@ -81,7 +82,7 @@ class MonsterType extends AbstractType
         ])
         ->add('charisma', IntegerType::class, [
             'required' => false,
-            'label' => 'CHA',
+            'label' => 'Charisme',
             'attr' => [
                 'min' => 0,
                 'class' => 'form-control',
@@ -133,13 +134,27 @@ class MonsterType extends AbstractType
         ])
         ->add('size', EntityType::class, [
             'class' => Size::class,
-            'label' => 'Size',
+            'label' => 'Taille',
             'required' => false,
             'attr' => [
                 'class' => 'form-control',
             ],
         ])
-        
+        ->add('type', EntityType::class, [
+            'class' => Type::class,
+            'label' => 'Type',
+            'required' => false,
+            'attr' => [
+                'class' => 'form-control',
+            ],
+        ])
+        ->add('subtype', TextType::class, [
+            'required' => false,
+            'label' => 'Sous-type',
+            'attr' => [
+                'class' => 'form-control',
+            ],
+        ])
 
         ;
         $monster = $options['data'] ?? null;
