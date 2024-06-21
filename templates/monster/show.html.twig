@@ -10,9 +10,19 @@
 
 			<p><strong>Classe d'armure</strong> {{ monster.ac }}</p>
 			<p><strong>Points de vie</strong> {{ monster.hp }}</p>
-			<p><strong>Vitesse</strong> {{ monster.groundspeed }}</p>
-			{# <p><strong>Alignement</strong> {{ monster.alignment }}</p> #}
-
+			{# {% if monster.groundspeed %} #}
+			<p><strong>Vitesse</strong> 
+				{{ monster.speed }}
+				
+			
+			
+			
+			
+				{# {% endif %} #}
+			</p>
+			{% if monster.alignment %}
+			<p><strong>Alignement</strong> {{ monster.alignment }}</p>
+			{% endif %}
 			<hr class="mb-2 mt-2">
 			<div class="d-flex justify-content-between">
 				<div class"d-flex flex-column">
@@ -39,6 +49,30 @@
 					<p><strong>CHA</strong></p> 
 					<p class="text-center">{{ monster.charisma }}</p>
 				</div>
+			</div>
+			<div><strong>Sens</strong> 
+			{# Perception passive {{ monster.passiveperception }} #}
+			{% if monster.blindsight %}
+			{{ monster.blindsight }}
+			{% endif %}
+			{% if monster.darkvision %}
+			{{ monster.darkvision }}
+			{% endif %}
+			{% if monster.truesight %}
+			{{ monster.truesight }}
+			{% endif %}
+			{% if monster.tremorsense %}
+			{{ monster.tremorsense }}
+			{% endif %}
+			{% if monster.blindsight %}
+			{{ monster.blindsight }}
+			{% endif %}
+			{% if monster.darkvision %}
+			{{ monster.darkvision }}
+			{% endif %}
+			{% if monster.truesight %}
+			{{ monster.truesight }}
+			{% endif %}
 			</div>
 
 			<hr class="mb-2 mt-2">
