@@ -18,7 +18,7 @@ class Language
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\ManyToMany(targetEntity: Monster::class, mappedBy: 'language')]
+    #[ORM\ManyToMany(targetEntity: Monster::class, mappedBy: 'languages')]
     private Collection $monsters;
 
     public function __construct()
