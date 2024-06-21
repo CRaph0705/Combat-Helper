@@ -46,8 +46,9 @@ class Monster
     #[ORM\Column(nullable: true)]
     private ?int $charisma = null;
 
-    #[ORM\Column(length: 10, nullable: true)]
-    private ?string $challenge = null;
+    // #[ORM\Column(length: 10, nullable: true)]
+    #[ORM\ManyToOne(targetEntity: Challenge::class)]
+    private ?Challenge $challenge = null;
 
     #[ORM\Column(nullable: true)]
     private ?float $groundspeed = null;
@@ -263,12 +264,12 @@ class Monster
         return $this;
     }
 
-    public function getChallenge(): ?string
+    public function getChallenge(): ?Challenge
     {
         return $this->challenge;
     }
 
-    public function setChallenge(?string $challenge): self
+    public function setChallenge(?Challenge $challenge): self
     {
         $this->challenge = $challenge;
 
