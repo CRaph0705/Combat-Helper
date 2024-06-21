@@ -50,19 +50,19 @@ class Monster
     private ?string $challenge = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $groundspeed = null;
+    private ?float $groundspeed = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $climbspeed = null;
+    private ?float $climbspeed = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $flyspeed = null;
+    private ?float $flyspeed = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $burrowspeed = null;
+    private ?float $burrowspeed = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $swimspeed = null;
+    private ?float $swimspeed = null;
 
     #[ORM\ManyToOne(inversedBy: 'monsters')]
     private ?Size $size = null;
@@ -190,17 +190,6 @@ class Monster
         return $this;
     }
 
-    public function getSpeed(): ?string
-    {
-        return $this->speed;
-    }
-
-    public function setSpeed(?string $speed): self
-    {
-        $this->speed = $speed;
-
-        return $this;
-    }
 
     public function getStrength(): ?int
     {
@@ -310,60 +299,60 @@ class Monster
         ];
     }
 
-    public function getGroundspeed(): ?int
+    public function getGroundspeed(): ?float
     {
         return $this->groundspeed;
     }
 
-    public function setGroundspeed(?int $groundspeed): static
+    public function setGroundspeed(?float $groundspeed): static
     {
         $this->groundspeed = $groundspeed;
 
         return $this;
     }
 
-    public function getClimbspeed(): ?int
+    public function getClimbspeed(): ?float
     {
         return $this->climbspeed;
     }
 
-    public function setClimbspeed(?int $climbspeed): static
+    public function setClimbspeed(?float $climbspeed): static
     {
         $this->climbspeed = $climbspeed;
 
         return $this;
     }
 
-    public function getFlyspeed(): ?int
+    public function getFlyspeed(): ?float
     {
         return $this->flyspeed;
     }
 
-    public function setFlyspeed(?int $flyspeed): static
+    public function setFlyspeed(?float $flyspeed): static
     {
         $this->flyspeed = $flyspeed;
 
         return $this;
     }
 
-    public function getBurrowspeed(): ?int
+    public function getBurrowspeed(): ?float
     {
         return $this->burrowspeed;
     }
 
-    public function setBurrowspeed(?int $burrowspeed): static
+    public function setBurrowspeed(?float $burrowspeed): static
     {
         $this->burrowspeed = $burrowspeed;
 
         return $this;
     }
 
-    public function getSwimspeed(): ?int
+    public function getSwimspeed(): ?float
     {
         return $this->swimspeed;
     }
 
-    public function setSwimspeed(?int $swimspeed): static
+    public function setSwimspeed(?float $swimspeed): static
     {
         $this->swimspeed = $swimspeed;
 
@@ -658,4 +647,31 @@ class Monster
         return $this;
     }
 
+    public function getSpeed(): string
+    {
+        $speed = '';
+
+        $this->getGroundspeed();
+        $this->getClimbspeed();
+        $this->getFlyspeed();
+        $this->getBurrowspeed();
+        $this->getSwimspeed();
+        
+        $speed .= $this->groundspeed ? ' '.$this->groundspeed.'m' : '0m';
+        $speed .= $this->climbspeed ? ', escalade '.$this->climbspeed.'m' : '';
+        $speed .= $this->flyspeed ? ', vol '.$this->flyspeed.'m' : '';
+        $speed .= $this->burrowspeed ? ', fouissement '.$this->burrowspeed.'m' : '';
+        $speed .= $this->swimspeed ? ', nage '.$this->swimspeed.'m' : '';
+
+        
+        return $speed;
+    }
+
+    public function getStatModulo(int $value): string
+    {
+        $moduloValue = floor(($value - 10) / 2);
+        $modulo = $value < 10 ? '('.$moduloValue .')' : '(+' .$moduloValue .')';
+
+        return $modulo;
+    }
 }
