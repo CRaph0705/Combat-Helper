@@ -89,7 +89,7 @@ class Monster
     private ?int $truesight = null;
 
     #[ORM\ManyToMany(targetEntity: Language::class, inversedBy: 'monsters', cascade: ['persist'])]
-    private Collection $language;
+    private Collection $languages;
 
     #[ORM\Column(nullable: true)]
     private ?int $telepathy = null;
@@ -123,7 +123,7 @@ class Monster
 
     public function __construct()
     {
-        $this->language = new ArrayCollection();
+        $this->languages = new ArrayCollection();
         $this->stateImmunity = new ArrayCollection();
         $this->damageTypeImmunity = new ArrayCollection();
         $this->damageTypeVulnerability = new ArrayCollection();
@@ -458,15 +458,15 @@ class Monster
     /**
      * @return Collection<int, Language>
      */
-    public function getLanguage(): Collection
+    public function getLanguages(): Collection
     {
-        return $this->language;
+        return $this->languages;
     }
 
     public function addLanguage(Language $language): static
     {
-        if (!$this->language->contains($language)) {
-            $this->language->add($language);
+        if (!$this->languages->contains($language)) {
+            $this->languages->add($language);
         }
 
         return $this;
@@ -474,7 +474,7 @@ class Monster
 
     public function removeLanguage(Language $language): static
     {
-        $this->language->removeElement($language);
+        $this->languages->removeElement($language);
 
         return $this;
     }

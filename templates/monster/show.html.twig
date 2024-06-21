@@ -6,19 +6,14 @@
 	<turbo-frame id="monster-details-content">
 		<div class="monster-detail-card">
 			<h1>{{ monster.name }}</h1>
+			{# Le tilde (~) est l'opérateur de concaténation en Twig #}
+			<p><strong> {{ monster.type }} {{ (monster.subtype)? '(' ~ monster.subtype ~ ')'  : '' }}</strong> de taille {{ monster.size }}, {{ (monster.alignment)? monster.alignment : 'non alignée' }}</p> 
 			<hr class="mb-2 mt-2">
-
 			<p><strong>Classe d'armure</strong> {{ monster.ac }}</p>
 			<p><strong>Points de vie</strong> {{ monster.hp }}</p>
 			{# {% if monster.groundspeed %} #}
 			<p><strong>Vitesse</strong> 
 				{{ monster.speed }}
-				
-			
-			
-			
-			
-				{# {% endif %} #}
 			</p>
 			{% if monster.alignment %}
 			<p><strong>Alignement</strong> {{ monster.alignment }}</p>
@@ -27,39 +22,27 @@
 			<div class="d-flex justify-content-between">
 				<div class"d-flex flex-column">
 					<p><strong>FOR</strong></p> 
-					<p class="text-center">{{ monster.strength }}</p>
-					{# {% set strengthModulo = monster.getStatModulo(monster.strength) %} #}
-					<p>{{ monster.getStatModulo(monster.strength) }}</p>
+					<p class="text-center">{{ monster.strength }} {{ monster.getStatModulo(monster.strength) }}</p>
 				</div>
 				<div class"d-flex flex-column">
 					<p><strong>DEX</strong></p> 
-					<p class="text-center">{{ monster.dexterity }}</p>
-					<p>{{ monster.getStatModulo(monster.dexterity) }}</p>
-
+					<p class="text-center">{{ monster.dexterity }} {{ monster.getStatModulo(monster.dexterity) }}</p>
 				</div>
 				<div class"d-flex flex-column">
 					<p><strong>CON</strong></p> 
-					<p class="text-center">{{ monster.constitution }}</p>
-					<p>{{ monster.getStatModulo(monster.constitution) }}</p>
-
+					<p class="text-center">{{ monster.constitution }} {{ monster.getStatModulo(monster.constitution) }}</p>
 				</div>
 				<div class"d-flex flex-column">
 					<p><strong>INT</strong></p> 
-					<p class="text-center">{{ monster.intelligence }}</p>
-					<p>{{ monster.getStatModulo(monster.intelligence) }}</p>
-
+					<p class="text-center">{{ monster.intelligence }} {{ monster.getStatModulo(monster.intelligence) }}</p>
 				</div>
 				<div class"d-flex flex-column">
 					<p><strong>SAG</strong></p> 
-					<p class="text-center">{{ monster.wisdom }}</p>
-					<p>{{ monster.getStatModulo(monster.wisdom) }}</p>
-
+					<p class="text-center">{{ monster.wisdom }} {{ monster.getStatModulo(monster.wisdom) }}</p>
 				</div>
 				<div class"d-flex flex-column">
 					<p><strong>CHA</strong></p> 
-					<p class="text-center">{{ monster.charisma }}</p>
-					<p>{{ monster.getStatModulo(monster.charisma) }}</p>
-
+					<p class="text-center">{{ monster.charisma }} {{ monster.getStatModulo(monster.charisma) }}</p>
 				</div>
 			</div>
 			<div><strong>Sens</strong> 
@@ -86,9 +69,19 @@
 			{{ monster.truesight }}
 			{% endif %}
 			</div>
+			{% if monster.languages is not empty %}
+				<p><strong>Langues :</strong> 
+					{% for language in monster.languages %}
+						{{ language.name }}</p>
+					{% endfor %}
+			{% endif %}
+			{% if monster.challenge %}
+			<p><strong>Challenge</strong> {{ monster.challenge }}</p>
+			{% endif %}
+
+
 
 			<hr class="mb-2 mt-2">
-			<p><strong>Puissance</strong> {{ monster.challenge }}</p>
 		</div>
 	</turbo-frame>
 	{# <a href="{{ path('app_monster_edit', {'id': monster.id}) }}">edit</a> #}
