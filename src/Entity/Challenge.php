@@ -13,9 +13,6 @@ class Challenge
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $reward = null;
-
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
@@ -30,18 +27,6 @@ class Challenge
     public function __toString(): string
     {
         return $this->name;
-    }
-
-    public function getReward(): ?int
-    {
-        return $this->reward;
-    }
-
-    public function setReward(?int $reward): static
-    {
-        $this->reward = $reward;
-
-        return $this;
     }
 
     public function getName(): ?string
