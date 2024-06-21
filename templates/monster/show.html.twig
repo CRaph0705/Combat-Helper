@@ -6,8 +6,9 @@
 	<turbo-frame id="monster-details-content">
 		<div class="monster-detail-card">
 			<h1>{{ monster.name }}</h1>
+			{# Le tilde (~) est l'opérateur de concaténation en Twig #}
+			<p><strong> {{ monster.type }} {{ (monster.subtype)? '(' ~ monster.subtype ~ ')'  : '' }}</strong> de taille {{ monster.size }}, {{ (monster.alignment)? monster.alignment : 'non alignée' }}</p> 
 			<hr class="mb-2 mt-2">
-
 			<p><strong>Classe d'armure</strong> {{ monster.ac }}</p>
 			<p><strong>Points de vie</strong> {{ monster.hp }}</p>
 			{# {% if monster.groundspeed %} #}
