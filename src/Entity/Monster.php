@@ -666,4 +666,12 @@ class Monster
         
         return $speed;
     }
+
+    public function getStatModulo(int $value): string
+    {
+        $moduloValue = floor(($value - 10) / 2);
+        $modulo = $value < 10 ? '('.$moduloValue .')' : '(+' .$moduloValue .')';
+
+        return $modulo;
+    }
 }
