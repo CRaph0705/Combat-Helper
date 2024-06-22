@@ -203,7 +203,7 @@ class MonsterType extends AbstractType
             ],
         ])
         //Langues & communication
-        ->add('language', EntityType::class, [
+        ->add('languages', EntityType::class, [
             'class' => Language::class,
             'multiple' => true,
             // 'expanded' => true,
