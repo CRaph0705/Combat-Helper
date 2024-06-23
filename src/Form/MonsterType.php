@@ -21,6 +21,8 @@ use App\Entity\Resistance;
 use App\Entity\Immunity;
 use App\Entity\Vulnerability;
 use App\Entity\SavingThrow;
+use App\Entity\ProficientSkill;
+use App\Entity\ExpertSkill;
 
 class MonsterType extends AbstractType
 {
@@ -311,6 +313,26 @@ class MonsterType extends AbstractType
                 ],
             ])
 
+            ->add('proficientSkill', EntityType::class, [
+                'class' => ProficientSkill::class,
+                'multiple' => true,
+                'required' => false,
+                'label' => 'Compétences maîtrisées',
+                'attr' => [
+                    'class' => 'checkbox-container',
+                ],
+            ])
+        
+
+            ->add('expertSkill', EntityType::class, [
+                'class' => ExpertSkill::class,
+                'multiple' => true,
+                'required' => false,
+                'label' => 'Compétences expertes',
+                'attr' => [
+                    'class' => 'checkbox-container',
+                ],
+            ])
         ;
         $monster = $options['data'] ?? null;
         if ($monster instanceof Monster) {
