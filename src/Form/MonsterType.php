@@ -20,6 +20,7 @@ use App\Entity\State;
 use App\Entity\Resistance;
 use App\Entity\Immunity;
 use App\Entity\Vulnerability;
+use App\Entity\SavingThrow;
 
 class MonsterType extends AbstractType
 {
@@ -298,6 +299,15 @@ class MonsterType extends AbstractType
                 'label' => 'Actions légendaires',
                 'attr' => [
                     'class' => 'form-control',
+                ],
+            ])
+            ->add('savingThrows', EntityType::class, [
+                'class' => SavingThrow::class,
+                'multiple' => true,
+                'required' => false,
+                'label' => 'Jets de sauvegarde',
+                'attr' => [
+                    'class' => 'checkbox-container',
                 ],
             ])
 

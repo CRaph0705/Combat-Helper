@@ -122,6 +122,18 @@ class Monster
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $reactions = null;
 
+    #[ORM\ManyToMany(targetEntity: ProficientSkill::class, inversedBy: 'monsters')]
+    private Collection $proficientSkill;
+
+    #[ORM\ManyToMany(targetEntity: ExpertSkill::class, inversedBy: 'monsters')]
+    private Collection $expertSkill;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $masteryBonus = null;
+
+    #[ORM\ManyToMany(targetEntity: SavingThrow::class, inversedBy: 'monsters')]
+    private Collection $savingThrows;
+
     public function __construct()
     {
         $this->languages = new ArrayCollection();
@@ -131,6 +143,9 @@ class Monster
         $this->damageResistance = new ArrayCollection();
         $this->damageVulnerability = new ArrayCollection();
         $this->damageImmunity = new ArrayCollection();
+        $this->proficientSkill = new ArrayCollection();
+        $this->expertSkill = new ArrayCollection();
+        $this->savingThrows = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -674,5 +689,89 @@ class Monster
         $modulo = $value < 10 ? '('.$moduloValue .')' : '(+' .$moduloValue .')';
 
         return $modulo;
+    }
+
+    /**
+     * @return Collection<int, ProficientSkill>
+     */
+    public function getProficientSkill(): Collection
+    {
+        return $this->proficientSkill;
+    }
+
+    public function addProficientSkill(ProficientSkill $proficientSkill): static
+    {
+        if (!$this->proficientSkill->contains($proficientSkill)) {
+            $this->proficientSkill->add($proficientSkill);
+        }
+
+        return $this;
+    }
+
+    public function removeProficientSkill(ProficientSkill $proficientSkill): static
+    {
+        $this->proficientSkill->removeElement($proficientSkill);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ExpertSkill>
+     */
+    public function getExpertSkill(): Collection
+    {
+        return $this->expertSkill;
+    }
+
+    public function addExpertSkill(ExpertSkill $expertSkill): static
+    {
+        if (!$this->expertSkill->contains($expertSkill)) {
+            $this->expertSkill->add($expertSkill);
+        }
+
+        return $this;
+    }
+
+    public function removeExpertSkill(ExpertSkill $expertSkill): static
+    {
+        $this->expertSkill->removeElement($expertSkill);
+
+        return $this;
+    }
+
+    public function getMasteryBonus(): ?int
+    {
+        return $this->masteryBonus;
+    }
+
+    public function setMasteryBonus(?int $masteryBonus): static
+    {
+        $this->masteryBonus = $masteryBonus;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SavingThrow>
+     */
+    public function getSavingThrows(): Collection
+    {
+        return $this->savingThrows;
+    }
+
+    public function addSavingThrow(SavingThrow $savingThrow): static
+    {
+        if (!$this->savingThrows->contains($savingThrow)) {
+            $this->savingThrows->add($savingThrow);
+        }
+
+        return $this;
+    }
+
+    public function removeSavingThrow(SavingThrow $savingThrow): static
+    {
+        $this->savingThrows->removeElement($savingThrow);
+
+        return $this;
     }
 }

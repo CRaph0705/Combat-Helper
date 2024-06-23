@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\ProficientSkillRepository;
+use App\Repository\SavingThrowRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ProficientSkillRepository::class)]
-class ProficientSkill
+#[ORM\Entity(repositoryClass: SavingThrowRepository::class)]
+class SavingThrow
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -18,12 +18,17 @@ class ProficientSkill
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\ManyToMany(targetEntity: Monster::class, mappedBy: 'proficientSkill')]
+    #[ORM\ManyToMany(targetEntity: Monster::class, mappedBy: 'savingThrows')]
     private Collection $monsters;
 
     public function __construct()
     {
         $this->monsters = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
     }
 
     public function getId(): ?int
@@ -55,7 +60,7 @@ class ProficientSkill
     {
         if (!$this->monsters->contains($monster)) {
             $this->monsters->add($monster);
-            $monster->addProficientSkill($this);
+            $monster->addSavingThrow($this);
         }
 
         return $this;
@@ -64,7 +69,7 @@ class ProficientSkill
     public function removeMonster(Monster $monster): static
     {
         if ($this->monsters->removeElement($monster)) {
-            $monster->removeProficientSkill($this);
+            $monster->removeSavingThrow($this);
         }
 
         return $this;
