@@ -1,19 +1,20 @@
 {{ form_start(form) }}
 <div class="container">
 	<div class="row">
-		<div class="col-6">{{ form_row(form.name) }}</div>
+		<div class="col-4">{{ form_row(form.name) }}</div>
+		<div class="col-4">{{ form_row(form.size) }}</div>
+		<div class="col-4">{{ form_row(form.challenge) }}</div>
 	</div>
-	<div class="row">
-		<div class="col-3">{{ form_row(form.hp) }}</div>
-		<div class="col-3">{{ form_row(form.ac) }}</div>
-        <div class="col-3">{{ form_row(form.speed) }}</div>
-		<div class="col-3">
-			{{ form_row(form.difficulty) }}
-		</div>
-	</div>
-	<br>
 
 	<div class="row">
+		<div class="col-4">{{ form_row(form.type) }}</div>
+		<div class="col-4">{{ form_row(form.subtype) }}</div>
+		<div class="col-4">{{ form_row(form.alignment) }}</div>
+	</div>
+
+	<br>
+
+	<div class="row"><div class="col-12"><h4>Caractéristiques</h4></div>
 		<div class="col-2">
 			{{ form_row(form.strength) }}
 		</div>
@@ -33,13 +34,80 @@
 			{{ form_row(form.charisma) }}
 		</div>
 	</div>
-<br>
 
-	<div class="row">
-        
+	<br>
+
+	<div class="row"><div class="col-12"><h4>Défenses</h4></div>
+		<div class="col-3">{{ form_row(form.hp) }}</div>
+		<div class="col-3">{{ form_row(form.ac) }}</div>
+		<div class="col-3">
+		</div>
+	</div>
+
+	<br>
+
+	<div class="row"><div class="col-12"><h4>Maîtrises</h4></div>
+		<div class="col-4">{{ form_row(form.savingThrows) }}</div>
+		<div class="col-4">{{ form_row(form.proficientSkill) }}</div>
+		<div class="col-4">{{ form_row(form.expertSkill) }}</div>
+	</div>
+
+	<div class="row"><div class="col-12"><h4>Résistances et vulnérabilités</h4></div>
+		<div class="col-3">{{ form_row(form.stateImmunity) }}</div>
+		<div class="col-3">{{ form_row(form.damageResistance) }}</div>
+		<div class="col-3">{{ form_row(form.damageVulnerability) }}</div>
+		<div class="col-3">{{ form_row(form.damageImmunity) }}</div>
+	</div>
+
+	<br>
+
+	<div class="row"><div class="col-12"><h4>Déplacements</h3></div>
+		{# label déplacements #}
+		<div class="col-2">
+			{{ form_row(form.groundspeed) }}
+		</div>
+		<div class="col-2">
+			{{ form_row(form.climbspeed) }}
+		</div>
+		<div class="col-2">
+			{{ form_row(form.burrowspeed) }}
+		</div>		
+		<div class="col-2">
+			{{ form_row(form.swimspeed) }}
+		</div>
+		<div class="col-2">
+			{{ form_row(form.flyspeed) }}
+		</div>
+	</div>
+
+	<br>
+
+	<div class="row"><div class="col-12"><h4>Sens</h4></div>
+		<div class="col-3">{{ form_row(form.tremorsense) }}</div>
+		<div class="col-3">{{ form_row(form.blindsight) }}</div>
+		<div class="col-3">{{ form_row(form.darkvision) }}</div>
+		<div class="col-3">{{ form_row(form.truesight) }}</div>
+	</div>
+
+	<br>
+	
+	<div class="row"><h4>Langues et communication</h4>
+        <div class="col-3">{{ form_row(form.languages) }}</div>
+        <div class="col-3">{{ form_row(form.customLanguage) }}</div>
+		<div class="col-3">{{ form_row(form.telepathy) }}</div>
+	</div>
+	
+	<br>
+
+	<div class="row"><h4>Capacités, Actions, Réactions et Actions légendaires</h4>
+		<div class="col-3">{{ form_row(form.capacities) }}</div>
+		<div class="col-3">{{ form_row(form.actions) }}</div>
+		<div class="col-3">{{ form_row(form.reactions) }}</div>
+		<div class="col-3">{{ form_row(form.legendaryActions) }}</div>
 	</div>
 </div>
+<br>
 <div class="button-container">
-	<button class="btn btn-default btn-save">{{ button_label|default('Save') }}</button>
+	<button class="btn btn-default btn-save">{{ button_label|default('Enregistrer') }}</button>
 </div>
 {{ form_end(form) }}

@@ -11,7 +11,7 @@ install: ## Install the project
 	npm install
 
 rebuild: ## Rebuild the project
-	rm -rf var/cache/*
+## rm -rf var/cache/*
 	symfony console doctrine:database:drop -f
 	symfony console doctrine:database:create
 	symfony console doctrine:schema:update -f
