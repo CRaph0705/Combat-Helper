@@ -1,109 +1,109 @@
 {{ form_start(form) }}
 <div class="container">
 	<div class="row">
-		<div class="col-4">{{ form_row(form.name) }}</div>
-		<div class="col-4">{{ form_row(form.size) }}</div>
-		<div class="col-4">{{ form_row(form.challenge) }}</div>
+		<div class="col-4 form-item-container">{{ form_row(form.name, {'attr': {'data-controller': 'form-control', 'class': 'form-item'}}) }}</div>
+		<div class="col-4 form-item-container">{{ form_row(form.size, {'attr': {'data-controller': 'single-select', 'class': 'form-item'}}) }}</div>
+		<div class="col-4 form-item-container">{{ form_row(form.challenge, {'attr': {'data-controller': 'single-select', 'class': 'form-item'}}) }}</div>
 	</div>
 
 	<div class="row">
-		<div class="col-4">{{ form_row(form.type) }}</div>
-		<div class="col-4">{{ form_row(form.subtype) }}</div>
-		<div class="col-4">{{ form_row(form.alignment) }}</div>
+		<div class="col-4 form-item-container">{{ form_row(form.type, {'attr': {'data-controller': 'single-select', 'class': 'form-item'}}) }}</div>
+		<div class="col-4 form-item-container">{{ form_row(form.subtype, {'attr': {'data-controller': 'form-control', 'class': 'form-item'}}) }}</div>
+		<div class="col-4 form-item-container">{{ form_row(form.alignment, {'attr': {'data-controller': 'single-select', 'class': 'form-item'}}) }}</div>
 	</div>
 
 	<br>
 
 	<div class="row"><div class="col-12"><h4>Caractéristiques</h4></div>
-		<div class="col-2">
-			{{ form_row(form.strength) }}
+		<div class="col-2 form-item-container">
+			{{ form_row(form.strength, {'attr': {'data-controller': 'form-control', 'class': 'form-item'}}) }}
 		</div>
-		<div class="col-2">
-			{{ form_row(form.dexterity) }}
+		<div class="col-2 form-item-container">
+			{{ form_row(form.dexterity, {'attr': {'data-controller': 'form-control', 'class': 'form-item'}}) }}
 		</div>
-		<div class="col-2">
-			{{ form_row(form.constitution) }}
+		<div class="col-2 form-item-container">
+			{{ form_row(form.constitution, {'attr': {'data-controller': 'form-control', 'class': 'form-item'}}) }}
 		</div>
-		<div class="col-2">
-			{{ form_row(form.intelligence) }}
+		<div class="col-2 form-item-container">
+			{{ form_row(form.intelligence, {'attr': {'data-controller': 'form-control', 'class': 'form-item'}}) }}
 		</div>
-		<div class="col-2">
-			{{ form_row(form.wisdom) }}
+		<div class="col-2 form-item-container">
+			{{ form_row(form.wisdom, {'attr': {'data-controller': 'form-control', 'class': 'form-item'}}) }}
 		</div>
-		<div class="col-2">
-			{{ form_row(form.charisma) }}
+		<div class="col-2 form-item-container">
+			{{ form_row(form.charisma, {'attr': {'data-controller': 'form-control', 'class': 'form-item'}}) }}
 		</div>
 	</div>
 
 	<br>
 
 	<div class="row"><div class="col-12"><h4>Défenses</h4></div>
-		<div class="col-3">{{ form_row(form.hp) }}</div>
-		<div class="col-3">{{ form_row(form.ac) }}</div>
-		<div class="col-3">
+		<div class="col-3 form-item-container">{{ form_row(form.hp, {'attr': {'data-controller': 'form-control', 'class': 'form-item'}}) }}</div>
+		<div class="col-3 form-item-container">{{ form_row(form.ac, {'attr': {'data-controller': 'form-control', 'class': 'form-item'}}) }}</div>
+		<div class="col-6">
 		</div>
 	</div>
 
 	<br>
 
 	<div class="row"><div class="col-12"><h4>Maîtrises</h4></div>
-		<div class="col-4">{{ form_row(form.savingThrows) }}</div>
-		<div class="col-4">{{ form_row(form.proficientSkill) }}</div>
-		<div class="col-4">{{ form_row(form.expertSkill) }}</div>
+		<div class="col-4 form-item-container">{{ form_row(form.savingThrows, {'attr': {'data-controller': 'select2', 'class': 'form-item'}}) }}</div>
+		<div class="col-4 form-item-container">{{ form_row(form.proficientSkill, {'attr': {'data-controller': 'select2', 'class': 'form-item'}}) }}</div>
+		<div class="col-4 form-item-container">{{ form_row(form.expertSkill, {'attr': {'data-controller': 'select2', 'class': 'form-item'}}) }}</div>
 	</div>
 
 	<div class="row"><div class="col-12"><h4>Résistances et vulnérabilités</h4></div>
-		<div class="col-3">{{ form_row(form.stateImmunity) }}</div>
-		<div class="col-3">{{ form_row(form.damageResistance) }}</div>
-		<div class="col-3">{{ form_row(form.damageVulnerability) }}</div>
-		<div class="col-3">{{ form_row(form.damageImmunity) }}</div>
+		<div class="col-3 form-item-container">{{ form_row(form.stateImmunity, {'attr': {'data-controller': 'select2', 'class': 'form-item'}}) }}</div>
+		<div class="col-3 form-item-container">{{ form_row(form.damageImmunity, {'attr': {'data-controller': 'select2', 'class': 'form-item'}}) }}</div>
+		<div class="col-3 form-item-container">{{ form_row(form.damageResistance, {'attr': {'data-controller': 'select2', 'class': 'form-item'}}) }}</div>
+		<div class="col-3 form-item-container">{{ form_row(form.damageVulnerability, {'attr': {'data-controller': 'select2', 'class': 'form-item'}}) }}</div>
 	</div>
 
 	<br>
 
 	<div class="row"><div class="col-12"><h4>Déplacements</h3></div>
 		{# label déplacements #}
-		<div class="col-2">
-			{{ form_row(form.groundspeed) }}
+		<div class="col-2 form-item-container">
+			{{ form_row(form.groundspeed, {'attr': {'data-controller': 'form-control', 'class': 'form-item'}}) }}
 		</div>
-		<div class="col-2">
-			{{ form_row(form.climbspeed) }}
+		<div class="col-2 form-item-container">
+			{{ form_row(form.climbspeed, {'attr': {'data-controller': 'form-control', 'class': 'form-item'}}) }}
 		</div>
-		<div class="col-2">
-			{{ form_row(form.burrowspeed) }}
+		<div class="col-2 form-item-container">
+			{{ form_row(form.burrowspeed, {'attr': {'data-controller': 'form-control', 'class': 'form-item'}}) }}
 		</div>		
-		<div class="col-2">
-			{{ form_row(form.swimspeed) }}
+		<div class="col-2 form-item-container">
+			{{ form_row(form.swimspeed, {'attr': {'data-controller': 'form-control', 'class': 'form-item'}}) }}
 		</div>
-		<div class="col-2">
-			{{ form_row(form.flyspeed) }}
+		<div class="col-2 form-item-container">
+			{{ form_row(form.flyspeed, {'attr': {'data-controller': 'form-control', 'class': 'form-item'}}) }}
 		</div>
 	</div>
 
 	<br>
 
 	<div class="row"><div class="col-12"><h4>Sens</h4></div>
-		<div class="col-3">{{ form_row(form.tremorsense) }}</div>
-		<div class="col-3">{{ form_row(form.blindsight) }}</div>
-		<div class="col-3">{{ form_row(form.darkvision) }}</div>
-		<div class="col-3">{{ form_row(form.truesight) }}</div>
+		<div class="col-3 form-item-container">{{ form_row(form.tremorsense, {'attr': {'data-controller': 'form-control', 'class': 'form-item'}}) }}</div>
+		<div class="col-3 form-item-container">{{ form_row(form.blindsight, {'attr': {'data-controller': 'form-control', 'class': 'form-item'}}) }}</div>
+		<div class="col-3 form-item-container">{{ form_row(form.darkvision, {'attr': {'data-controller': 'form-control', 'class': 'form-item'}}) }}</div>
+		<div class="col-3 form-item-container">{{ form_row(form.truesight, {'attr': {'data-controller': 'form-control', 'class': 'form-item'}}) }}</div>
 	</div>
 
 	<br>
 	
 	<div class="row"><h4>Langues et communication</h4>
-        <div class="col-3">{{ form_row(form.languages) }}</div>
-        <div class="col-3">{{ form_row(form.customLanguage) }}</div>
-		<div class="col-3">{{ form_row(form.telepathy) }}</div>
+        <div class="col-3 form-item-container">{{ form_row(form.languages, {'attr': {'data-controller': 'select2', 'class': 'form-item'}}) }}</div>
+        <div class="col-3 form-item-container">{{ form_row(form.customLanguage, {'attr': {'data-controller': 'form-control', 'class': 'form-item'}}) }}</div>
+		<div class="col-3 form-item-container">{{ form_row(form.telepathy, {'attr': {'data-controller': 'form-control', 'class': 'form-item'}}) }}</div>
 	</div>
 	
 	<br>
 
 	<div class="row"><h4>Capacités, Actions, Réactions et Actions légendaires</h4>
-		<div class="col-3">{{ form_row(form.capacities) }}</div>
-		<div class="col-3">{{ form_row(form.actions) }}</div>
-		<div class="col-3">{{ form_row(form.reactions) }}</div>
-		<div class="col-3">{{ form_row(form.legendaryActions) }}</div>
+		<div class="col-3 form-item-container">{{ form_row(form.capacities, {'attr': {'data-controller': 'form-control', 'class': 'form-item'}}) }}</div>
+		<div class="col-3 form-item-container">{{ form_row(form.actions, {'attr': {'data-controller': 'form-control', 'class': 'form-item'}}) }}</div>
+		<div class="col-3 form-item-container">{{ form_row(form.reactions, {'attr': {'data-controller': 'form-control', 'class': 'form-item'}}) }}</div>
+		<div class="col-3 form-item-container">{{ form_row(form.legendaryActions, {'attr': {'data-controller': 'form-control', 'class': 'form-item'}}) }}</div>
 	</div>
 </div>
 <br>

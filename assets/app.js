@@ -29,4 +29,7 @@ import { definitionsFromContext } from 'stimulus/webpack-helpers';
 import './bootstrap';
 // Démarrez le code JavaScript spécifique à votre application après avoir initialisé l'application Stimulus
 
+// select2 pour les selects multiples
+import 'select2/dist/css/select2.css';
 
+import 'select2';
