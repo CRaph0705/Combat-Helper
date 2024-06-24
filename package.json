@@ -29,6 +29,7 @@
     "dependencies": {
         "jquery": "^3.7.1",
         "sass": "^1.69.5",
+        "select2": "^4.1.0-rc.0",
         "stimulus": "^3.2.1",
         "swiper": "^11.0.5"
     }

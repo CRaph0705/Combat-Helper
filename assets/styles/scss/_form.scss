@@ -1,0 +1,19 @@
+.form-item-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-item {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+
+    input[type="text"] {
+        box-sizing: border-box;
+        white-space: normal;
+        overflow: hidden;
+        resize: vertical;
+    }
+}
