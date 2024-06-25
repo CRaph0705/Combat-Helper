@@ -8,6 +8,22 @@ use Doctrine\Persistence\ObjectManager;
 
 class StateFixtures extends Fixture
 {
+    public const STATE_PRONE = 'prone';
+    public const STATE_GRAPPLED = 'grappled';
+    public const STATE_DEAFENED = 'deafened';
+    public const STATE_BLINDED = 'blinded';
+    public const STATE_CHARMED = 'charmed';
+    public const STATE_FRIGHTENED = 'frightened';
+    public const STATE_POISONED = 'poisoned';
+    public const STATE_RESTRAINED = 'restrained';
+    public const STATE_STUNNED = 'stunned';
+    public const STATE_INCAPACITATED = 'incapacitated';
+    public const STATE_UNCONSCIOUS = 'unconscious';
+    public const STATE_INVISIBLE = 'invisible';
+    public const STATE_PARALYZED = 'paralyzed';
+    public const STATE_PETRIFIED = 'petrified';
+
+
     public function load(ObjectManager $manager): void
     {
         // à terre
@@ -19,6 +35,7 @@ class StateFixtures extends Fixture
         Un jet d'attaque contre la créature a un avantage si l'attaquant est à 1,50 mètre ou moins de la créature. Sinon, le jet d'attaque a un désavantage.
         ");
         $manager->persist($prone);
+        $this->addReference(self::STATE_PRONE, $prone);
 
         // agrippé
         $grappled = new State();
@@ -29,6 +46,7 @@ class StateFixtures extends Fixture
         L'état se termine également si un effet met la créature agrippée hors de portée de la créature ou de l'effet qui l'agrippe, comme par exemple lorsqu'une créature est projetée par le sort vague tonnante.
         ");
         $manager->persist($grappled);
+        $this->addReference(self::STATE_GRAPPLED, $grappled);
 
         // assourdi
         $deafened = new State();
@@ -37,6 +55,7 @@ class StateFixtures extends Fixture
         Une créature assourdie ne peut entendre et automatiquement échoue à tout jet de sauvegarde qui nécessite l'ouïe.
         ");
         $manager->persist($deafened);
+        $this->addReference(self::STATE_DEAFENED, $deafened);
 
         // aveuglé
         $blinded = new State();
@@ -46,6 +65,7 @@ class StateFixtures extends Fixture
         Les jets d'attaque contre la créature ont un avantage, et les jets d'attaque de la créature ont un désavantage.
         ");
         $manager->persist($blinded);
+        $this->addReference(self::STATE_BLINDED, $blinded);
 
         // charmé
         $charmed = new State();
@@ -55,6 +75,7 @@ class StateFixtures extends Fixture
         Le charmeur a un avantage à ses jets de caractéristique pour interagir socialement avec la créature.
         ");
         $manager->persist($charmed);
+        $this->addReference(self::STATE_CHARMED, $charmed);
 
          // effrayé
          $frightened = new State();
@@ -64,6 +85,7 @@ class StateFixtures extends Fixture
         La créature ne peut se rapprocher volontairement de la source de sa peur.
         ");
          $manager->persist($frightened);
+        $this->addReference(self::STATE_FRIGHTENED, $frightened);
 
         // empoisonné
         $poisoned = new State();
@@ -72,6 +94,7 @@ class StateFixtures extends Fixture
         Une créature empoisonnée a un désavantage à ses jets de caractéristique et à ses jets d'attaque.
         ");
         $manager->persist($poisoned);
+        $this->addReference(self::STATE_POISONED, $poisoned);
        
         // entravé
         $restrained = new State();
@@ -82,6 +105,7 @@ class StateFixtures extends Fixture
         La créature a un désavantage aux jets de sauvegarde de Dextérité.
         ");
         $manager->persist($restrained);
+        $this->addReference(self::STATE_RESTRAINED, $restrained);
 
         // étourdi
         $stunned = new State();
@@ -92,6 +116,7 @@ class StateFixtures extends Fixture
         Les jets d'attaque contre la créature ont un avantage.
         ");
         $manager->persist($stunned);
+        $this->addReference(self::STATE_STUNNED, $stunned);
 
         // Incapable d'agir / Neutralisé [Incapacitated]
         $incapacitated = new State();
@@ -100,6 +125,7 @@ class StateFixtures extends Fixture
         Une créature neutralisée ne peut pas effectuer d'actions ou de réactions.
         ");
         $manager->persist($incapacitated);
+        $this->addReference(self::STATE_INCAPACITATED, $incapacitated);
 
         // inconscient
         $unconscious = new State();
@@ -112,6 +138,7 @@ class StateFixtures extends Fixture
         Toute attaque qui touche la créature est un coup critique si l'attaquant est à 1,50 mètre ou moins de la créature.
         ");
         $manager->persist($unconscious);
+        $this->addReference(self::STATE_UNCONSCIOUS, $unconscious);
 
         // invisible
         $invisible = new State();
@@ -121,6 +148,7 @@ class StateFixtures extends Fixture
         Les jets d'attaque contre la créature ont un désavantage, et les jets d'attaque de la créature ont un avantage.
         ");
         $manager->persist($invisible);
+        $this->addReference(self::STATE_INVISIBLE, $invisible);
 
    
         // paralysé
@@ -133,6 +161,7 @@ class StateFixtures extends Fixture
         Toute attaque qui touche la créature est un coup critique si l'attaquant est à 1,50 mètre ou moins de la créature.
         ");
         $manager->persist($paralyzed);
+        $this->addReference(self::STATE_PARALYZED, $paralyzed);
 
         // pétrifié
         $petrified = new State();
@@ -146,6 +175,7 @@ class StateFixtures extends Fixture
         La créature est immunisée contre le poison et la maladie, mais un poison ou une maladie déjà dans son organisme est seulement suspendu, pas neutralisé.
         ");
         $manager->persist($petrified);
+        $this->addReference(self::STATE_PETRIFIED, $petrified);
 
        
 
