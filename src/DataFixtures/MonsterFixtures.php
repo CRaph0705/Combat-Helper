@@ -216,7 +216,18 @@ class MonsterFixtures extends Fixture implements DependentFixtureInterface
     public function getDependencies(): array
     {
         return [
+            AlignmentFixtures::class,
             ChallengeFixtures::class,
+            ExpertSkillFixtures::class,
+            ImmunityFixtures::class,
+            LanguageFixtures::class,
+            ProficientSkillFixtures::class,
+            ResistanceFixtures::class,
+            SavingThrowFixtures::class,
+            SizeFixtures::class,
+            StateFixtures::class,
+            TypeFixtures::class,
+            VulnerabilityFixtures::class,
         ];
     }
 }

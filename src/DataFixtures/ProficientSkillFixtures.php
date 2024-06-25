@@ -8,6 +8,24 @@ use Doctrine\Persistence\ObjectManager;
 
 class ProficientSkillFixtures extends Fixture
 {
+    public const PROFICIENT_SKILL_ACROBATICS = 'proficient-skill-acrobatics';
+    public const PROFICIENT_SKILL_ARCANA = 'proficient-skill-arcana';
+    public const PROFICIENT_SKILL_ATHLETICS = 'proficient-skill-athletics';
+    public const PROFICIENT_SKILL_STEALTH = 'proficient-skill-stealth';
+    public const PROFICIENT_SKILL_ANIMAL_HANDLING = 'proficient-skill-animal-handling';
+    public const PROFICIENT_SKILL_SLEIGHT_OF_HAND = 'proficient-skill-sleight-of-hand';
+    public const PROFICIENT_SKILL_HISTORY = 'proficient-skill-history';
+    public const PROFICIENT_SKILL_INTIMIDATION = 'proficient-skill-intimidation';
+    public const PROFICIENT_SKILL_INVESTIGATION = 'proficient-skill-investigation';
+    public const PROFICIENT_SKILL_MEDICINE = 'proficient-skill-medicine';
+    public const PROFICIENT_SKILL_NATURE = 'proficient-skill-nature';
+    public const PROFICIENT_SKILL_PERCEPTION = 'proficient-skill-perception';
+    public const PROFICIENT_SKILL_INSIGHT = 'proficient-skill-insight';
+    public const PROFICIENT_SKILL_PERSUASION = 'proficient-skill-persuasion';
+    public const PROFICIENT_SKILL_RELIGION = 'proficient-skill-religion';
+    public const PROFICIENT_SKILL_PERFORMANCE = 'proficient-skill-performance';
+    public const PROFICIENT_SKILL_SURVIVAL = 'proficient-skill-survival';
+
     public function load(ObjectManager $manager): void
     {
         $acrobatics = new ProficientSkill();
@@ -21,6 +39,7 @@ class ProficientSkillFixtures extends Fixture
         $athletics = new ProficientSkill();
         $athletics->setName('Athlétisme');
         $manager->persist($athletics);
+
         $stealth = new ProficientSkill();
         $stealth->setName('Discrétion');
         $manager->persist($stealth);

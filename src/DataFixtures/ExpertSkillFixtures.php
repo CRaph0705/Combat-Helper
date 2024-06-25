@@ -8,6 +8,24 @@ use Doctrine\Persistence\ObjectManager;
 
 class ExpertSkillFixtures extends Fixture
 {
+    public const EXPERT_SKILL_ACROBATICS = 'expert-skill-acrobatics';
+    public const EXPERT_SKILL_ARCANA = 'expert-skill-arcana';
+    public const EXPERT_SKILL_ATHLETICS = 'expert-skill-athletics';
+    public const EXPERT_SKILL_STEALTH = 'expert-skill-stealth';
+    public const EXPERT_SKILL_ANIMAL_HANDLING = 'expert-skill-animal-handling';
+    public const EXPERT_SKILL_SLEIGHT_OF_HAND = 'expert-skill-sleight-of-hand';
+    public const EXPERT_SKILL_HISTORY = 'expert-skill-history';
+    public const EXPERT_SKILL_INTIMIDATION = 'expert-skill-intimidation';
+    public const EXPERT_SKILL_INVESTIGATION = 'expert-skill-investigation';
+    public const EXPERT_SKILL_MEDICINE = 'expert-skill-medicine';
+    public const EXPERT_SKILL_NATURE = 'expert-skill-nature';
+    public const EXPERT_SKILL_PERCEPTION = 'expert-skill-perception';
+    public const EXPERT_SKILL_INSIGHT = 'expert-skill-insight';
+    public const EXPERT_SKILL_PERSUASION = 'expert-skill-persuasion';
+    public const EXPERT_SKILL_RELIGION = 'expert-skill-religion';
+    public const EXPERT_SKILL_PERFORMANCE = 'expert-skill-performance';
+    public const EXPERT_SKILL_SURVIVAL = 'expert-skill-survival';
+
     public function load(ObjectManager $manager): void
     {
         $acrobatics = new ExpertSkill();
@@ -21,6 +39,7 @@ class ExpertSkillFixtures extends Fixture
         $athletics = new ExpertSkill();
         $athletics->setName('Athlétisme');
         $manager->persist($athletics);
+
         $stealth = new ExpertSkill();
         $stealth->setName('Discrétion');
         $manager->persist($stealth);

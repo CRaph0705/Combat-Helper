@@ -137,6 +137,9 @@ class Monster
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $capacity = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $isLegendary = null;
+
     public function __construct()
     {
         $this->languages = new ArrayCollection();
@@ -803,5 +806,17 @@ class Monster
 
 
         return $passivePerception;
+    }
+
+    public function isIsLegendary(): ?bool
+    {
+        return $this->isLegendary;
+    }
+
+    public function setIsLegendary(?bool $isLegendary): static
+    {
+        $this->isLegendary = $isLegendary;
+
+        return $this;
     }
 }
