@@ -221,7 +221,7 @@ class MonsterFixtures extends Fixture implements DependentFixtureInterface
             ExpertSkillFixtures::class,
             ImmunityFixtures::class,
             LanguageFixtures::class,
-            ProficienctSkillFixtures::class,
+            ProficientSkillFixtures::class,
             ResistanceFixtures::class,
             SavingThrowFixtures::class,
             SizeFixtures::class,
