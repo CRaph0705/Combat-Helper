@@ -45,46 +45,119 @@
 					<p class="text-center">{{ monster.charisma }} {{ monster.getStatModulo(monster.charisma) }}</p>
 				</div>
 			</div>
+			<hr class="mb-2 mt-2">
+			{% if monster.savingThrows is not empty %}
+				<div><strong>Jets de sauvegarde</strong>
+					{% for save in monster.savingThrows %}
+						<p><strong>{{ save.name }}</strong> {{ save.value }}</p>
+					{% endfor %}
+				</div>
+			{% endif %}
+			{% if monster.damageVulnerability is not empty %}
+				<div><strong>Vulnérabilités aux dégâts</strong>
+					{% for vulnerability in monster.damageVulnerability %}
+						<p>{{ vulnerability.name }}</p>
+					{% endfor %}
+				</div>
+			{% endif %}
+			{% if monster.damageResistance is not empty %}
+				<div><strong>Résistances aux dégâts</strong>
+					{% for resistance in monster.damageResistance %}
+						<p>{{ resistance.name }}</p>
+					{% endfor %}
+				</div>
+			{% endif %}
+			{% if monster.damageImmunity is not empty %}
+				<div><strong>Immunité aux dégâts</strong>
+					{% for immunity in damageImmunity %}
+						<p>{{ immunity.name }}</p>						
+					{% endfor %}
+				</div>
+			{% endif %}
+			{% if monster.stateImmunity is not empty %}
+				<div><strong>Immunité aux états</strong>
+					{% for state in stateImmunity %}
+						<p>{{ state.name }}</p>						
+					{% endfor %}
+				</div>
+			{% endif %}
 			<div><strong>Sens</strong> 
-			{# Perception passive {{ monster.passiveperception }} #}
-			{% if monster.blindsight %}
-			{{ monster.blindsight }}
-			{% endif %}
-			{% if monster.darkvision %}
-			{{ monster.darkvision }}
-			{% endif %}
-			{% if monster.truesight %}
-			{{ monster.truesight }}
-			{% endif %}
-			{% if monster.tremorsense %}
-			{{ monster.tremorsense }}
-			{% endif %}
-			{% if monster.blindsight %}
-			{{ monster.blindsight }}
-			{% endif %}
-			{% if monster.darkvision %}
-			{{ monster.darkvision }}
-			{% endif %}
-			{% if monster.truesight %}
-			{{ monster.truesight }}
-			{% endif %}
+				Perception passive
+				{{ monster.passiveperception }}
+				{% if monster.blindsight %}
+				{{ monster.blindsight }}
+				{% endif %}
+				{% if monster.darkvision %}
+				{{ monster.darkvision }}
+				{% endif %}
+				{% if monster.truesight %}
+				{{ monster.truesight }}
+				{% endif %}
+				{% if monster.tremorsense %}
+				{{ monster.tremorsense }}
+				{% endif %}
+				{% if monster.blindsight %}
+				{{ monster.blindsight }}
+				{% endif %}
+				{% if monster.darkvision %}
+				{{ monster.darkvision }}
+				{% endif %}
+				{% if monster.truesight %}
+				{{ monster.truesight }}
+				{% endif %}
 			</div>
-			<div><p><strong>Langues </strong> 
+			<div><p><strong>Langues :</strong> 
 				{% if monster.languages is not empty %}
-					<p><strong>Langues :</strong> 
-						{% for language in monster.languages %}
-							{{ language.name }}</p>
-						{% endfor %}
+					{% for language in monster.languages %}
+						{{ language.name }}</p>
+					{% endfor %}
 				{% else %}
 							-
 				{% endif %}
 				{% if monster.challenge %}
-				<p><strong>Dangerosité</strong> {{ monster.challenge.name }} ({{ monster.challenge.xp }}XP)</p>
+					<p><strong>Dangerosité</strong> {{ monster.challenge.name }} ({{ monster.challenge.xp }}XP)</p>
 				{% endif %}
 			</div>
-
-
 			<hr class="mb-2 mt-2">
+			{% if monster.proficientSkill is not empty %}
+				<div><strong>Compétences</strong>
+					{% for skill in monster.proficientSkill %}
+						<p><strong>{{ skill.name }}</strong> {{ skill.description }}</p>
+					{% endfor %}
+				</div>
+			<hr class="mb-2 mt-2">
+
+			{% endif %}
+
+
+			{% if monster.capacity %}
+				<div><strong>Capacités</strong>
+					{{ monster.capacity }}
+				</div>
+			{% endif %}
+
+
+			{% if monster.actions is not empty or monster.reactions is not empty or monster.legendaryActions is not empty %}
+
+				<div><strong>Actions</strong>
+					{% if monster.actions is not empty %}
+						{% for action in monster.actions %}
+							<p><strong>{{ action.name }}</strong> {{ action.description }}</p>
+						{% endfor %}
+					{% endif %}
+					{% if monster.reactions is not empty %}
+						{% for action in monster.actions %}
+							<p><strong>{{ action.name }}</strong> {{ action.description }}</p>
+						{% endfor %}
+					{% endif %}
+					{% if monster.legendaryActions is not empty %}
+						{% for action in monster.actions %}
+							<p><strong>{{ action.name }}</strong> {{ action.description }}</p>
+						{% endfor %}
+					<hr class="mb-2 mt-2">
+					{% endif %}
+				</div>
+			{% endif %}
 		</div>
 	</turbo-frame>
 	{# <a href="{{ path('app_monster_edit', {'id': monster.id}) }}">edit</a> #}

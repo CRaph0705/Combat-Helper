@@ -134,6 +134,9 @@ class Monster
     #[ORM\ManyToMany(targetEntity: SavingThrow::class, inversedBy: 'monsters')]
     private Collection $savingThrows;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $capacity = null;
+
     public function __construct()
     {
         $this->languages = new ArrayCollection();
@@ -773,5 +776,32 @@ class Monster
         $this->savingThrows->removeElement($savingThrow);
 
         return $this;
+    }
+
+    public function getCapacity(): ?string
+    {
+        return $this->capacity;
+    }
+
+    public function setCapacity(?string $capacity): static
+    {
+        $this->capacity = $capacity;
+
+        return $this;
+    }
+
+    // perception passive (Sagesse) est égale à 10 + modificateur de Sagesse + bonus de maîtrise (si la compétence Perception est maîtrisée)
+    public function getPassivePerception(): int
+    {
+        $charismaModuloString = $this->getStatModulo($this->getCharisma());
+        $charismaModulo = (int)str_replace(['(', ')', '+'], '', $charismaModuloString);
+        $passivePerception = 10 + $charismaModulo;
+
+        if ($this->getProficientSkill()->contains('Perception')) {
+            $passivePerception += $this->getMasteryBonus();
+        }
+
+
+        return $passivePerception;
     }
 }
