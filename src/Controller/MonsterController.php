@@ -60,6 +60,7 @@ class MonsterController extends AbstractController
     #[Route('/{id}', name: 'app_monster_show', methods: ['GET'])]
     public function show(Monster $monster): Response
     {
+        // dd($monster);
         return $this->render('monster/show.html.twig', [
             'monster' => $monster,
         ]);
