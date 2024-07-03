@@ -89,10 +89,8 @@ class CreateOrUpdateMonstersCommand extends Command
                 $monsterEntity->setName($monster['name']);
             }
             // là on update l'entité monster avec les données de l'api
-            // dd($localSizesArray);
             $monsterEntity->setSize($localSizesArray[$convertedMonsterData['size']]);
             $monsterEntity->setAlignment($localAlignmentsArray[$convertedMonsterData['alignment']]);
-            // dd($convertedMonsterData);
             $monsterEntity->setAc($convertedMonsterData['armor_class'][0]['value']);
             $monsterEntity->setHp($convertedMonsterData['hit_points']);
             if (isset($convertedMonsterData['groundspeed'])) {
@@ -117,6 +115,8 @@ class CreateOrUpdateMonstersCommand extends Command
             $monsterEntity->setIntelligence($convertedMonsterData['intelligence']);
             $monsterEntity->setWisdom($convertedMonsterData['wisdom']);
             $monsterEntity->setCharisma($convertedMonsterData['charisma']);
+            $monsterEntity->setType($localTypesArray[$convertedMonsterData['type']]);
+            $monsterEntity->setChallenge($localChallengesArray[$convertedMonsterData['challenge']]);
 
 
             $this->em->persist($monsterEntity);
