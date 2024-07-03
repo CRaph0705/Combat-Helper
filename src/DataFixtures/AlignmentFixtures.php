@@ -8,16 +8,16 @@ use Doctrine\Persistence\ObjectManager;
 
 class AlignmentFixtures extends Fixture
 {
-    public const ALIGNMENT_LAWFUL_GOOD = 'alignment-lawful-good';
-    public const ALIGNMENT_NEUTRAL_GOOD = 'alignment-neutral-good';
-    public const ALIGNMENT_CHAOTIC_GOOD = 'alignment-chaotic-good';
-    public const ALIGNMENT_LAWFUL_NEUTRAL = 'alignment-lawful-neutral';
-    public const ALIGNMENT_TRUE_NEUTRAL = 'alignment-true-neutral';
-    public const ALIGNMENT_CHAOTIC_NEUTRAL = 'alignment-chaotic-neutral';
-    public const ALIGNMENT_LAWFUL_EVIL = 'alignment-lawful-evil';
-    public const ALIGNMENT_NEUTRAL_EVIL = 'alignment-neutral-evil';
-    public const ALIGNMENT_CHAOTIC_EVIL = 'alignment-chaotic-evil';
-    public const ALIGNMENT_UNALIGNED = 'alignment-unaligned';
+    public const ALIGNMENT_LAWFUL_GOOD = 'lawful good';
+    public const ALIGNMENT_NEUTRAL_GOOD = 'neutral good';
+    public const ALIGNMENT_CHAOTIC_GOOD = 'chaotic good';
+    public const ALIGNMENT_LAWFUL_NEUTRAL = 'lawful neutral';
+    public const ALIGNMENT_TRUE_NEUTRAL = 'true neutral';
+    public const ALIGNMENT_CHAOTIC_NEUTRAL = 'chaotic neutral';
+    public const ALIGNMENT_LAWFUL_EVIL = 'lawful evil';
+    public const ALIGNMENT_NEUTRAL_EVIL = 'neutral evil';
+    public const ALIGNMENT_CHAOTIC_EVIL = 'chaotic evil';
+    public const ALIGNMENT_UNALIGNED = 'unaligned';
 
     public function load(ObjectManager $manager): void
     {

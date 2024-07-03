@@ -9,12 +9,12 @@ use Doctrine\Persistence\ObjectManager;
 class SizeFixtures extends Fixture
 {
 
-    public const SIZE_TINY = 'size-tiny';
-    public const SIZE_SMALL = 'size-small';
-    public const SIZE_MEDIUM = 'size-medium';
-    public const SIZE_LARGE = 'size-large';
-    public const SIZE_HUGE = 'size-huge';
-    public const SIZE_GARGANTUAN = 'size-gargantuan';
+    public const SIZE_TINY = 'tiny';
+    public const SIZE_SMALL = 'small';
+    public const SIZE_MEDIUM = 'medium';
+    public const SIZE_LARGE = 'large';
+    public const SIZE_HUGE = 'huge';
+    public const SIZE_GARGANTUAN = 'gargantuan';
 
     public function load(ObjectManager $manager): void
     {
