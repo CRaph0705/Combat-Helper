@@ -94,4 +94,5 @@ class MonsterController extends AbstractController
 
         return $this->redirectToRoute('app_monster_index', [], Response::HTTP_SEE_OTHER);
     }
+
 }
