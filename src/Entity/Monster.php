@@ -796,9 +796,9 @@ class Monster
     // perception passive (Sagesse) est égale à 10 + modificateur de Sagesse + bonus de maîtrise (si la compétence Perception est maîtrisée)
     public function getPassivePerception(): int
     {
-        $charismaModuloString = $this->getStatModulo($this->getCharisma());
-        $charismaModulo = (int)str_replace(['(', ')', '+'], '', $charismaModuloString);
-        $passivePerception = 10 + $charismaModulo;
+        $wisdomModuloString = $this->getStatModulo($this->getWisdom());
+        $wisdomModulo = (int)str_replace(['(', ')', '+'], '', $wisdomModuloString);
+        $passivePerception = 10 + $wisdomModulo;
 
         if ($this->getProficientSkill()->contains('Perception')) {
             $passivePerception += $this->getMasteryBonus();

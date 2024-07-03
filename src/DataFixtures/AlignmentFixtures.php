@@ -17,6 +17,7 @@ class AlignmentFixtures extends Fixture
     public const ALIGNMENT_LAWFUL_EVIL = 'alignment-lawful-evil';
     public const ALIGNMENT_NEUTRAL_EVIL = 'alignment-neutral-evil';
     public const ALIGNMENT_CHAOTIC_EVIL = 'alignment-chaotic-evil';
+    public const ALIGNMENT_UNALIGNED = 'alignment-unaligned';
 
     public function load(ObjectManager $manager): void
     {
@@ -64,6 +65,11 @@ class AlignmentFixtures extends Fixture
         $chaoticEvil->setName('Chaotique Mauvais');
         $manager->persist($chaoticEvil);
         $this->addReference(self::ALIGNMENT_CHAOTIC_EVIL, $chaoticEvil);
+
+        $unaligned = new Alignment();
+        $unaligned->setName('Non aligné');
+        $manager->persist($unaligned);
+        $this->addReference(self::ALIGNMENT_UNALIGNED, $unaligned);
 
         $manager->flush();
     }

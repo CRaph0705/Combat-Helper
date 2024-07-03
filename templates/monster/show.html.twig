@@ -88,32 +88,28 @@
 				{{ monster.blindsight }}
 				{% endif %}
 				{% if monster.darkvision %}
-				{{ monster.darkvision }}
+				, vision dans le noir {{ monster.darkvision }}m
 				{% endif %}
 				{% if monster.truesight %}
-				{{ monster.truesight }}
+				, vision parfaite {{ monster.truesight }}m
 				{% endif %}
 				{% if monster.tremorsense %}
-				{{ monster.tremorsense }}
+				, perception des vibrations {{ monster.tremorsense }}m
 				{% endif %}
 				{% if monster.blindsight %}
-				{{ monster.blindsight }}
-				{% endif %}
-				{% if monster.darkvision %}
-				{{ monster.darkvision }}
-				{% endif %}
-				{% if monster.truesight %}
-				{{ monster.truesight }}
+				, vision aveugle {{ monster.blindsight }}m
 				{% endif %}
 			</div>
-			<div><p><strong>Langues :</strong> 
-				{% if monster.languages is not empty %}
-					{% for language in monster.languages %}
-						{{ language.name }}</p>
-					{% endfor %}
-				{% else %}
-							-
-				{% endif %}
+			<div>
+				<p><strong>Langues :</strong> 
+					{% if monster.languages is not empty %}
+						{% for language in monster.languages %}
+							{{ language.name }}, 
+						{% endfor %}
+					{% else %}
+						-
+					{% endif %}
+				</p>
 				{% if monster.challenge %}
 					<p><strong>Dangerosité</strong> {{ monster.challenge.name }} ({{ monster.challenge.xp }}XP)</p>
 				{% endif %}
