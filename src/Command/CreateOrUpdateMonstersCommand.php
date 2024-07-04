@@ -89,10 +89,8 @@ class CreateOrUpdateMonstersCommand extends Command
                 $monsterEntity->setName($monster['name']);
             }
             // là on update l'entité monster avec les données de l'api
-            // dd($localSizesArray);
             $monsterEntity->setSize($localSizesArray[$convertedMonsterData['size']]);
             $monsterEntity->setAlignment($localAlignmentsArray[$convertedMonsterData['alignment']]);
-            // dd($convertedMonsterData);
             $monsterEntity->setAc($convertedMonsterData['armor_class'][0]['value']);
             $monsterEntity->setHp($convertedMonsterData['hit_points']);
             if (isset($convertedMonsterData['groundspeed'])) {
@@ -117,6 +115,48 @@ class CreateOrUpdateMonstersCommand extends Command
             $monsterEntity->setIntelligence($convertedMonsterData['intelligence']);
             $monsterEntity->setWisdom($convertedMonsterData['wisdom']);
             $monsterEntity->setCharisma($convertedMonsterData['charisma']);
+            $monsterEntity->setType($localTypesArray[$convertedMonsterData['type']]);
+            $monsterEntity->setChallenge($localChallengesArray[$convertedMonsterData['challenge']]);
+            $monsterEntity->setProficiencyBonus($convertedMonsterData['proficiency_bonus']);
+            //if damage vulnerabilities is present, set damage vulnerabilities
+            //if damage resistances is present, set damage resistances
+            //if damage immunities is present, set damage immunities
+            // if proficient skills is present, set proficient skills
+            // if saving throws is present, set saving throws
+
+            // if senses { darkvision, blindsight, tremorsense, truesight } is present, set senses
+            if (isset($convertedMonsterData['senses']['darkvision'])) {
+                $monsterEntity->setDarkvision($convertedMonsterData['senses']['darkvision']);
+            }
+            if (isset($convertedMonsterData['senses']['blindsight'])) {
+                $monsterEntity->setBlindsight($convertedMonsterData['senses']['blindsight']);
+            }
+            if (isset($convertedMonsterData['senses']['tremorsense'])) {
+                $monsterEntity->setTremorsense($convertedMonsterData['senses']['tremorsense']);
+            }
+            if (isset($convertedMonsterData['senses']['truesight'])) {
+                $monsterEntity->setTruesight($convertedMonsterData['senses']['truesight']);
+            }
+
+
+            
+            // if languages is present, set languages
+            if (isset($convertedMonsterData['languages'])) {
+                foreach ($convertedMonsterData['languages'] as $language) {
+                    $monsterEntity->addLanguage($localLanguagesArray[$language]);
+                }                
+            }
+            // if telepathy is present in languages, convert and set telepathy
+            if (isset($convertedMonsterData['telepathy'])) {
+                $monsterEntity->setTelepathy($convertedMonsterData['telepathy']);
+            }
+
+
+
+            // $monsterEntity->setTelepathy($convertedMonsterData['telepathy']);
+            // if special abilities is present, set special abilities
+            // if actions is present, set actions
+            // if legendary actions is present, set legendary actions
 
 
             $this->em->persist($monsterEntity);
