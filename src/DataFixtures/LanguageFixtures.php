@@ -8,24 +8,24 @@ use Doctrine\Persistence\ObjectManager;
 
 class LanguageFixtures extends Fixture
 {
-    public const LANGUAGE_COMMON = 'language-common';
-    public const LANGUAGE_ELVISH = 'language-elvish';
-    public const LANGUAGE_GIANT = 'language-giant';
-    public const LANGUAGE_GNOMISH = 'language-gnomish';
-    public const LANGUAGE_GOBLIN = 'language-goblin';
-    public const LANGUAGE_HALFLING = 'language-halfling';
-    public const LANGUAGE_DWARVISH = 'language-dwarvish';
-    public const LANGUAGE_ORC = 'language-orc';
-    public const LANGUAGE_ABYSSAL = 'language-abyssal';
-    public const LANGUAGE_CELESTIAL = 'language-celestial';
-    public const LANGUAGE_DRACONIC = 'language-draconic';
-    public const LANGUAGE_DEEP_SPEECH = 'language-deep-speech';
-    public const LANGUAGE_INFERNAL = 'language-infernal';
-    public const LANGUAGE_PRIMORDIAL = 'language-primordial';
-    public const LANGUAGE_SYLVAN = 'language-sylvan';
-    public const LANGUAGE_UNDERCOMMON = 'language-undercommon';
-    public const LANGUAGE_BLACK_SPEECH = 'language-black-speech';
-    public const LANGUAGE_SSELISH = 'language-sselish';
+    public const LANGUAGE_COMMON = 'Common';
+    public const LANGUAGE_ELVISH = 'Elvish';
+    public const LANGUAGE_GIANT = 'Giant';
+    public const LANGUAGE_GNOMISH = 'Gnomish';
+    public const LANGUAGE_GOBLIN = 'Goblin';
+    public const LANGUAGE_HALFLING = 'Halfling';
+    public const LANGUAGE_DWARVISH = 'Dwarvish';
+    public const LANGUAGE_ORC = 'Orc';
+    public const LANGUAGE_ABYSSAL = 'Abyssal';
+    public const LANGUAGE_CELESTIAL = 'Celestial';
+    public const LANGUAGE_DRACONIC = 'Draconic';
+    public const LANGUAGE_DEEP_SPEECH = 'Deep Speech';
+    public const LANGUAGE_INFERNAL = 'Infernal';
+    public const LANGUAGE_PRIMORDIAL = 'Primordial';
+    public const LANGUAGE_SYLVAN = 'Sylvan';
+    public const LANGUAGE_UNDERCOMMON = 'Undercommon';
+    public const LANGUAGE_BLACK_SPEECH = 'Black Speech';
+    public const LANGUAGE_SSELISH = 'Sselish';
 
     public function load(ObjectManager $manager): void
     {

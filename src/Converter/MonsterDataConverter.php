@@ -27,9 +27,11 @@ class MonsterDataConverter
             $monsterData['senses'] = $this->convertSenses($monsterData['senses']);
         }
 
-        // $languagesAndTelepathy = $this->convertLanguageAndTelepathy($monsterData['languages']);
-        // $monsterData['languages'] = $languagesAndTelepathy['languages'];
-        // $monsterData['telepathy'] = $languagesAndTelepathy['telepathy'];
+        // dans $monsterData on va avoir ['languages'], et ['telepathy'].
+        // On va devoir les séparer pour les mettre dans des colonnes différentes dans la base de données.
+        $languagesAndTelepathy = $this->convertLanguageAndTelepathy($monsterData['languages']);
+        $monsterData['languages'] = $languagesAndTelepathy['languages'];
+        $monsterData['telepathy'] = $languagesAndTelepathy['telepathy'];
 
 
 
@@ -137,8 +139,7 @@ class MonsterDataConverter
         return $challengeTranslations[$challenge] ?? null;
     }
 
-    private function convertSenses($senses)
-    {
+    private function convertSenses($senses) {
         $convertedSenses = [];
         if (isset($senses['darkvision'])) {
             $convertedSenses['darkvision'] = $this->convertFeetToMeters($senses['darkvision']);
@@ -160,18 +161,56 @@ class MonsterDataConverter
 
 
 
-    // private function convertLanguageAndTelepathy($languages) {
-    //     $languageArray = explode(',', $languages);
-    //     $languageArray = array_map('trim', $languageArray);
-    //     $telepathy = null;
-    //     foreach ($languageArray as $key => $language) {
-    //         if (preg_match('/telepathy (\d+) ft\./', $language, $matches)) {
-    //             $telepathy = $this->convertFeetToMeters($matches[1]);
-    //             unset($languageArray[$key]);
-    //         }
-    //     }
-    //     $languagesCollection = implode(', ', $languageArray);
+    private function convertLanguageAndTelepathy($languages) {
+        $languageArray = explode(',', $languages); // sépare les langues par une virgule
+        $languageArray = array_map('trim', $languageArray);// retire les espaces en début et fin de chaîne
+        // dd( $languageArray);
+        $telepathy = null;
+        foreach ($languageArray as $key => $language) {
+            if (preg_match('/telepathy (\d+) ft\./', $language, $matches)) {
+                // si on trouve une correspondance pour la télépathie, on convertit la portée en mètres
+                $telepathyString = $matches[0];
+                $telepathy = $this->convertFeetToMeters($telepathyString);
+                // on retire la télépathie du tableau des langues
+                unset($languageArray[$key]);
+                break;
+            }
+        }
+        // $languagesCollection = [];
+        // foreach ($languageArray as $language) {
+        //     $translatedLanguage = $this->translateLanguage($language);
+        //     if ($translatedLanguage) {
+        //         $languagesCollection[] = $translatedLanguage;
+        //     }
 
-    //     return ['languages' => $languagesCollection, 'telepathy' => $telepathy];
-    // }
+        $languagesCollection = array_map(fn($language) => $this->translateLanguage($language), $languageArray);
+        $languagesCollection = array_filter($languagesCollection); // Supprime les valeurs null
+        
+        
+        // on va retourner un tableau $languages et un float $telepathy
+
+
+        return ['languages' => $languagesCollection, 'telepathy' => $telepathy];
+    }
+
+    private function translateLanguage($language) {
+        $languageTranslations = [
+            'Abyssal' => 'Abyssal',
+            'Celestial' => 'Céleste',
+            'Draconic' => 'Draconique',
+            'Deep Speech' => 'Profond',
+            'Infernal' => 'Infernal',
+            'Primordial' => 'Primordial',
+            'Sylvan' => 'Sylvestre',
+            'Undercommon' => 'Commun des profondeurs',
+            'Common' => 'Commun',
+            'Dwarvish' => 'Nain',
+            'Elvish' => 'Elfique',
+            'Giant' => 'Géant',
+            'Goblin' => 'Gobelin',
+            'Halfling' => 'Halfelin',
+            'Orc' => 'Orque'
+        ];
+        return $languageTranslations[$language] ?? null;
+    }
 }

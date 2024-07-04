@@ -123,7 +123,7 @@ class CreateOrUpdateMonstersCommand extends Command
             //if damage immunities is present, set damage immunities
             // if proficient skills is present, set proficient skills
             // if saving throws is present, set saving throws
-            
+
             // if senses { darkvision, blindsight, tremorsense, truesight } is present, set senses
             if (isset($convertedMonsterData['senses']['darkvision'])) {
                 $monsterEntity->setDarkvision($convertedMonsterData['senses']['darkvision']);
@@ -139,10 +139,20 @@ class CreateOrUpdateMonstersCommand extends Command
             }
 
 
-
+            
             // if languages is present, set languages
+            if (isset($convertedMonsterData['languages'])) {
+                foreach ($convertedMonsterData['languages'] as $language) {
+                    $monsterEntity->addLanguage($localLanguagesArray[$language]);
+                }                
+            }
             // if telepathy is present in languages, convert and set telepathy
-            // $monsterEntity->setLanguages($convertedMonsterData['languages']);
+            if (isset($convertedMonsterData['telepathy'])) {
+                $monsterEntity->setTelepathy($convertedMonsterData['telepathy']);
+            }
+
+
+
             // $monsterEntity->setTelepathy($convertedMonsterData['telepathy']);
             // if special abilities is present, set special abilities
             // if actions is present, set actions
