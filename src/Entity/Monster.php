@@ -78,22 +78,22 @@ class Monster
     private ?Alignment $alignment = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $tremorsense = null;
+    private ?float $tremorsense = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $blindsight = null;
+    private ?float $blindsight = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $darkvision = null;
+    private ?float $darkvision = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $truesight = null;
+    private ?float $truesight = null;
 
     #[ORM\ManyToMany(targetEntity: Language::class, inversedBy: 'monsters', cascade: ['persist'])]
     private Collection $languages;
 
     #[ORM\Column(nullable: true)]
-    private ?int $telepathy = null;
+    private ?float $telepathy = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $customLanguage = null;
@@ -129,7 +129,7 @@ class Monster
     private Collection $expertSkill;
 
     #[ORM\Column(nullable: true)]
-    private ?int $masteryBonus = null;
+    private ?int $proficiencyBonus = null;
 
     #[ORM\ManyToMany(targetEntity: SavingThrow::class, inversedBy: 'monsters')]
     private Collection $savingThrows;
@@ -745,14 +745,14 @@ class Monster
         return $this;
     }
 
-    public function getMasteryBonus(): ?int
+    public function getProficiencyBonus(): ?int
     {
-        return $this->masteryBonus;
+        return $this->proficiencyBonus;
     }
 
-    public function setMasteryBonus(?int $masteryBonus): static
+    public function setProficiencyBonus(?int $proficiencyBonus): static
     {
-        $this->masteryBonus = $masteryBonus;
+        $this->proficiencyBonus = $proficiencyBonus;
 
         return $this;
     }
@@ -801,7 +801,7 @@ class Monster
         $passivePerception = 10 + $wisdomModulo;
 
         if ($this->getProficientSkill()->contains('Perception')) {
-            $passivePerception += $this->getMasteryBonus();
+            $passivePerception += $this->getProficiencyBonus();
         }
 
 

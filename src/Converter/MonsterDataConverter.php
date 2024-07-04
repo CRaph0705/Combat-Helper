@@ -23,6 +23,13 @@ class MonsterDataConverter
         $monsterData['type'] = $this->translateType($monsterData['type']);
         $monsterData['challenge'] = $this->translateChallenge($monsterData['challenge_rating']);
 
+        if (isset($monsterData['senses'])) {
+            $monsterData['senses'] = $this->convertSenses($monsterData['senses']);
+        }
+
+        // $languagesAndTelepathy = $this->convertLanguageAndTelepathy($monsterData['languages']);
+        // $monsterData['languages'] = $languagesAndTelepathy['languages'];
+        // $monsterData['telepathy'] = $languagesAndTelepathy['telepathy'];
 
 
 
@@ -36,7 +43,8 @@ class MonsterDataConverter
             $feet = (float)$matches[1];
             // Convertir les pieds en mètres (1 pied = 0.3048 mètres)
             $meters = $feet * 0.3048;
-            return $meters;
+            $roundedMeters = round($meters * 2) / 2;
+            return $roundedMeters;
         }
         return null; // Ou une valeur par défaut si la conversion échoue
     }
@@ -128,4 +136,42 @@ class MonsterDataConverter
         ];
         return $challengeTranslations[$challenge] ?? null;
     }
+
+    private function convertSenses($senses)
+    {
+        $convertedSenses = [];
+        if (isset($senses['darkvision'])) {
+            $convertedSenses['darkvision'] = $this->convertFeetToMeters($senses['darkvision']);
+        }
+        if (isset($senses['blindsight'])) {
+            $convertedSenses['blindsight'] = $this->convertFeetToMeters($senses['blindsight']);
+        }
+        if (isset($senses['tremorsense'])) {
+            $convertedSenses['tremorsense'] = $this->convertFeetToMeters($senses['tremorsense']);
+        }
+        if (isset($senses['truesight'])) {
+            $convertedSenses['truesight'] = $this->convertFeetToMeters($senses['truesight']);
+        }
+
+        return $convertedSenses;
+    }
+
+
+
+
+
+    // private function convertLanguageAndTelepathy($languages) {
+    //     $languageArray = explode(',', $languages);
+    //     $languageArray = array_map('trim', $languageArray);
+    //     $telepathy = null;
+    //     foreach ($languageArray as $key => $language) {
+    //         if (preg_match('/telepathy (\d+) ft\./', $language, $matches)) {
+    //             $telepathy = $this->convertFeetToMeters($matches[1]);
+    //             unset($languageArray[$key]);
+    //         }
+    //     }
+    //     $languagesCollection = implode(', ', $languageArray);
+
+    //     return ['languages' => $languagesCollection, 'telepathy' => $telepathy];
+    // }
 }

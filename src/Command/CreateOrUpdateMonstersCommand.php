@@ -117,6 +117,36 @@ class CreateOrUpdateMonstersCommand extends Command
             $monsterEntity->setCharisma($convertedMonsterData['charisma']);
             $monsterEntity->setType($localTypesArray[$convertedMonsterData['type']]);
             $monsterEntity->setChallenge($localChallengesArray[$convertedMonsterData['challenge']]);
+            $monsterEntity->setProficiencyBonus($convertedMonsterData['proficiency_bonus']);
+            //if damage vulnerabilities is present, set damage vulnerabilities
+            //if damage resistances is present, set damage resistances
+            //if damage immunities is present, set damage immunities
+            // if proficient skills is present, set proficient skills
+            // if saving throws is present, set saving throws
+            
+            // if senses { darkvision, blindsight, tremorsense, truesight } is present, set senses
+            if (isset($convertedMonsterData['senses']['darkvision'])) {
+                $monsterEntity->setDarkvision($convertedMonsterData['senses']['darkvision']);
+            }
+            if (isset($convertedMonsterData['senses']['blindsight'])) {
+                $monsterEntity->setBlindsight($convertedMonsterData['senses']['blindsight']);
+            }
+            if (isset($convertedMonsterData['senses']['tremorsense'])) {
+                $monsterEntity->setTremorsense($convertedMonsterData['senses']['tremorsense']);
+            }
+            if (isset($convertedMonsterData['senses']['truesight'])) {
+                $monsterEntity->setTruesight($convertedMonsterData['senses']['truesight']);
+            }
+
+
+
+            // if languages is present, set languages
+            // if telepathy is present in languages, convert and set telepathy
+            // $monsterEntity->setLanguages($convertedMonsterData['languages']);
+            // $monsterEntity->setTelepathy($convertedMonsterData['telepathy']);
+            // if special abilities is present, set special abilities
+            // if actions is present, set actions
+            // if legendary actions is present, set legendary actions
 
 
             $this->em->persist($monsterEntity);
