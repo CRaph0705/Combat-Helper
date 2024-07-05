@@ -36,7 +36,7 @@ class MonsterDataConverter
         $monsterData['special_abilities'] = $this->convertSpecialAbilitiesInHtml($monsterData['special_abilities']);
         $monsterData['actions'] = $this->convertActionsInHtml($monsterData['actions']);
         $monsterData['legendary_actions'] = $this->convertLegendaryActionsInHtml($monsterData['legendary_actions']);
-
+        // $monsterData['reactions'] = $this->convertReactionInHtml($monsterData['reactions']);
 
         return $monsterData;
     }
@@ -248,4 +248,15 @@ class MonsterDataConverter
         }
         return $html;
     }
+
+    // private function convertReactionInHtml($reactions) {
+    //     $html = '';
+    //     foreach ($reactions as $reaction) {
+    //         $html .= '<h4>' . $reaction['name'] . '</h4>';
+    //         $html .= '<p>' . $reaction['desc'] . '</p>';
+    //     }
+    //     return $html;
+    // }
+
+
 }
