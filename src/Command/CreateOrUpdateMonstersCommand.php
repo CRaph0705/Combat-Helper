@@ -118,45 +118,101 @@ class CreateOrUpdateMonstersCommand extends Command
             $monsterEntity->setType($localTypesArray[$convertedMonsterData['type']]);
             $monsterEntity->setChallenge($localChallengesArray[$convertedMonsterData['challenge']]);
             $monsterEntity->setProficiencyBonus($convertedMonsterData['proficiency_bonus']);
-            //if damage vulnerabilities is present, set damage vulnerabilities
-            //if damage resistances is present, set damage resistances
-            //if damage immunities is present, set damage immunities
-            // if proficient skills is present, set proficient skills
-            // if saving throws is present, set saving throws
 
-            // if senses { darkvision, blindsight, tremorsense, truesight } is present, set senses
             if (isset($convertedMonsterData['senses']['darkvision'])) {
                 $monsterEntity->setDarkvision($convertedMonsterData['senses']['darkvision']);
             }
+
             if (isset($convertedMonsterData['senses']['blindsight'])) {
                 $monsterEntity->setBlindsight($convertedMonsterData['senses']['blindsight']);
             }
+
             if (isset($convertedMonsterData['senses']['tremorsense'])) {
                 $monsterEntity->setTremorsense($convertedMonsterData['senses']['tremorsense']);
             }
+
             if (isset($convertedMonsterData['senses']['truesight'])) {
                 $monsterEntity->setTruesight($convertedMonsterData['senses']['truesight']);
             }
-
-
             
-            // if languages is present, set languages
             if (isset($convertedMonsterData['languages'])) {
                 foreach ($convertedMonsterData['languages'] as $language) {
                     $monsterEntity->addLanguage($localLanguagesArray[$language]);
                 }                
             }
-            // if telepathy is present in languages, convert and set telepathy
+
             if (isset($convertedMonsterData['telepathy'])) {
                 $monsterEntity->setTelepathy($convertedMonsterData['telepathy']);
             }
 
+            if (isset($convertedMonsterData['special_abilities'])) {
+                $monsterEntity->setSpecialAbilities($convertedMonsterData['special_abilities']);
+            }  
+
+            if (isset($convertedMonsterData['actions'])) {
+                $monsterEntity->setActions($convertedMonsterData['actions']);
+            }
+            
+            if (isset($convertedMonsterData['legendary_actions'])) {
+                $monsterEntity->setLegendaryActions($convertedMonsterData['legendary_actions']);
+            }
 
 
-            // $monsterEntity->setTelepathy($convertedMonsterData['telepathy']);
-            // if special abilities is present, set special abilities
-            // if actions is present, set actions
-            // if legendary actions is present, set legendary actions
+            ///// TODO : ADD TO CONVERTER
+            if (isset($convertedMonsterData['reactions'])) {
+                $monsterEntity->setReactions($convertedMonsterData['reactions']);
+            }
+            //if damage vulnerabilities is present, set damage vulnerabilities
+            if (isset($convertedMonsterData['damage_vulnerabilities'])) {
+                foreach ($convertedMonsterData['damage_vulnerabilities'] as $vulnerability) {
+                    $monsterEntity->addVulnerability($localVulnerabilitiesArray[$vulnerability]);
+                }
+            }
+
+            //if damage resistances is present, set damage resistances
+            if (isset($convertedMonsterData['damage_resistances'])) {
+                foreach ($convertedMonsterData['damage_resistances'] as $resistance) {
+                    $monsterEntity->addResistance($localResistancesArray[$resistance]);
+                }
+            }
+
+            //if damage immunities is present, set damage immunities
+            if (isset($convertedMonsterData['damage_immunities'])) {
+                foreach ($convertedMonsterData['damage_immunities'] as $immunity) {
+                    $monsterEntity->addImmunity($localImmunitiesArray[$immunity]);
+                }
+            }
+
+            // if proficient skills is present, set proficient skills
+            if (isset($convertedMonsterData['proficient_skills'])) {
+                foreach ($convertedMonsterData['proficient_skills'] as $proficientSkill) {
+                    $monsterEntity->addProficientSkill($localProficientSkillsArray[$proficientSkill]);
+                }
+            }
+
+            // if expert skills is present, set expert skills
+            if (isset($convertedMonsterData['expert_skills'])) {
+                foreach ($convertedMonsterData['expert_skills'] as $expertSkill) {
+                    $monsterEntity->addExpertSkill($localExpertSkillsArray[$expertSkill]);
+                }
+            }
+
+
+            // if saving throws is present, set saving throws
+            if (isset($convertedMonsterData['saving_throws'])) {
+                foreach ($convertedMonsterData['saving_throws'] as $savingThrow) {
+                    $monsterEntity->addSavingThrow($localSavingThrowsArray[$savingThrow]);
+                }
+            }
+
+            // if states is present, set states (immunities)
+            if (isset($convertedMonsterData['states'])) {
+                foreach ($convertedMonsterData['states'] as $state) {
+                    $monsterEntity->addState($localStatesArray[$state]);
+                }
+            }
+
+
 
 
             $this->em->persist($monsterEntity);
