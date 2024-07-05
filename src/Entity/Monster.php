@@ -111,7 +111,7 @@ class Monster
     private Collection $damageResistance;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $capacities = null;
+    private ?string $specialAbilities = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $actions = null;
@@ -133,12 +133,6 @@ class Monster
 
     #[ORM\ManyToMany(targetEntity: SavingThrow::class, inversedBy: 'monsters')]
     private Collection $savingThrows;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $capacity = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?bool $isLegendary = null;
 
     public function __construct()
     {
@@ -621,14 +615,14 @@ class Monster
         return $this;
     }
 
-    public function getCapacities(): ?string
+    public function getSpecialAbilities(): ?string
     {
-        return $this->capacities;
+        return $this->specialAbilities;
     }
 
-    public function setCapacities(?string $capacities): static
+    public function setSpecialAbilities(?string $specialAbilities): static
     {
-        $this->capacities = $capacities;
+        $this->specialAbilities = $specialAbilities;
 
         return $this;
     }
@@ -781,18 +775,6 @@ class Monster
         return $this;
     }
 
-    public function getCapacity(): ?string
-    {
-        return $this->capacity;
-    }
-
-    public function setCapacity(?string $capacity): static
-    {
-        $this->capacity = $capacity;
-
-        return $this;
-    }
-
     // perception passive (Sagesse) est égale à 10 + modificateur de Sagesse + bonus de maîtrise (si la compétence Perception est maîtrisée)
     public function getPassivePerception(): int
     {
@@ -806,17 +788,5 @@ class Monster
 
 
         return $passivePerception;
-    }
-
-    public function isIsLegendary(): ?bool
-    {
-        return $this->isLegendary;
-    }
-
-    public function setIsLegendary(?bool $isLegendary): static
-    {
-        $this->isLegendary = $isLegendary;
-
-        return $this;
     }
 }

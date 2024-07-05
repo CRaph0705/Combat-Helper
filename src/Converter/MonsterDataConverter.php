@@ -33,7 +33,9 @@ class MonsterDataConverter
         $monsterData['languages'] = $languagesAndTelepathy['languages'];
         $monsterData['telepathy'] = $languagesAndTelepathy['telepathy'];
 
-
+        $monsterData['special_abilities'] = $this->convertSpecialAbilitiesInHtml($monsterData['special_abilities']);
+        $monsterData['actions'] = $this->convertActionsInHtml($monsterData['actions']);
+        $monsterData['legendary_actions'] = $this->convertLegendaryActionsInHtml($monsterData['legendary_actions']);
 
 
         return $monsterData;
@@ -157,10 +159,6 @@ class MonsterDataConverter
         return $convertedSenses;
     }
 
-
-
-
-
     private function convertLanguageAndTelepathy($languages) {
         $languageArray = explode(',', $languages); // sépare les langues par une virgule
         $languageArray = array_map('trim', $languageArray);// retire les espaces en début et fin de chaîne
@@ -212,5 +210,42 @@ class MonsterDataConverter
             'Orc' => 'Orque'
         ];
         return $languageTranslations[$language] ?? null;
+    }
+
+    private function convertSpecialAbilitiesInHtml($specialAbilities) {
+        $html = '';
+        foreach ($specialAbilities as $specialAbility) {
+            $html .= '<h4>' . $specialAbility['name'] . '</h4>';
+            $html .= '<p>' . $specialAbility['desc'] . '</p>';
+        }
+        return $html;
+    }
+
+    private function convertActionsInHtml($actions) {
+        $html = '';
+        foreach ($actions as $action) {
+            $html .= '<h4>' . $action['name'] . '</h4>';
+            $html .= '<p>' . $action['desc'] . '</p>';
+            if (isset($action['usage'])) {
+                $html .= '<p>(' . $action['usage']['times'] . $action ['usage']['type'] . ')</p>';
+
+            }
+        $html .= '<br>';
+        }
+        return $html;
+    }
+
+    private function convertLegendaryActionsInHtml($legendaryActions) {
+        $html = '';
+        foreach ($legendaryActions as $legendaryAction) {
+            $html .= '<h4>' . $legendaryAction['name'] . '</h4>';
+            $html .= '<p>' . $legendaryAction['desc'] . '</p>';
+            if (isset($legendaryAction['usage'])) {
+                $html .= '<p>(' . $legendaryAction['usage']['times'] . $legendaryAction ['usage']['type'] . ')</p>';
+
+            }
+        $html .= '<br>';
+        }
+        return $html;
     }
 }

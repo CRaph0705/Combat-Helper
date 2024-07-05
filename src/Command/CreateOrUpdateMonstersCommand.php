@@ -155,9 +155,19 @@ class CreateOrUpdateMonstersCommand extends Command
 
             // $monsterEntity->setTelepathy($convertedMonsterData['telepathy']);
             // if special abilities is present, set special abilities
-            // if actions is present, set actions
-            // if legendary actions is present, set legendary actions
+            if (isset($convertedMonsterData['special_abilities'])) {
+                $monsterEntity->setSpecialAbilities($convertedMonsterData['special_abilities']);
+            }  
 
+            // if actions is present, set actions
+            if (isset($convertedMonsterData['actions'])) {
+                $monsterEntity->setActions($convertedMonsterData['actions']);
+            }
+            
+            // if legendary actions is present, set legendary actions
+            if (isset($convertedMonsterData['legendary_actions'])) {
+                $monsterEntity->setLegendaryActions($convertedMonsterData['legendary_actions']);
+            }
 
             $this->em->persist($monsterEntity);
             break;
