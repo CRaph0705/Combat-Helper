@@ -158,10 +158,11 @@ class CreateOrUpdateMonstersCommand extends Command
             }
 
 
-            ///// TODO : ADD TO CONVERTER
+            ///// TODO : TO UPDATE IN CONVERTER WHEN AN IMPORT CONTAINS THESE FIELDS
             if (isset($convertedMonsterData['reactions'])) {
                 $monsterEntity->setReactions($convertedMonsterData['reactions']);
             }
+            
             //if damage vulnerabilities is present, set damage vulnerabilities
             if (isset($convertedMonsterData['damage_vulnerabilities'])) {
                 foreach ($convertedMonsterData['damage_vulnerabilities'] as $vulnerability) {

@@ -38,6 +38,8 @@ class MonsterDataConverter
         $monsterData['legendary_actions'] = $this->convertLegendaryActionsInHtml($monsterData['legendary_actions']);
         // $monsterData['reactions'] = $this->convertReactionInHtml($monsterData['reactions']);
 
+        // $monsterData['damage_vulnerabilities'] = $this->convertDamageVulnerabilities($monsterData['damage_vulnerabilities']);
+
         return $monsterData;
     }
 
@@ -215,7 +217,7 @@ class MonsterDataConverter
     private function convertSpecialAbilitiesInHtml($specialAbilities) {
         $html = '';
         foreach ($specialAbilities as $specialAbility) {
-            $html .= '<h4>' . $specialAbility['name'] . '</h4>';
+            $html .= '<h5>' . $specialAbility['name'] . '</h4>';
             $html .= '<p>' . $specialAbility['desc'] . '</p>';
         }
         return $html;
@@ -224,7 +226,7 @@ class MonsterDataConverter
     private function convertActionsInHtml($actions) {
         $html = '';
         foreach ($actions as $action) {
-            $html .= '<h4>' . $action['name'] . '</h4>';
+            $html .= '<h5>' . $action['name'] . '</h4>';
             $html .= '<p>' . $action['desc'] . '</p>';
             if (isset($action['usage'])) {
                 $html .= '<p>(' . $action['usage']['times'] . $action ['usage']['type'] . ')</p>';
@@ -238,7 +240,7 @@ class MonsterDataConverter
     private function convertLegendaryActionsInHtml($legendaryActions) {
         $html = '';
         foreach ($legendaryActions as $legendaryAction) {
-            $html .= '<h4>' . $legendaryAction['name'] . '</h4>';
+            $html .= '<h5>' . $legendaryAction['name'] . '</h4>';
             $html .= '<p>' . $legendaryAction['desc'] . '</p>';
             if (isset($legendaryAction['usage'])) {
                 $html .= '<p>(' . $legendaryAction['usage']['times'] . $legendaryAction ['usage']['type'] . ')</p>';
@@ -257,6 +259,185 @@ class MonsterDataConverter
     //     }
     //     return $html;
     // }
+
+
+    //private function convertDamageVulnerabilities($damageVulnerabilities) {
+    //    $vulnerabilities = [];
+    //    foreach ($damageVulnerabilities as $damageVulnerability) {
+    //        $vulnerabilities[] = $this->translateDamageType($damageVulnerability);
+    //    }
+    //    return $vulnerabilities;
+    //}
+
+
+    private function translateDamageTypeVulnerability($damageTypeVulnerability) {
+        $damageTypeTranslations = [
+            // Types de dégâts simples
+            'acid' => 'vulnerability-acid',
+            'bludgeoning' => 'vulnerability-bludgeoning',
+            'cold' => 'vulnerability-cold',
+            'fire' => 'vulnerability-fire',
+            'force' => 'vulnerability-force',
+            'lightning' => 'vulnerability-lightning',
+            'necrotic' => 'vulnerability-necrotic',
+            'piercing' => 'vulnerability-piercing',
+            'poison' => 'vulnerability-poison',
+            'psychic' => 'vulnerability-psychic',
+            'radiant' => 'vulnerability-radiant',
+            'slashing' => 'vulnerability-slashing',
+            'thunder' => 'vulnerability-thunder',
+            
+            // Types de dégâts avec conditions
+            'non-magical bludgeoning' => 'vulnerability-non-magical-bludgeoning',
+            'non-cold iron bludgeoning' => 'vulnerability-non-cold-iron-bludgeoning',
+            'non-adamantine bludgeoning' => 'vulnerability-non-adamantine-bludgeoning',
+            'non-silver bludgeoning' => 'vulnerability-non-silver-bludgeoning',
+            'non-magical piercing' => 'vulnerability-non-magical-piercing',
+            'non-cold iron piercing' => 'vulnerability-non-cold-iron-piercing',
+            'non-adamantine piercing' => 'vulnerability-non-adamantine-piercing',
+            'non-silver piercing' => 'vulnerability-non-silver-piercing',
+            'non-magical slashing' => 'vulnerability-non-magical-slashing',
+            'non-cold iron slashing' => 'vulnerability-non-cold-iron-slashing',
+            'non-adamantine slashing' => 'vulnerability-non-adamantine-slashing',
+            'non-silver slashing' => 'vulnerability-non-silver-slashing',
+            
+            // Combinations de dégâts avec conditions
+            'non-magical piercing and slashing' => 'vulnerability-non-magical-piercing-and-slashing',
+            'non-cold iron piercing and slashing' => 'vulnerability-non-cold-iron-piercing-and-slashing',
+            'non-adamantine piercing and slashing' => 'vulnerability-non-adamantine-piercing-and-slashing',
+            'non-silver piercing and slashing' => 'vulnerability-non-silver-piercing-and-slashing',
+            'non-magical bludgeoning and slashing' => 'vulnerability-non-magical-bludgeoning-and-slashing',
+            'non-cold iron bludgeoning and slashing' => 'vulnerability-non-cold-iron-bludgeoning-and-slashing',
+            'non-adamantine bludgeoning and slashing' => 'vulnerability-non-adamantine-bludgeoning-and-slashing',
+            'non-silver bludgeoning and slashing' => 'vulnerability-non-silver-bludgeoning-and-slashing',
+            'non-magical bludgeoning and piercing' => 'vulnerability-non-magical-bludgeoning-and-piercing',
+            'non-cold iron bludgeoning and piercing' => 'vulnerability-non-cold-iron-bludgeoning-and-piercing',
+            'non-adamantine bludgeoning and piercing' => 'vulnerability-non-adamantine-bludgeoning-and-piercing',
+            'non-silver bludgeoning and piercing' => 'vulnerability-non-silver-bludgeoning-and-piercing',
+            
+            // Combinaisons multiples
+            'non-magical bludgeoning and piercing and slashing' => 'vulnerability-non-magical-bludgeoning-and-piercing-and-slashing',
+            'non-cold iron bludgeoning and piercing and slashing' => 'vulnerability-non-cold-iron-bludgeoning-and-piercing-and-slashing',
+            'non-adamantine bludgeoning and piercing and slashing' => 'vulnerability-non-adamantine-bludgeoning-and-piercing-and-slashing',
+            'non-silver bludgeoning and piercing and slashing' => 'vulnerability-non-silver-bludgeoning-and-piercing-and-slashing',
+        ];
+        
+        return $damageTypeTranslations[$damageTypeVulnerability] ?? null;
+    }
+
+    private function translateDamageTypeResistance($damageTypeResistance) {
+        $damageTypeTranslations = [
+            // Types de dégâts simples
+            'acid' => 'resistance-acid',
+            'bludgeoning' => 'resistance-bludgeoning',
+            'cold' => 'resistance-cold',
+            'fire' => 'resistance-fire',
+            'force' => 'resistance-force',
+            'lightning' => 'resistance-lightning',
+            'necrotic' => 'resistance-necrotic',
+            'piercing' => 'resistance-piercing',
+            'poison' => 'resistance-poison',
+            'psychic' => 'resistance-psychic',
+            'radiant' => 'resistance-radiant',
+            'slashing' => 'resistance-slashing',
+            'thunder' => 'resistance-thunder',
+            
+            // Types de dégâts avec conditions
+            'non-magical bludgeoning' => 'resistance-non-magical-bludgeoning',
+            'non-cold iron bludgeoning' => 'resistance-non-cold-iron-bludgeoning',
+            'non-adamantine bludgeoning' => 'resistance-non-adamantine-bludgeoning',
+            'non-silver bludgeoning' => 'resistance-non-silver-bludgeoning',
+            'non-magical piercing' => 'resistance-non-magical-piercing',
+            'non-cold iron piercing' => 'resistance-non-cold-iron-piercing',
+            'non-adamantine piercing' => 'resistance-non-adamantine-piercing',
+            'non-silver piercing' => 'resistance-non-silver-piercing',
+            'non-magical slashing' => 'resistance-non-magical-slashing',
+            'non-cold iron slashing' => 'resistance-non-cold-iron-slashing',
+            'non-adamantine slashing' => 'resistance-non-adamantine-slashing',
+            'non-silver slashing' => 'resistance-non-silver-slashing',
+            
+            // Combinations de dégâts avec conditions
+            'non-magical piercing and slashing' => 'resistance-non-magical-piercing-and-slashing',
+            'non-cold iron piercing and slashing' => 'resistance-non-cold-iron-piercing-and-slashing',
+            'non-adamantine piercing and slashing' => 'resistance-non-adamantine-piercing-and-slashing',
+            'non-silver piercing and slashing' => 'resistance-non-silver-piercing-and-slashing',
+            'non-magical bludgeoning and slashing' => 'resistance-non-magical-bludgeoning-and-slashing',
+            'non-cold iron bludgeoning and slashing' => 'resistance-non-cold-iron-bludgeoning-and-slashing',
+            'non-adamantine bludgeoning and slashing' => 'resistance-non-adamantine-bludgeoning-and-slashing',
+            'non-silver bludgeoning and slashing' => 'resistance-non-silver-bludgeoning-and-slashing',
+            'non-magical bludgeoning and piercing' => 'resistance-non-magical-bludgeoning-and-piercing',
+            'non-cold iron bludgeoning and piercing' => 'resistance-non-cold-iron-bludgeoning-and-piercing',
+            'non-adamantine bludgeoning and piercing' => 'resistance-non-adamantine-bludgeoning-and-piercing',
+            'non-silver bludgeoning and piercing' => 'resistance-non-silver-bludgeoning-and-piercing',
+
+            // Combinaisons multiples
+            'non-magical bludgeoning and piercing and slashing' => 'resistance-non-magical-bludgeoning-and-piercing-and-slashing',
+            'non-cold iron bludgeoning and piercing and slashing' => 'resistance-non-cold-iron-bludgeoning-and-piercing-and-slashing',
+            'non-adamantine bludgeoning and piercing and slashing' => 'resistance-non-adamantine-bludgeoning-and-piercing-and-slashing',
+            'non-silver bludgeoning and piercing and slashing' => 'resistance-non-silver-bludgeoning-and-piercing-and-slashing',
+        ];
+
+        return $damageTypeTranslations[$damageTypeResistance] ?? null;
+
+    }
+
+    private function translateDamageTypeImmunity($damageTypeImmunity) {
+        $damageTypeTranslations = [
+            // Types de dégâts simples
+            'acid' => 'immunity-acid',
+            'bludgeoning' => 'immunity-bludgeoning',
+            'cold' => 'immunity-cold',
+            'fire' => 'immunity-fire',
+            'force' => 'immunity-force',
+            'lightning' => 'immunity-lightning',
+            'necrotic' => 'immunity-necrotic',
+            'piercing' => 'immunity-piercing',
+            'poison' => 'immunity-poison',
+            'psychic' => 'immunity-psychic',
+            'radiant' => 'immunity-radiant',
+            'slashing' => 'immunity-slashing',
+            'thunder' => 'immunity-thunder',
+            
+            // Types de dégâts avec conditions
+            'non-magical bludgeoning' => 'immunity-non-magical-bludgeoning',
+            'non-cold iron bludgeoning' => 'immunity-non-cold-iron-bludgeoning',
+            'non-adamantine bludgeoning' => 'immunity-non-adamantine-bludgeoning',
+            'non-silver bludgeoning' => 'immunity-non-silver-bludgeoning',
+            'non-magical piercing' => 'immunity-non-magical-piercing',
+            'non-cold iron piercing' => 'immunity-non-cold-iron-piercing',
+            'non-adamantine piercing' => 'immunity-non-adamantine-piercing',
+            'non-silver piercing' => 'immunity-non-silver-piercing',
+            'non-magical slashing' => 'immunity-non-magical-slashing',
+            'non-cold iron slashing' => 'immunity-non-cold-iron-slashing',
+            'non-adamantine slashing' => 'immunity-non-adamantine-slashing',
+            'non-silver slashing' => 'immunity-non-silver-slashing',
+            
+            // Combinations de dégâts avec conditions
+            'non-magical piercing and slashing' => 'immunity-non-magical-piercing-and-slashing',
+            'non-cold iron piercing and slashing' => 'immunity-non-cold-iron-piercing-and-slashing',
+            'non-adamantine piercing and slashing' => 'immunity-non-adamantine-piercing-and-slashing',
+            'non-silver piercing and slashing' => 'immunity-non-silver-piercing-and-slashing',
+            'non-magical bludgeoning and slashing' => 'immunity-non-magical-bludgeoning-and-slashing',
+            'non-cold iron bludgeoning and slashing' => 'immunity-non-cold-iron-bludgeoning-and-slashing',
+            'non-adamantine bludgeoning and slashing' => 'immunity-non-adamantine-bludgeoning-and-slashing',
+            'non-silver bludgeoning and slashing' => 'immunity-non-silver-bludgeoning-and-slashing',
+            'non-magical bludgeoning and piercing' => 'immunity-non-magical-bludgeoning-and-piercing',
+            'non-cold iron bludgeoning and piercing' => 'immunity-non-cold-iron-bludgeoning-and-piercing',
+            'non-adamantine bludgeoning and piercing' => 'immunity-non-adamantine-bludgeoning-and-piercing',
+            'non-silver bludgeoning and piercing' => 'immunity-non-silver-bludgeoning-and-piercing',
+
+            // Combinaisons multiples
+            'non-magical bludgeoning and piercing and slashing' => 'immunity-non-magical-bludgeoning-and-piercing-and-slashing',
+            'non-cold iron bludgeoning and piercing and slashing' => 'immunity-non-cold-iron-bludgeoning-and-piercing-and-slashing',
+            'non-adamantine bludgeoning and piercing and slashing' => 'immunity-non-adamantine-bludgeoning-and-piercing-and-slashing',
+            'non-silver bludgeoning and piercing and slashing' => 'immunity-non-silver-bludgeoning-and-piercing-and-slashing',
+        ];
+
+        return $damageTypeTranslations[$damageTypeImmunity] ?? null;
+    }
+
+
+
 
 
 }
