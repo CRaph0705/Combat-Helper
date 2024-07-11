@@ -22,6 +22,7 @@ class TypeFixtures extends Fixture
     public const TYPE_OOZE = 'ooze';
     public const TYPE_PLANT = 'plant';
     public const TYPE_UNDEAD = 'undead';
+    public const TYPE_SWARM = 'swarm';
 
     public function load(ObjectManager $manager): void
     {
@@ -94,6 +95,11 @@ class TypeFixtures extends Fixture
         $undead->setName('Mort-vivant');
         $manager->persist($undead);
         $this->addReference(self::TYPE_UNDEAD, $undead);
+
+        $swarm = new Type();
+        $swarm->setName('Essaim');
+        $manager->persist($swarm);
+        $this->addReference(self::TYPE_SWARM, $swarm);
 
         $manager->flush();
     }

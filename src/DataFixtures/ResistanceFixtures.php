@@ -49,6 +49,9 @@ class ResistanceFixtures extends Fixture
     public const RESISTANCE_NON_COLD_IRON_BLUDGEONING_AND_PIERCING_AND_SLASHING = 'resistance-non-cold-iron-bludgeoning-and-piercing-and-slashing';
     public const RESISTANCE_NON_ADAMANTINE_BLUDGEONING_AND_PIERCING_AND_SLASHING = 'resistance-non-adamantine-bludgeoning-and-piercing-and-slashing';
     public const RESISTANCE_NON_SILVER_BLUDGEONING_AND_PIERCING_AND_SLASHING = 'resistance-non-silver-bludgeoning-and-piercing-and-slashing';
+    public const RESISTANCE_SPELLS = 'resistance-spells';
+    public const RESISTANCE_STONESKIN = 'resistance-stoneskin';
+    public const RESISTANCE_NON_ADAMANTINE_NON_MAGICAL_BLUDGEONING_PIERCING_AND_SLASHING = 'resistance-non-adamantine-non-magical-bludgeoning-piercing-and-slashing';
 
     public function load(ObjectManager $manager): void
     {
@@ -285,6 +288,28 @@ class ResistanceFixtures extends Fixture
         $nonSilverBludgeoningAndPiercingAndSlashing->setName('contondants, perforants et tranchants infligés par des attaques non-magiques qui ne sont pas en argent');
         $manager->persist($nonSilverBludgeoningAndPiercingAndSlashing);
         $this->addReference(self::RESISTANCE_NON_SILVER_BLUDGEONING_AND_PIERCING_AND_SLASHING, $nonSilverBludgeoningAndPiercingAndSlashing);
+
+        $spells = new Resistance();
+        $spells->setName('dégâts infligés par des sorts');
+        $manager->persist($spells);
+        $this->addReference(self::RESISTANCE_SPELLS, $spells);
+
+
+        //		"bludgeoning, piercing, and slashing from nonmagical attacks (from stoneskin)"
+        $stoneskinBludgeoningPiercingAndSlashing = new Resistance();
+        $stoneskinBludgeoningPiercingAndSlashing->setName('contondants, perforants et tranchants infligés par des attaques non-magiques (peau de pierre)');
+        $manager->persist($stoneskinBludgeoningPiercingAndSlashing);
+        $this->addReference(self::RESISTANCE_STONESKIN, $stoneskinBludgeoningPiercingAndSlashing);
+
+
+        //		"bludgeoning, piercing, and slashing from nonmagical weapons that aren't adamantine"
+        $nonAdamantineNonMagicalBludgeoningPiercingAndSlashing = new Resistance();
+        $nonAdamantineNonMagicalBludgeoningPiercingAndSlashing->setName('contondants, perforants et tranchants infligés par des armes non-magiques qui ne sont pas en adamantium');
+        $manager->persist($nonAdamantineNonMagicalBludgeoningPiercingAndSlashing);
+        $this->addReference(self::RESISTANCE_NON_ADAMANTINE_NON_MAGICAL_BLUDGEONING_PIERCING_AND_SLASHING, $nonAdamantineNonMagicalBludgeoningPiercingAndSlashing);
+
+    
+
 
         $manager->flush();
     }

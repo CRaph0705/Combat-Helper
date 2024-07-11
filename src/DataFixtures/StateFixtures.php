@@ -22,6 +22,7 @@ class StateFixtures extends Fixture
     public const STATE_INVISIBLE = 'invisible';
     public const STATE_PARALYZED = 'paralyzed';
     public const STATE_PETRIFIED = 'petrified';
+    public const STATE_EXHAUSTION = 'exhaustion';
 
 
     public function load(ObjectManager $manager): void
@@ -176,6 +177,19 @@ class StateFixtures extends Fixture
         ");
         $manager->persist($petrified);
         $this->addReference(self::STATE_PETRIFIED, $petrified);
+
+        $exhaustion = new State();
+        $exhaustion->setName('épuisé');
+        $exhaustion->setDescription("
+        L'épuisement est mesuré en six niveaux. Un personnage souffrant d'épuisement au niveau 1 a un désavantage à ses jets de caractéristique.
+        Au niveau 2, le personnage a la vitesse réduite de moitié.
+        Au niveau 3, le personnage a un désavantage à ses jets d'attaque et de sauvegarde.
+        Au niveau 4, le personnage a un maximum de points de vie réduit de moitié.
+        Au niveau 5, le personnage a sa vitesse réduite à 0.        
+        Un personnage souffrant d'épuisement au niveau 6 meurt.
+        ");
+        $manager->persist($exhaustion);
+        $this->addReference(self::STATE_EXHAUSTION, $exhaustion);
 
        
 
