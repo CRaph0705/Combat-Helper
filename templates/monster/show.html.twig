@@ -63,29 +63,30 @@
 			{% if monster.damageResistance is not empty %}
 				<div><strong>Résistances aux dégâts</strong>
 					{% for resistance in monster.damageResistance %}
-						<p>{{ resistance.name }}</p>
+						{{ resistance.name }}, 
 					{% endfor %}
 				</div>
 			{% endif %}
 			{% if monster.damageImmunity is not empty %}
 				<div><strong>Immunité aux dégâts</strong>
-					{% for immunity in damageImmunity %}
-						<p>{{ immunity.name }}</p>						
+					{% for immunity in monster.damageImmunity %}
+						{{ immunity.name }}, 
 					{% endfor %}
 				</div>
 			{% endif %}
 			{% if monster.stateImmunity is not empty %}
 				<div><strong>Immunité aux états</strong>
-					{% for state in stateImmunity %}
-						<p>{{ state.name }}</p>						
+					{% for state in monster.stateImmunity %}
+						{{ state.name }}, 
 					{% endfor %}
 				</div>
 			{% endif %}
 			<div><strong>Sens</strong> 
 				Perception passive
-				{{ monster.passiveperception }}
+				{{ monster.passiveperception }}m
+
 				{% if monster.blindsight %}
-				{{ monster.blindsight }}
+				, vision aveugle {{ monster.blindsight }}m
 				{% endif %}
 				{% if monster.darkvision %}
 				, vision dans le noir {{ monster.darkvision }}m
