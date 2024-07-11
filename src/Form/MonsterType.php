@@ -274,14 +274,6 @@ class MonsterType extends AbstractType
                     'class' => 'checkbox-container',
                 ],
             ])
-            //capacités, actions, actions légendaires
-            ->add('capacities', TextType::class, [
-                'required' => false,
-                'label' => 'Capacités',
-                'attr' => [
-                    'class' => 'form-control',
-                ],
-            ])
             ->add('actions', TextType::class, [
                 'required' => false,
                 'label' => 'Actions',
