@@ -36,8 +36,31 @@ class MonsterDataConverter
         $monsterData['special_abilities'] = $this->convertSpecialAbilitiesInHtml($monsterData['special_abilities']);
         $monsterData['actions'] = $this->convertActionsInHtml($monsterData['actions']);
         $monsterData['legendary_actions'] = $this->convertLegendaryActionsInHtml($monsterData['legendary_actions']);
-        // $monsterData['reactions'] = $this->convertReactionInHtml($monsterData['reactions']);
+        if (isset($monsterData['reactions'])) {
+            $monsterData['reactions'] = $this->convertReactionInHtml($monsterData['reactions']);
+        }
+        //$monsterData['damage_vulnerabilities'] = $this->translateDamageTypeVulnerability($monsterData['damage_vulnerabilities']);
+        foreach ($monsterData['damage_vulnerabilities'] as $key => $damage) {
+            $monsterData['damage_vulnerabilities'][$key] = $this->translateDamageTypeVulnerability($damage);
+        }
 
+
+        // $monsterData['damage_resistances'] = $this->translateDamageTypeResistance($monsterData['damage_resistances']);
+        foreach ($monsterData['damage_resistances'] as $key => $damage) {
+            $monsterData['damage_resistances'][$key] = $this->translateDamageTypeResistance($damage);
+        }
+
+        // $monsterData['damage_immunities'] = $this->translateDamageTypeImmunity($monsterData['damage_immunities']);
+        foreach ($monsterData['damage_immunities'] as $key => $damage) {
+            $monsterData['damage_immunities'][$key] = $this->translateDamageTypeImmunity($damage);
+        }
+
+        // $monsterData['condition_immunities'] = $monsterData['condition_immunities'] ?? null;
+
+        foreach ($monsterData['condition_immunities'] as $key => $condition) {
+            $monsterData['condition_immunities'][$key] = $this->translateState(strtolower($condition['name']));
+        }
+        
         return $monsterData;
     }
 
@@ -72,16 +95,31 @@ class MonsterDataConverter
             'chaotic good' => 'Chaotique Bon',
             'lawful neutral' => 'Loyal Neutre',
             'true neutral' => 'Neutre',
+            'neutral' => 'Neutre',
             'chaotic neutral' => 'Chaotique Neutre',
             'lawful evil' => 'Loyal Mauvais',
             'neutral evil' => 'Neutre Mauvais',
             'chaotic evil' => 'Chaotique Mauvais',
-            'unaligned' => 'Non aligné'
+            'unaligned' => 'Non aligné',
+            'any alignment' => 'Tout alignement',
+            'any non-good alignment' => 'Tout alignement sauf bon',
+            'any good alignment' => 'Tout alignement bon',
+            'any neutral alignment' => 'Tout alignement neutre',
+            'any chaotic alignment' => 'Tout alignement chaotique',
+            'any lawful alignment' => 'Tout alignement loyal',
+            'any non-lawful alignment' => 'Tout alignement non loyal',
+            'neutral good (50%) or neutral evil (50%)' => 'Tout alignement neutre',
+            'any evil alignment' => 'Tout alignement mauvais',
+
+
         ];
         return $alignmentTranslations[$alignment] ?? null;
     }
 
     private function translateType($type) {
+        if (preg_match('/swarm of/', $type)) {
+            $type = 'swarm';
+        }
         $typeTranslations = [
             'aberration' => 'Aberration',
             'beast' => 'Bête',
@@ -96,7 +134,8 @@ class MonsterDataConverter
             'monstrosity' => 'Monstruosité',
             'ooze' => 'Vase',
             'plant' => 'Plante',
-            'undead' => 'Mort-vivant'
+            'undead' => 'Mort-vivant',
+            'swarm' => 'Essaim',
         ];
         return $typeTranslations[$type] ?? null;
     }
@@ -215,7 +254,7 @@ class MonsterDataConverter
     private function convertSpecialAbilitiesInHtml($specialAbilities) {
         $html = '';
         foreach ($specialAbilities as $specialAbility) {
-            $html .= '<h4>' . $specialAbility['name'] . '</h4>';
+            $html .= '<h5>' . $specialAbility['name'] . '</h4>';
             $html .= '<p>' . $specialAbility['desc'] . '</p>';
         }
         return $html;
@@ -224,12 +263,12 @@ class MonsterDataConverter
     private function convertActionsInHtml($actions) {
         $html = '';
         foreach ($actions as $action) {
-            $html .= '<h4>' . $action['name'] . '</h4>';
+            $html .= '<h5>' . $action['name'] . '</h4>';
             $html .= '<p>' . $action['desc'] . '</p>';
-            if (isset($action['usage'])) {
-                $html .= '<p>(' . $action['usage']['times'] . $action ['usage']['type'] . ')</p>';
+            // if (isset($action['usage'])) {
+            //     $html .= '<p>(' . $action['usage']['times'] . $action ['usage']['type'] . ')</p>';
 
-            }
+            // }
         $html .= '<br>';
         }
         return $html;
@@ -238,25 +277,245 @@ class MonsterDataConverter
     private function convertLegendaryActionsInHtml($legendaryActions) {
         $html = '';
         foreach ($legendaryActions as $legendaryAction) {
-            $html .= '<h4>' . $legendaryAction['name'] . '</h4>';
+            $html .= '<h5>' . $legendaryAction['name'] . '</h4>';
             $html .= '<p>' . $legendaryAction['desc'] . '</p>';
-            if (isset($legendaryAction['usage'])) {
-                $html .= '<p>(' . $legendaryAction['usage']['times'] . $legendaryAction ['usage']['type'] . ')</p>';
+            // if (isset($legendaryAction['usage'])) {
+            //     $html .= '<p>(' . $legendaryAction['usage']['times'] . $legendaryAction ['usage']['type'] . ')</p>';
 
-            }
+            // }
         $html .= '<br>';
         }
         return $html;
     }
 
-    // private function convertReactionInHtml($reactions) {
-    //     $html = '';
-    //     foreach ($reactions as $reaction) {
-    //         $html .= '<h4>' . $reaction['name'] . '</h4>';
-    //         $html .= '<p>' . $reaction['desc'] . '</p>';
-    //     }
-    //     return $html;
-    // }
+    private function convertReactionInHtml($reactions) {
+        $html = '';
+        foreach ($reactions as $reaction) {
+            $html .= '<h4>' . $reaction['name'] . '</h4>';
+            $html .= '<p>' . $reaction['desc'] . '</p>';
+        }
+        return $html;
+    }
+
+
+    //private function convertDamageVulnerabilities($damageVulnerabilities) {
+    //    $vulnerabilities = [];
+    //    foreach ($damageVulnerabilities as $damageVulnerability) {
+    //        $vulnerabilities[] = $this->translateDamageType($damageVulnerability);
+    //    }
+    //    return $vulnerabilities;
+    //}
+
+
+    private function translateDamageTypeVulnerability($damageTypeVulnerability) {
+        $damageTypeTranslations = [
+            'acid' => 'd\'acide',
+            'bludgeoning' => 'contondants',
+            'cold' => 'de froid',
+            'fire' => 'de feu',
+            'force' => 'de force',
+            'lightning' => 'de foudre',
+            'necrotic' => 'nécrotiques',
+            'piercing' => 'perforants',
+            'poison' => 'de poison',
+            'psychic' => 'psychiques',
+            'radiant' => 'radiants',
+            'slashing' => 'tranchants',
+            'thunder' => 'de tonnerre',
+            
+            // Types de dégâts avec conditions
+            'non-magical bludgeoning' => 'contondants infligés par des attaques non-magiques',
+            'non-cold iron bludgeoning' => 'contondants infligés par des armes qui ne sont pas en fer froid',
+            'non-adamantine bludgeoning' => 'contondants infligés par des attaques non-magiques qui ne sont pas en adamantium',
+            'non-silver bludgeoning' => 'contondants infligés par des attaques non-magiques qui ne sont pas en argent',
+            'non-magical piercing' => 'perforants infligés par des attaques non-magiques',
+            'non-cold iron piercing' => 'perforants infligés par des armes qui ne sont pas en fer froid',
+            'non-adamantine piercing' => 'perforants infligés par des attaques non-magiques qui ne sont pas en adamantium',
+            'non-silver piercing' => 'perforants infligés par des attaques non-magiques qui ne sont pas en argent',
+            'non-magical slashing' => 'tranchants infligés par des attaques non-magiques',
+            'non-cold iron slashing' => 'tranchants infligés par des armes qui ne sont pas en fer froid',
+            'non-adamantine slashing' => 'tranchants infligés par des attaques non-magiques qui ne sont pas en adamantium',
+            'non-silver slashing' => 'tranchants infligés par des attaques non-magiques qui ne sont pas en argent',
+            'piercing from magic weapons wielded by good creatures' => 'perforants d\'armes magiques maniées par une créature bonne',
+            
+            
+            // Combinations de dégâts avec conditions
+            'non-magical piercing and slashing' => 'perforants, et tranchants infligés par des attaques non-magiques',
+            'non-cold iron piercing and slashing' => 'perforants, et tranchants infligés par des armes qui ne sont pas en fer froid',
+            'non-adamantine piercing and slashing' => 'perforants, et tranchants infligés par des attaques non-magiques qui ne sont pas en adamantium',
+            'non-silver piercing and slashing' => 'perforants, et tranchants infligés par des attaques non-magiques qui ne sont pas en argent',
+            'non-magical bludgeoning and slashing' => 'contondants et tranchants infligés par des attaques non-magiques',
+            'non-cold iron bludgeoning and slashing' => 'contondants et tranchants infligés par des armes qui ne sont pas en fer froid',
+            'non-adamantine bludgeoning and slashing' => 'contondants et tranchants infligés par des attaques non-magiques qui ne sont pas en adamantium',
+            'non-silver bludgeoning and slashing' => 'contondants et tranchants infligés par des attaques non-magiques qui ne sont pas en argent',
+            'non-magical bludgeoning and piercing' => 'contondants et perforants infligés par des attaques non-magiques',
+            'non-cold iron bludgeoning and piercing' => 'contondants et perforants infligés par des armes qui ne sont pas en fer froid',
+            'non-adamantine bludgeoning and piercing' => 'contondants et perforants infligés par des attaques non-magiques qui ne sont pas en adamantium',
+            'non-silver bludgeoning and piercing' => 'contondants et perforants infligés par des attaques non-magiques qui ne sont pas en argent',
+
+            // Combinaisons multiples
+            'bludgeoning, piercing, and slashing from nonmagical weapons' => 'contondants, perforants et tranchants infligés par des attaques non-magiques',
+            'non-magical bludgeoning and piercing and slashing' => 'contondants, perforants et tranchants infligés par des attaques non-magiques',
+
+            'non-cold iron bludgeoning and piercing and slashing' => 'contondants, perforants et tranchants infligés par des armes qui ne sont pas en fer froid',
+            'non-adamantine bludgeoning and piercing and slashing' => 'contondants, perforants et tranchants infligés par des attaques non-magiques qui ne sont pas en adamantium',
+            'non-silver bludgeoning and piercing and slashing' => 'contondants, perforants et tranchants infligés par des attaques non-magiques qui ne sont pas en argent',
+
+            'damage from spells' => 'dégâts infligés par des sorts',
+            'bludgeoning, piercing, and slashing from nonmagical attacks (from stoneskin)' => 'contondants, perforants et tranchants infligés par des attaques non-magiques (peau de pierre)',
+        ];
+        
+        return $damageTypeTranslations[$damageTypeVulnerability] ?? null;
+    }
+
+    private function translateDamageTypeResistance($damageTypeResistance) {
+        $damageTypeTranslations = [
+            // Types de dégâts simples
+            'acid' => 'd\'acide',
+            'bludgeoning' => 'contondants',
+            'cold' => 'de froid',
+            'fire' => 'de feu',
+            'force' => 'de force',
+            'lightning' => 'de foudre',
+            'necrotic' => 'nécrotiques',
+            'piercing' => 'perforants',
+            'poison' => 'de poison',
+            'psychic' => 'psychiques',
+            'radiant' => 'radiants',
+            'slashing' => 'tranchants',
+            'thunder' => 'de tonnerre',
+            
+            // Types de dégâts avec conditions
+            'non-magical bludgeoning' => 'contondants infligés par des attaques non-magiques',
+            'non-cold iron bludgeoning' => 'contondants infligés par des armes qui ne sont pas en fer froid',
+            'non-adamantine bludgeoning' => 'contondants infligés par des attaques non-magiques qui ne sont pas en adamantium',
+            'non-silver bludgeoning' => 'contondants infligés par des attaques non-magiques qui ne sont pas en argent',
+            'non-magical piercing' => 'perforants infligés par des attaques non-magiques',
+            'non-cold iron piercing' => 'perforants infligés par des armes qui ne sont pas en fer froid',
+            'non-adamantine piercing' => 'perforants infligés par des attaques non-magiques qui ne sont pas en adamantium',
+            'non-silver piercing' => 'perforants infligés par des attaques non-magiques qui ne sont pas en argent',
+            'non-magical slashing' => 'tranchants infligés par des attaques non-magiques',
+            'non-cold iron slashing' => 'tranchants infligés par des armes qui ne sont pas en fer froid',
+            'non-adamantine slashing' => 'tranchants infligés par des attaques non-magiques qui ne sont pas en adamantium',
+            'non-silver slashing' => 'tranchants infligés par des attaques non-magiques qui ne sont pas en argent',
+            
+            
+            
+            // Combinations de dégâts avec conditions
+            'non-magical piercing and slashing' => 'perforants, et tranchants infligés par des attaques non-magiques',
+            'non-cold iron piercing and slashing' => 'perforants, et tranchants infligés par des armes qui ne sont pas en fer froid',
+            'non-adamantine piercing and slashing' => 'perforants, et tranchants infligés par des attaques non-magiques qui ne sont pas en adamantium',
+            'piercing and slashing from nonmagical weapons that aren\'t adamantine' => 'perforants, et tranchants infligés par des attaques non-magiques qui ne sont pas en adamantium',
+
+            'non-silver piercing and slashing' => 'perforants, et tranchants infligés par des attaques non-magiques qui ne sont pas en argent',
+            'non-magical bludgeoning and slashing' => 'contondants et tranchants infligés par des attaques non-magiques',
+            'non-cold iron bludgeoning and slashing' => 'contondants et tranchants infligés par des armes qui ne sont pas en fer froid',
+            'non-adamantine bludgeoning and slashing' => 'contondants et tranchants infligés par des attaques non-magiques qui ne sont pas en adamantium',
+            'non-silver bludgeoning and slashing' => 'contondants et tranchants infligés par des attaques non-magiques qui ne sont pas en argent',
+            'non-magical bludgeoning and piercing' => 'contondants et perforants infligés par des attaques non-magiques',
+            'non-cold iron bludgeoning and piercing' => 'contondants et perforants infligés par des armes qui ne sont pas en fer froid',
+            'non-adamantine bludgeoning and piercing' => 'contondants et perforants infligés par des attaques non-magiques qui ne sont pas en adamantium',
+            'non-silver bludgeoning and piercing' => 'contondants et perforants infligés par des attaques non-magiques qui ne sont pas en argent',
+
+            // Combinaisons multiples
+            'bludgeoning, piercing, and slashing from nonmagical weapons' => 'contondants, perforants et tranchants infligés par des attaques non-magiques',
+            'bludgeoning, piercing, and slashing from nonmagical weapons that aren\'t adamantine' => 'contondants, perforants et tranchants infligés par des armes non-magiques qui ne sont pas en adamantium',
+            'non-magical bludgeoning and piercing and slashing' => 'contondants, perforants et tranchants infligés par des attaques non-magiques',
+
+            'non-cold iron bludgeoning and piercing and slashing' => 'contondants, perforants et tranchants infligés par des armes qui ne sont pas en fer froid',
+            'non-adamantine bludgeoning and piercing and slashing' => 'contondants, perforants et tranchants infligés par des attaques non-magiques qui ne sont pas en adamantium',
+            'non-silver bludgeoning and piercing and slashing' => 'contondants, perforants et tranchants infligés par des attaques non-magiques qui ne sont pas en argent',
+            'bludgeoning, piercing, and slashing from nonmagical weapons that aren\'t silvered' => 'contondants, perforants et tranchants infligés par des attaques non-magiques qui ne sont pas en argent',
+
+            'damage from spells' => 'dégâts infligés par des sorts',
+            'bludgeoning, piercing, and slashing from nonmagical attacks (from stoneskin)' => 'contondants, perforants et tranchants infligés par des attaques non-magiques (peau de pierre)',
+        ];
+
+        return $damageTypeTranslations[$damageTypeResistance] ?? null;
+    }
+
+    private function translateDamageTypeImmunity($damageTypeImmunity) {
+        $damageTypeTranslations = [
+            // Types de dégâts simples
+            'acid' => 'd\'acide',
+            'bludgeoning' => 'contondants',
+            'cold' => 'de froid',
+            'fire' => 'de feu',
+            'force' => 'de force',
+            'lightning' => 'de foudre',
+            'necrotic' => 'nécrotiques',
+            'piercing' => 'perforants',
+            'poison' => 'de poison',
+            'psychic' => 'psychiques',
+            'radiant' => 'radiants',
+            'slashing' => 'tranchants',
+            'thunder' => 'de tonnerre',
+
+            // Types de dégâts avec conditions
+            'non-magical bludgeoning' => 'contondants infligés par des attaques non-magiques',
+            'non-cold iron bludgeoning' => 'contondants infligés par des armes qui ne sont pas en fer froid',
+            'non-adamantine bludgeoning' => 'contondants infligés par des armes qui ne sont pas en adamantium',
+            'non-silver bludgeoning' => 'contondants infligés par des armes qui ne sont pas en argent',
+            'non-magical piercing' => 'perforants infligés par des attaques non-magiques',
+            'non-cold iron piercing' => 'perforants infligés par des armes qui ne sont pas en fer froid',
+            'non-adamantine piercing' => 'perforants infligés par des armes qui ne sont pas en adamantium',
+            'non-silver piercing' => 'perforants infligés par des armes qui ne sont pas en argent',
+            'non-magical slashing' => 'tranchants infligés par des attaques non-magiques',
+            'non-cold iron slashing' => 'tranchants infligés par des armes qui ne sont pas en fer froid',
+            'non-adamantine slashing' => 'tranchants infligés par des armes qui ne sont pas en adamantium',
+            'non-silver slashing' => 'tranchants infligés par des armes qui ne sont pas en argent',
+
+            
+            // Combinations de dégâts avec conditions
+            'non-magical piercing and slashing' => 'perforants et tranchants infligés par des attaques non-magiques',
+            'non-cold iron piercing and slashing' => 'perforants et tranchants infligés par des armes qui ne sont pas en fer froid',
+            'non-adamantine piercing and slashing' => 'perforants et tranchants infligés par des armes qui ne sont pas en adamantium',
+            'non-silver piercing and slashing' => 'perforants et tranchants infligés par des armes qui ne sont pas en argent',
+            'non-magical bludgeoning and slashing' => 'contondants et tranchants infligés par des attaques non-magiques',
+            'non-cold iron bludgeoning and slashing' => 'contondants et tranchants infligés par des armes qui ne sont pas en fer froid',
+            'non-adamantine bludgeoning and slashing' => 'contondants et tranchants infligés par des armes qui ne sont pas en adamantium',
+            'non-silver bludgeoning and slashing' => 'contondants et tranchants infligés par des armes qui ne sont pas en argent',
+            'non-magical bludgeoning and piercing' => 'contondants et perforants infligés par des attaques non-magiques',
+            'non-cold iron bludgeoning and piercing' => 'contondants et perforants infligés par des armes qui ne sont pas en fer froid',
+            'non-adamantine bludgeoning and piercing' => 'contondants et perforants infligés par des armes qui ne sont pas en adamantium',
+            'non-silver bludgeoning and piercing' => 'contondants et perforants infligés par des armes qui ne sont pas en argent',
+
+
+            // Combinaisons multiples
+            'non-magical bludgeoning and piercing and slashing' => 'contondants, perforants et tranchants infligés par des attaques non-magiques',
+            'bludgeoning, piercing, and slashing from nonmagical weapons' => 'contondants, perforants et tranchants infligés par des attaques non-magiques',
+            'bludgeoning, piercing, and slashing from nonmagical weapons that aren\'t adamantine' => 'contondants, perforants et tranchants infligés par des attaques non-magiques qui ne sont pas en adamantium',
+            'piercing and slashing from nonmagical weapons that aren\'t adamantine' => 'perforants et tranchants infligés par des attaques non-magiques qui ne sont pas en adamantium',
+            'non-cold iron bludgeoning and piercing and slashing' => 'contondants, perforants et tranchants infligés par des armes qui ne sont pas en fer froid',
+            'non-adamantine bludgeoning and piercing and slashing' => 'contondants, perforants et tranchants infligés par des armes qui ne sont pas en adamantium',
+            'non-silver bludgeoning and piercing and slashing' => 'contondants, perforants et tranchants infligés par des armes qui ne sont pas en argent',
+            'bludgeoning, piercing, and slashing from nonmagical weapons that aren\'t silvered' => 'contondants, perforants et tranchants infligés par des armes non-magiques qui ne sont pas en argent',
+        ];
+
+        return $damageTypeTranslations[$damageTypeImmunity] ?? null;
+    }
+
+
+    private function translateState($state) {
+        $stateTranslations = [
+            'blinded' => 'aveuglé',
+            'charmed' => 'charmé',
+            'deafened' => 'assourdi',
+            'frightened' => 'effrayé',
+            'grappled' => 'agrippé',
+            'incapacitated' => 'neutralisé',
+            'invisible' => 'invisible',
+            'paralyzed' => 'paralysé',
+            'petrified' => 'pétrifié',
+            'poisoned' => 'empoisonné',
+            'prone' => 'à terre',
+            'restrained' => 'entravé',
+            'stunned' => 'étourdi',
+            'unconscious' => 'inconscient',
+            'exhaustion' => 'épuisé',
+        ];
+        return $stateTranslations[$state] ?? null;
+    }
 
 
 }

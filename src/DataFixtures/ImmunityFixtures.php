@@ -49,6 +49,8 @@ class ImmunityFixtures extends Fixture
     public const IMMUNITY_NON_COLD_IRON_BLUDGEONING_AND_PIERCING_AND_SLASHING = 'immunity-non-cold-iron-bludgeoning-and-piercing-and-slashing';
     public const IMMUNITY_NON_ADAMANTINE_BLUDGEONING_AND_PIERCING_AND_SLASHING = 'immunity-non-adamantine-bludgeoning-and-piercing-and-slashing';
     public const IMMUNITY_NON_SILVER_BLUDGEONING_AND_PIERCING_AND_SLASHING = 'immunity-non-silver-bludgeoning-and-piercing-and-slashing';
+    public const IMMUNITY_NON_MAGICAL_NON_ADAMANTINE_BLUDGEONING_AND_PIERCING_AND_SLASHING = 'immunity-non-magical-non-adamantine-bludgeoning-and-piercing-and-slashing';
+    public const IMMUNITY_NON_MAGICAL_NON_SILVER_BLUDGEONING_AND_PIERCING_AND_SLASHING = 'immunity-non-magical-non-silver-bludgeoning-and-piercing-and-slashing';
 
     public function load(ObjectManager $manager): void
     {
@@ -286,6 +288,19 @@ class ImmunityFixtures extends Fixture
         $manager->persist($nonSilverBludgeoningAndPiercingAndSlashing);
         $this->addReference(self::IMMUNITY_NON_SILVER_BLUDGEONING_AND_PIERCING_AND_SLASHING, $nonSilverBludgeoningAndPiercingAndSlashing);
 
+
+        //contondants, perforants et tranchants infligés par des attaques non-magiques qui ne sont pas en adamantium
+        $nonMagicalNonAdamantineBludgeoningAndPiercingAndSlashing = new Immunity();
+        $nonMagicalNonAdamantineBludgeoningAndPiercingAndSlashing->setName('contondants, perforants et tranchants infligés par des attaques non-magiques qui ne sont pas en adamantium');
+        $manager->persist($nonMagicalNonAdamantineBludgeoningAndPiercingAndSlashing);
+        $this->addReference(self::IMMUNITY_NON_MAGICAL_NON_ADAMANTINE_BLUDGEONING_AND_PIERCING_AND_SLASHING, $nonMagicalNonAdamantineBludgeoningAndPiercingAndSlashing);
+
+        // contondants, perforants et tranchants infligés par des armes non-magiques qui ne sont pas en argent
+        $nonMagicalNonSilverBludgeoningAndPiercingAndSlashing = new Immunity();
+        $nonMagicalNonSilverBludgeoningAndPiercingAndSlashing->setName('contondants, perforants et tranchants infligés par des armes non-magiques qui ne sont pas en argent');
+        $manager->persist($nonMagicalNonSilverBludgeoningAndPiercingAndSlashing);
+        $this->addReference(self::IMMUNITY_NON_MAGICAL_NON_SILVER_BLUDGEONING_AND_PIERCING_AND_SLASHING, $nonMagicalNonSilverBludgeoningAndPiercingAndSlashing);
+    
         $manager->flush();
     }
 }

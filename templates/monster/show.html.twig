@@ -125,34 +125,32 @@
 
 			{% endif %}
 
-
-			{% if monster.capacity %}
-				<div><strong>Capacités</strong>
-					{{ monster.capacity }}
+			{# capacités #}
+			{% if monster.specialAbilities %}
+				<div><strong><h4>Capacités</h4></strong>
+					{{ monster.specialAbilities|raw }}
 				</div>
 			{% endif %}
 
 
 			{% if monster.actions is not empty or monster.reactions is not empty or monster.legendaryActions is not empty %}
 
-				<div><strong>Actions</strong>
 					{% if monster.actions is not empty %}
-						{% for action in monster.actions %}
-							<p><strong>{{ action.name }}</strong> {{ action.description }}</p>
-						{% endfor %}
+						<div><strong><h4>Actions</h4></strong></div>
+
+						<p><strong>{{ monster.actions|raw }}</strong></p>
+						<br>
 					{% endif %}
 					{% if monster.reactions is not empty %}
-						{% for action in monster.actions %}
-							<p><strong>{{ action.name }}</strong> {{ action.description }}</p>
-						{% endfor %}
+						<p><strong><h4>Reactions</h4></strong></p>
+						<p><strong>{{ monster.reactions|raw }}</strong></p>
+						<br>
 					{% endif %}
 					{% if monster.legendaryActions is not empty %}
-						{% for action in monster.actions %}
-							<p><strong>{{ action.name }}</strong> {{ action.description }}</p>
-						{% endfor %}
+						<p><strong><h4>Actions légendaires</h4></strong></p>
+						<p><strong>{{ monster.legendaryActions|raw }}</strong></p>
 					<hr class="mb-2 mt-2">
 					{% endif %}
-				</div>
 			{% endif %}
 		</div>
 	</turbo-frame>

@@ -64,6 +64,8 @@ class CreateOrUpdateMonstersCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $io = new SymfonyStyle($input, $output);
+
         $localAlignmentsArray = $this->getEntitiesByName($this->alignmentRepository);
         $localChallengesArray = $this->getEntitiesByName($this->challengeRepository);
         $localExpertSkillsArray = $this->getEntitiesByName($this->expertSkillRepository);
@@ -78,16 +80,17 @@ class CreateOrUpdateMonstersCommand extends Command
         $localTypesArray = $this->getEntitiesByName($this->typeRepository);
         $localVulnerabilitiesArray = $this->getEntitiesByName($this->vulnerabilityRepository);
 
+
         $apiMonsters = $this->monstersApiCall->getAllMonsters();
+
         foreach ($apiMonsters['results'] as $monster) {
+            try {
             //on cherche si le monster existe en base
             $convertedMonsterData = $this->monsterDataConverter->convert($this->monstersApiCall->getMonster($monster));
-            $monsterEntity = isset($localMonstersArray[$monster['name']])? $localMonstersArray[$monster['name']] : [];
-
-            if (!$monsterEntity) {
-                $monsterEntity = new Monster();
-                $monsterEntity->setName($monster['name']);
-            }
+            $monsterEntity = isset($localMonstersArray[$monster['name']])? $localMonstersArray[$monster['name']] : new Monster();
+            $monsterEntity->setName($convertedMonsterData['name']);
+            
+            
             // là on update l'entité monster avec les données de l'api
             $monsterEntity->setSize($localSizesArray[$convertedMonsterData['size']]);
             $monsterEntity->setAlignment($localAlignmentsArray[$convertedMonsterData['alignment']]);
@@ -158,28 +161,35 @@ class CreateOrUpdateMonstersCommand extends Command
             }
 
 
-            ///// TODO : ADD TO CONVERTER
+            ///// TODO : TO UPDATE IN CONVERTER WHEN AN IMPORT CONTAINS THESE FIELDS
             if (isset($convertedMonsterData['reactions'])) {
                 $monsterEntity->setReactions($convertedMonsterData['reactions']);
             }
+            
             //if damage vulnerabilities is present, set damage vulnerabilities
             if (isset($convertedMonsterData['damage_vulnerabilities'])) {
                 foreach ($convertedMonsterData['damage_vulnerabilities'] as $vulnerability) {
-                    $monsterEntity->addVulnerability($localVulnerabilitiesArray[$vulnerability]);
+                    $monsterEntity->addDamageVulnerability($localVulnerabilitiesArray[$vulnerability]);
                 }
             }
 
             //if damage resistances is present, set damage resistances
             if (isset($convertedMonsterData['damage_resistances'])) {
+                // if (!empty($convertedMonsterData['damage_resistances'])) {
+                //     dump($convertedMonsterData['damage_resistances']);
+                // }
                 foreach ($convertedMonsterData['damage_resistances'] as $resistance) {
-                    $monsterEntity->addResistance($localResistancesArray[$resistance]);
+                    $monsterEntity->addDamageResistance($localResistancesArray[$resistance]);
                 }
             }
 
             //if damage immunities is present, set damage immunities
             if (isset($convertedMonsterData['damage_immunities'])) {
+                // if (!empty($convertedMonsterData['damage_immunities'])) {
+                //     dump($convertedMonsterData['damage_immunities']);
+                // }
                 foreach ($convertedMonsterData['damage_immunities'] as $immunity) {
-                    $monsterEntity->addImmunity($localImmunitiesArray[$immunity]);
+                    $monsterEntity->addDamageImmunity($localImmunitiesArray[$immunity]);
                 }
             }
 
@@ -206,9 +216,9 @@ class CreateOrUpdateMonstersCommand extends Command
             }
 
             // if states is present, set states (immunities)
-            if (isset($convertedMonsterData['states'])) {
-                foreach ($convertedMonsterData['states'] as $state) {
-                    $monsterEntity->addState($localStatesArray[$state]);
+            if (isset($convertedMonsterData['condition_immunities'])) {
+                foreach ($convertedMonsterData['condition_immunities'] as $state) {
+                    $monsterEntity->addStateImmunity($localStatesArray[$state]);
                 }
             }
 
@@ -216,7 +226,13 @@ class CreateOrUpdateMonstersCommand extends Command
 
 
             $this->em->persist($monsterEntity);
-            break;
+            // break;
+            } catch (\Exception $e) {
+                dump($e);
+                dump($monster);
+                dump($convertedMonsterData);
+                die();
+            }
         }
         $this->em->flush();
         return Command::SUCCESS;

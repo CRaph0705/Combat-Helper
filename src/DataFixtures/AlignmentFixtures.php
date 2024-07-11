@@ -18,6 +18,15 @@ class AlignmentFixtures extends Fixture
     public const ALIGNMENT_NEUTRAL_EVIL = 'neutral evil';
     public const ALIGNMENT_CHAOTIC_EVIL = 'chaotic evil';
     public const ALIGNMENT_UNALIGNED = 'unaligned';
+    public const ALIGNMENT_ANY = 'any alignment';
+    public const ALIGNMENT_ANY_NON_GOOD = 'any non good alignment';
+    public const ALIGNMENT_ANY_GOOD = 'any good alignment';
+    public const ALIGNMENT_ANY_NEUTRAL = 'any neutral alignment';
+    public const ALIGNMENT_ANY_CHAOTIC = 'any chaotic alignment';
+    public const ALIGNMENT_ANY_LAWFUL = 'any lawful alignment';
+    public const ALIGNMENT_ANY_NON_LAWFUL = 'any non lawful alignment';
+    public const ALIGNMENT_ANY_EVIL = 'any evil alignment';
+
 
     public function load(ObjectManager $manager): void
     {
@@ -70,6 +79,46 @@ class AlignmentFixtures extends Fixture
         $unaligned->setName('Non aligné');
         $manager->persist($unaligned);
         $this->addReference(self::ALIGNMENT_UNALIGNED, $unaligned);
+
+        $anyAlignment = new Alignment();
+        $anyAlignment->setName('Tout alignement');
+        $manager->persist($anyAlignment);
+        $this->addReference(self::ALIGNMENT_ANY, $anyAlignment);
+
+        $anyNonGoodAlignment = new Alignment();
+        $anyNonGoodAlignment->setName('Tout alignement sauf bon');
+        $manager->persist($anyNonGoodAlignment);
+        $this->addReference(self::ALIGNMENT_ANY_NON_GOOD, $anyNonGoodAlignment);
+
+        $anyGoodAlignment = new Alignment();
+        $anyGoodAlignment->setName('Tout alignement bon');
+        $manager->persist($anyGoodAlignment);
+        $this->addReference(self::ALIGNMENT_ANY_GOOD, $anyGoodAlignment);
+
+        $anyNeutralAlignment = new Alignment();
+        $anyNeutralAlignment->setName('Tout alignement neutre');
+        $manager->persist($anyNeutralAlignment);
+        $this->addReference(self::ALIGNMENT_ANY_NEUTRAL, $anyNeutralAlignment);
+
+        $anyChaoticAlignment = new Alignment();
+        $anyChaoticAlignment->setName('Tout alignement chaotique');
+        $manager->persist($anyChaoticAlignment);
+        $this->addReference(self::ALIGNMENT_ANY_CHAOTIC, $anyChaoticAlignment);
+
+        $anyLawfulAlignment = new Alignment();
+        $anyLawfulAlignment->setName('Tout alignement loyal');
+        $manager->persist($anyLawfulAlignment);
+        $this->addReference(self::ALIGNMENT_ANY_LAWFUL, $anyLawfulAlignment);
+        
+        $anyNonLawfulAlignment = new Alignment();
+        $anyNonLawfulAlignment->setName('Tout alignement non loyal');
+        $manager->persist($anyNonLawfulAlignment);
+        $this->addReference(self::ALIGNMENT_ANY_NON_LAWFUL, $anyNonLawfulAlignment);
+
+        $anyEvilAlignment = new Alignment();
+        $anyEvilAlignment->setName('Tout alignement mauvais');
+        $manager->persist($anyEvilAlignment);
+        $this->addReference(self::ALIGNMENT_ANY_EVIL, $anyEvilAlignment);
 
         $manager->flush();
     }
