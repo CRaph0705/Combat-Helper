@@ -112,10 +112,13 @@
 
     .unit-index-list,
     .monster-index-list,
-    .player-index-list {
+    .player-index-list,
+    .monster-details,
+    .player-details {
         overflow-y: scroll;
         max-height: 65vh;
         width: 50%;
+        padding: 1em;
     }
 }
 
