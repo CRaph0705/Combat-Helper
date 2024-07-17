@@ -56,7 +56,7 @@
 			{% if monster.damageVulnerability is not empty %}
 				<div><strong>Vulnérabilités aux dégâts</strong>
 					{% for vulnerability in monster.damageVulnerability %}
-						<p>{{ vulnerability.name }}</p>
+						{{ vulnerability.name }},
 					{% endfor %}
 				</div>
 			{% endif %}
