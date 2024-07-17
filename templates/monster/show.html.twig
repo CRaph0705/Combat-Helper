@@ -3,158 +3,118 @@
 {% block title %}Monster{% endblock %}
 
 {% block body %}
-	<turbo-frame id="monster-details-content">
-		<div class="monster-detail-card">
-			<h1>{{ monster.name }}</h1>
-			{# Le tilde (~) est l'opérateur de concaténation en Twig #}
-			<p><strong> {{ monster.type }} {{ (monster.subtype)? '(' ~ monster.subtype ~ ')'  : '' }}</strong> de taille {{ monster.size }}, {{ (monster.alignment)? monster.alignment : 'non alignée' }}</p> 
-			<hr class="mb-2 mt-2">
-			<p><strong>Classe d'armure</strong> {{ monster.ac }}</p>
-			<p><strong>Points de vie</strong> {{ monster.hp }}</p>
-			{# {% if monster.groundspeed %} #}
-			<p><strong>Vitesse</strong> 
-				{{ monster.speed }}
-			</p>
-			{% if monster.alignment %}
-			<p><strong>Alignement</strong> {{ monster.alignment }}</p>
-			{% endif %}
-			<hr class="mb-2 mt-2">
-			<div class="d-flex justify-content-between">
-				<div class"d-flex flex-column">
-					<p><strong>FOR</strong></p> 
-					<p class="text-center">{{ monster.strength }} {{ monster.getStatModulo(monster.strength) }}</p>
-				</div>
-				<div class"d-flex flex-column">
-					<p><strong>DEX</strong></p> 
-					<p class="text-center">{{ monster.dexterity }} {{ monster.getStatModulo(monster.dexterity) }}</p>
-				</div>
-				<div class"d-flex flex-column">
-					<p><strong>CON</strong></p> 
-					<p class="text-center">{{ monster.constitution }} {{ monster.getStatModulo(monster.constitution) }}</p>
-				</div>
-				<div class"d-flex flex-column">
-					<p><strong>INT</strong></p> 
-					<p class="text-center">{{ monster.intelligence }} {{ monster.getStatModulo(monster.intelligence) }}</p>
-				</div>
-				<div class"d-flex flex-column">
-					<p><strong>SAG</strong></p> 
-					<p class="text-center">{{ monster.wisdom }} {{ monster.getStatModulo(monster.wisdom) }}</p>
-				</div>
-				<div class"d-flex flex-column">
-					<p><strong>CHA</strong></p> 
-					<p class="text-center">{{ monster.charisma }} {{ monster.getStatModulo(monster.charisma) }}</p>
-				</div>
-			</div>
-			<hr class="mb-2 mt-2">
-			{% if monster.savingThrows is not empty %}
-				<div><strong>Jets de sauvegarde</strong>
-					{% for save in monster.savingThrows %}
-						<p><strong>{{ save.name }}</strong> {{ save.value }}</p>
-					{% endfor %}
-				</div>
-			{% endif %}
-			{% if monster.damageVulnerability is not empty %}
-				<div><strong>Vulnérabilités aux dégâts</strong>
-					{% for vulnerability in monster.damageVulnerability %}
-						{{ vulnerability.name }},
-					{% endfor %}
-				</div>
-			{% endif %}
-			{% if monster.damageResistance is not empty %}
-				<div><strong>Résistances aux dégâts</strong>
-					{% for resistance in monster.damageResistance %}
-						{{ resistance.name }}, 
-					{% endfor %}
-				</div>
-			{% endif %}
-			{% if monster.damageImmunity is not empty %}
-				<div><strong>Immunité aux dégâts</strong>
-					{% for immunity in monster.damageImmunity %}
-						{{ immunity.name }}, 
-					{% endfor %}
-				</div>
-			{% endif %}
-			{% if monster.stateImmunity is not empty %}
-				<div><strong>Immunité aux états</strong>
-					{% for state in monster.stateImmunity %}
-						{{ state.name }}, 
-					{% endfor %}
-				</div>
-			{% endif %}
-			<div><strong>Sens</strong> 
-				Perception passive
-				{{ monster.passiveperception }}m
+    <turbo-frame id="monster-details-content">
+        <div class="monster-detail-card">
+            <h1>{{ monster.name }}</h1>
+            <p><strong>{{ monster.type }} {{ (monster.subtype)? '(' ~ monster.subtype ~ ')'  : '' }}</strong> de taille {{ monster.size }}, {{ (monster.alignment)? monster.alignment : 'non alignée' }}</p>
+            <hr class="mb-2 mt-2">
+            <p><strong>Classe d'armure</strong> {{ monster.ac }}</p>
+            <p><strong>Points de vie</strong> {{ monster.hp }}</p>
+            <p><strong>Vitesse</strong> {{ monster.speed }}</p>
+            {% if monster.alignment %}
+                <p><strong>Alignement</strong> {{ monster.alignment }}</p>
+            {% endif %}
+            <hr class="mb-2 mt-2">
+            <div class="d-flex justify-content-between">
+                {% for attribute, value in {
+                    'FOR': monster.strength,
+                    'DEX': monster.dexterity,
+                    'CON': monster.constitution,
+                    'INT': monster.intelligence,
+                    'SAG': monster.wisdom,
+                    'CHA': monster.charisma
+                } %}
+                    <div class="d-flex flex-column">
+                        <p><strong>{{ attribute }}</strong></p>
+                        <p class="text-center">{{ value }} {{ monster.getStatModulo(value) }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+            <hr class="mb-2 mt-2">
+            {% if monster.savingThrows is not empty %}
+                <div><strong>Jets de sauvegarde</strong>
+                    {% for save in monster.savingThrows %}
+                        <p><strong>{{ save.name }}</strong> {{ save.value }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
 
-				{% if monster.blindsight %}
-				, vision aveugle {{ monster.blindsight }}m
-				{% endif %}
-				{% if monster.darkvision %}
-				, vision dans le noir {{ monster.darkvision }}m
-				{% endif %}
-				{% if monster.truesight %}
-				, vision parfaite {{ monster.truesight }}m
-				{% endif %}
-				{% if monster.tremorsense %}
-				, perception des vibrations {{ monster.tremorsense }}m
-				{% endif %}
-				{% if monster.blindsight %}
-				, vision aveugle {{ monster.blindsight }}m
-				{% endif %}
-			</div>
-			<div>
-				<p><strong>Langues :</strong> 
-					{% if monster.languages is not empty %}
-						{% for language in monster.languages %}
-							{{ language.name }}, 
-						{% endfor %}
-					{% else %}
-						-
-					{% endif %}
-				</p>
-				{% if monster.challenge %}
-					<p><strong>Dangerosité</strong> {{ monster.challenge.name }} ({{ monster.challenge.xp }}XP)</p>
-				{% endif %}
-			</div>
-			<hr class="mb-2 mt-2">
-			{% if monster.proficientSkill is not empty %}
-				<div><strong>Compétences</strong>
-					{% for skill in monster.proficientSkill %}
-						<p><strong>{{ skill.name }}</strong> {{ skill.description }}</p>
-					{% endfor %}
-				</div>
-			<hr class="mb-2 mt-2">
+            {% if monster.damageImmunity is not empty %}
+                <div><strong>Immunité aux dégâts</strong>
+                    {{ monster.damageImmunity|map(attribute => attribute.name)|join(', ') }}.
+                </div>
+            {% endif %}
 
-			{% endif %}
+            {% if monster.damageVulnerability is not empty %}
+                <div><strong>Vulnérabilités aux dégâts</strong>
+                    {{ monster.damageVulnerability|map(attribute => attribute.name)|join(', ') }}.
+                </div>
+            {% endif %}
 
-			{# capacités #}
-			{% if monster.specialAbilities %}
-				<div><strong><h4>Capacités</h4></strong>
-					{{ monster.specialAbilities|raw }}
-				</div>
-			{% endif %}
+            {% if monster.damageResistance is not empty %}
+                <div><strong>Résistances aux dégâts</strong>
+                    {{ monster.damageResistance|map(attribute => attribute.name)|join(', ') }}.
+                </div>
+            {% endif %}
 
+            {% if monster.stateImmunity is not empty %}
+                <div><strong>Immunité aux états</strong>
+                    {{ monster.stateImmunity|map(attribute => attribute.name)|join(', ') }}.
+                </div>
+            {% endif %}
 
-			{% if monster.actions is not empty or monster.reactions is not empty or monster.legendaryActions is not empty %}
+            <div><strong>Sens</strong> 
+                Perception passive {{ monster.passiveperception }}m
+                {% if monster.blindsight %}, vision aveugle {{ monster.blindsight }}m{% endif %}
+                {% if monster.darkvision %}, vision dans le noir {{ monster.darkvision }}m{% endif %}
+                {% if monster.truesight %}, vision parfaite {{ monster.truesight }}m{% endif %}
+                {% if monster.tremorsense %}, perception des vibrations {{ monster.tremorsense }}m{% endif %}
+            </div>
+            <div>
+                {% if monster.languages is not empty %}
+                    <p><strong>Langues :</strong>
+                        {{ monster.languages|map(attribute => attribute.name)|join(', ') }}.
+                    </p>
+                {% else %}
+                    <p><strong>Langues :</strong> -</p>
+                {% endif %}
+                {% if monster.challenge %}
+                    <p><strong>Dangerosité</strong> {{ monster.challenge.name }} ({{ monster.challenge.xp }}XP)</p>
+                {% endif %}
+            </div>
+            <hr class="mb-2 mt-2">
+            {% if monster.proficientSkill is not empty %}
+                <div><strong>Compétences</strong>
+                    {% for skill in monster.proficientSkill %}
+                        <p><strong>{{ skill.name }}</strong> {{ skill.description }}</p>
+                    {% endfor %}
+                </div>
+                <hr class="mb-2 mt-2">
+            {% endif %}
 
-					{% if monster.actions is not empty %}
-						<div><strong><h4>Actions</h4></strong></div>
+            {% if monster.specialAbilities %}
+                <div><strong><h4>Capacités</h4></strong>
+                    {{ monster.specialAbilities|raw }}
+                </div>
+            {% endif %}
 
-						<p><strong>{{ monster.actions|raw }}</strong></p>
-						<br>
-					{% endif %}
-					{% if monster.reactions is not empty %}
-						<p><strong><h4>Reactions</h4></strong></p>
-						<p><strong>{{ monster.reactions|raw }}</strong></p>
-						<br>
-					{% endif %}
-					{% if monster.legendaryActions is not empty %}
-						<p><strong><h4>Actions légendaires</h4></strong></p>
-						<p><strong>{{ monster.legendaryActions|raw }}</strong></p>
-					<hr class="mb-2 mt-2">
-					{% endif %}
-			{% endif %}
-		</div>
-	</turbo-frame>
-	{# <a href="{{ path('app_monster_edit', {'id': monster.id}) }}">edit</a> #}
-	{# <a href="{{ path('app_monster_delete', {'id': monster.id}) }}">delete</a> #}
+            {% if monster.actions is not empty or monster.reactions is not empty or monster.legendaryActions is not empty %}
+                {% if monster.actions is not empty %}
+                    <div><strong><h4>Actions</h4></strong></div>
+                    <p><strong>{{ monster.actions|raw }}</strong></p>
+                    <br>
+                {% endif %}
+                {% if monster.reactions is not empty %}
+                    <p><strong><h4>Reactions</h4></strong></p>
+                    <p><strong>{{ monster.reactions|raw }}</strong></p>
+                    <br>
+                {% endif %}
+                {% if monster.legendaryActions is not empty %}
+                    <p><strong><h4>Actions légendaires</h4></strong></p>
+                    <p><strong>{{ monster.legendaryActions|raw }}</strong></p>
+                    <hr class="mb-2 mt-2">
+                {% endif %}
+            {% endif %}
+        </div>
+    </turbo-frame>
 {% endblock %}
