@@ -9,7 +9,7 @@
 	</div>
 	<div class="player-index-container d-flex" data-controller="player-index">
 		<div
-			class="player-index-list">
+			class="player-index-list scrollable">
 			<!-- Liste des players avec un défilement indépendant -->
 			<ul>
 				{% for player_character in player_characters %}
@@ -42,7 +42,7 @@
 				{% endfor %}
 			</ul>
 		</div>
-		<div class="player-details">
+		<div class="player-details scrollable">
 			<turbo-frame id="player-details-content" src=""></turbo-frame>
 		</div>
 	</div>

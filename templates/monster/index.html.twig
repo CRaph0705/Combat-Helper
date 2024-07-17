@@ -9,7 +9,7 @@
 	</div>
 	<div class="monster-index-container d-flex" data-controller="monster-index">
 		<div
-			class="monster-index-list">
+			class="monster-index-list scrollable">
 			<!-- Liste des monstres avec un défilement indépendant -->
 			<ul>
 				{% for monster in monsters %}
@@ -38,7 +38,7 @@
 				{% endfor %}
 			</ul>
 		</div>
-		<div class="monster-details">
+		<div class="monster-details scrollable">
 			<turbo-frame id="monster-details-content" src=""></turbo-frame>
 		</div>
 	</div>
