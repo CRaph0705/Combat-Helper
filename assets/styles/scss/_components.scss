@@ -115,13 +115,17 @@
     .player-index-list,
     .monster-details,
     .player-details {
-        overflow-y: scroll;
         max-height: 65vh;
         width: 50%;
         padding: 1em;
     }
 }
 
+.scrollable {
+    overflow-y: scroll;
+    max-height: 65vh;
+    
+}
 
 
 .section-separator {
