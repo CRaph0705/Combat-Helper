@@ -42,6 +42,11 @@ export default class extends Controller {
 
         const searchValue = searchInput.value.toLowerCase();
 
+        if (searchValue === "" || searchValue.length < 3) {
+            this.showAllMonsters();
+            return;
+        }
+
         monsters.forEach((monster) => {
             const monsterName = monster.dataset.name.toLowerCase();
             const shouldDisplay = monsterName.includes(searchValue);
@@ -69,5 +74,21 @@ export default class extends Controller {
             firstVisibleMonster.classList.add("unit-selected");
         }
 
+    }
+
+    showAllMonsters() {
+        const monsters = document.querySelectorAll(".monster");
+        monsters.forEach((monster) => {
+            monster.style.display = "block";
+        });
+
+        const firstMonster = monsters[0];
+        if (firstMonster) {
+            const turboFrame = document.querySelector("turbo-frame");
+            turboFrame.src = firstMonster.dataset.src;
+
+            monsters.forEach((m) => m.classList.remove("unit-selected"));
+            firstMonster.classList.add("unit-selected");
+        }
     }
 }
