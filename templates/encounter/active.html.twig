@@ -7,11 +7,11 @@
 		{% include "_parts/separator.html.twig" %}
 
 		<section id="top-section">
-		<div id="end-button-container">
-			<button id="end_encounter_button" class="btn btn-default" data-action="click->encounter-active#stopEncounter">
-				End
-			</button>
-		</div>
+			<div id="end-button-container">
+				<button id="end_encounter_button" class="btn btn-default" data-action="click->encounter-active#stopEncounter">
+					End
+				</button>
+			</div>
 
 			<div id="active-unit-tracker-container">
 				<div id="active-unit-tracker">
@@ -42,8 +42,38 @@
 		</section>
 
 
-		<section
-			class="bottom-section index-container unit-index-container d-flex">
+		<section class="bottom-section index-container unit-index-container d-flex">
+
+			<div id="damageCalculator" class="calculator-container">
+				<div class="calculator">
+					<div class="display">
+						<input type="text" id="calculationDisplay" data-encounter-active-target="calculationDisplay"  readonly>
+					</div>
+					<div class="buttons">
+						<button class="num calc-button" data-num="1">1</button>
+						<button class="num calc-button" data-num="2">2</button>
+						<button class="num calc-button" data-num="3">3</button>
+						<button class="num calc-button" data-num="4">4</button>
+						<button class="num calc-button" data-num="5">5</button>
+						<button class="num calc-button" data-num="6">6</button>
+						<button class="num calc-button" data-num="7">7</button>
+						<button class="num calc-button" data-num="8">8</button>
+						<button class="num calc-button" data-num="9">9</button>
+						<button class="num calc-button" data-num="0">0</button>
+						<!-- Add buttons for all numbers and basic operations -->
+						<button class="operation-button heal" id='heal-button' data-operation="heal">Heal</button>
+						<button class="operation-button damage selected-operation" id='damage-button' data-operation="damage">Damage</button>
+						<button class="mod-button selected-mod" id="default-button" data-mod="default">Default</button>
+						<button class="mod-button" data-mod="vulnerable">Vulnerable</button>
+						<button class="mod-button" data-mod="resistant">Resistant</button>
+						<button class="action" data-action="encounter-active#clearCalculator">Clear</button>
+						<button id="validateButton" class="action" data-target="validate-button" >Validate</button>
+						{# <button id="validateButton" class="action" data-action="encounter-active#applyDamageOrHeal">Validate</button> #}
+					</div>
+					<button class="close" data-action="encounter-active#closeCalculator">×</button>
+				</div>
+			</div>
+
 			{# scss to change #}
 			<div id="indices-container">
 				<div id="index-selection">

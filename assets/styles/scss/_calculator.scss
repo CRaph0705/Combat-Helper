@@ -1,0 +1,113 @@
+#damageCalculator {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 30%;
+    height: 30%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.calculator-visible {
+    display: flex;
+}
+
+.calculator {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.display {
+    margin-bottom: 20px;
+}
+
+.buttons {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.button {
+    flex: 1 1 30%;
+    margin: 5px;
+    padding: 20px;
+    font-size: 20px;
+    text-align: center;
+    border: 1px solid transparent;
+    transition: background 0.3s, border 0.3s;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.num {
+    background: brown;
+    color: white; // ajouter une couleur pour le texte des boutons num
+}
+
+.num:hover {
+    background: red;
+    border: 1px solid white;
+}
+
+button.operation-button {
+    background: #fff;
+    color: #000;
+    border: 1px solid #ccc;
+    transition: background 0.3s, color 0.3s, border 0.3s; // transition douce
+}
+
+button.operation-button.damage.selected-operation {
+    background: red;
+    color: white;
+    border: 1px solid white;
+}
+
+button.operation-button.heal.selected-operation {
+    background: green;
+    color: white;
+    border: 1px solid white;
+}
+
+button.operation-button:hover {
+    background: #ccc;
+    color: #000;
+    border: 1px solid #000;
+}
+
+button.mod-button {
+    background: #fff;
+    color: #000;
+    border: 1px solid #ccc;
+    transition: background 0.3s, color 0.3s, border 0.3s;
+}
+
+button.mod-button:disabled {
+    background: #ccc;
+    color: #888; 
+    border: 1px solid #888;
+    cursor: not-allowed;
+}
+
+button.mod-button.selected-mod {
+    background: red;
+    color: white;
+    border: 1px solid white;
+}
+
+button.mod-button:hover:not(:disabled) {
+    background: #ccc;
+    color: #000;
+    border: 1px solid #000;
+}
