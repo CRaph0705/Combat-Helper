@@ -249,7 +249,7 @@ export default class extends Controller {
         const calculatorContainer = document.getElementById('damageCalculator');
         calculatorContainer.addEventListener('click', event => event.stopPropagation());
 
-        const numButtons = document.querySelectorAll('.calc-button');
+        const numButtons = document.querySelectorAll('.num-button');
         numButtons.forEach(button => {
             button.addEventListener('click', event => this.handleButtonClick(event, 'num'));
         });
@@ -380,8 +380,8 @@ export default class extends Controller {
         const unitRect = unitDiv.getBoundingClientRect();
 
         damageCalculator.style.display = 'block';
-        damageCalculator.style.left = `${unitRect.left + window.scrollX}px`;
-        damageCalculator.style.top = `${unitRect.bottom + window.scrollY}px`;
+        // damageCalculator.style.left = `${unitRect.left + window.scrollX}px`;
+        // damageCalculator.style.top = `${unitRect.bottom + window.scrollY}px`;
     }
 
     closeCalculator() {
@@ -393,10 +393,12 @@ export default class extends Controller {
 
     handleButtonClick(event, buttonType) {
         // console.log(event.target.innerText);
+        console.log(buttonType);
         if (buttonType === 'num') {
+            console.log('Appending number', event.target.innerText);
             this.appendNumber(event.target.innerText);
         } else if (buttonType === 'mod') {
-            // console.log('Applying modifier', event.target.dataset);
+            console.log('Applying modifier', event.target.dataset);
             this.applyModifier(event.target.dataset.mod);
             //add selected class to the button and remove it from the others
             const modbuttons = document.querySelectorAll('.mod-button');
@@ -405,6 +407,7 @@ export default class extends Controller {
             });
             event.target.classList.add('selected-mod');
         } else if (buttonType === 'operation') {
+            console.log('Setting operation', event.target.dataset.operation);
             this.setOperation(event.target.dataset.operation);
             //add selected class to the button and remove it from the others
             const operationButtons = document.querySelectorAll('.operation-button');
@@ -446,7 +449,7 @@ export default class extends Controller {
 
         // damage result doit être un entier arrondi au supérieur
         const damageResult = Math.ceil(hpAmount * this.selectedMultiplier);
-        
+
         const healResult = hpAmount;
 
         console.log(`Operation: ${this.selectedOperation}`);
@@ -470,6 +473,7 @@ export default class extends Controller {
     }
 
     clearCalculator() {
+        console.log('clear');
         //remove selected class from all mod buttons
         const modbuttons = document.querySelectorAll('.mod-button');
         modbuttons.forEach(button => {
@@ -484,11 +488,30 @@ export default class extends Controller {
         this.selectedOperation = 'damage';
         this.selectedMultiplier = 1;
         //on remet le bouton default en selected
+        // const defaultButton = document.querySelector('.mod-button.calc-button[data-mod="default"]');
         const defaultButton = document.querySelector('.mod-button[data-mod="default"]');
-        defaultButton.classList.add('selected-mod');
+        if (defaultButton) {
+            document.querySelectorAll('.mod-button').forEach(button => {
+                button.classList.remove('selected-mod');
+            });
+            defaultButton.classList.add('selected-mod');
+        } else {
+            console.log('defaultButton not found');
+        }
+
         //on remet le bouton damage en selected
         const damageButton = document.querySelector('.operation-button[data-operation="damage"]');
         damageButton.classList.add('selected-operation');
+
+        // const damageButton = document.querySelector('.operation-button[data-operation="damage"]');
+        // if (damageButton) {
+        //     document.querySelectorAll('.operation-button').forEach(button => {
+        //         button.classList.remove('selected-operation');
+        //     });
+        //     damageButton.classList.add('selected-operation');
+        // } else {
+        //     console.log('damageButton not found');
+        // }
     }
 
     

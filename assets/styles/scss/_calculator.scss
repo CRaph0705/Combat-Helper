@@ -1,8 +1,10 @@
 #damageCalculator {
     display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
+    position: absolute;
+    // top: 0;
+    // left: 0;
+    top: 50%;
+    left: 50%;
     width: 30%;
     height: 30%;
     background: rgba(0, 0, 0, 0.5);
@@ -15,6 +17,7 @@
 }
 
 .calculator {
+    height: 100%;
     background: white;
     padding: 20px;
     border-radius: 10px;
@@ -41,6 +44,16 @@
     transition: background 0.3s, border 0.3s;
 }
 
+.calc-button {
+    width: 100%;
+    margin: 1%;
+
+    //hover
+    &:hover {
+        background: grey;
+    }
+}
+
 .close {
     position: absolute;
     top: 10px;
@@ -54,11 +67,12 @@
 .num {
     background: brown;
     color: white; // ajouter une couleur pour le texte des boutons num
+    // width: 100%;
 }
 
 .num:hover {
     background: red;
-    border: 1px solid white;
+    // border: 1px solid white;
 }
 
 button.operation-button {

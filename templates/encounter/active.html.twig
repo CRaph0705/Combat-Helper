@@ -46,31 +46,53 @@
 
 			<div id="damageCalculator" class="calculator-container">
 				<div class="calculator">
-					<div class="display">
-						<input type="text" id="calculationDisplay" data-encounter-active-target="calculationDisplay"  readonly>
+					<div class='row'>	
+						<div class="col-12 display">
+							<input type="text" id="calculationDisplay" data-encounter-active-target="calculationDisplay"  readonly>
+							<button class="action" data-action="encounter-active#clearCalculator">Clear</button>
+						</div>
 					</div>
-					<div class="buttons">
-						<button class="num calc-button" data-num="1">1</button>
-						<button class="num calc-button" data-num="2">2</button>
-						<button class="num calc-button" data-num="3">3</button>
-						<button class="num calc-button" data-num="4">4</button>
-						<button class="num calc-button" data-num="5">5</button>
-						<button class="num calc-button" data-num="6">6</button>
-						<button class="num calc-button" data-num="7">7</button>
-						<button class="num calc-button" data-num="8">8</button>
-						<button class="num calc-button" data-num="9">9</button>
-						<button class="num calc-button" data-num="0">0</button>
-						<!-- Add buttons for all numbers and basic operations -->
-						<button class="operation-button heal" id='heal-button' data-operation="heal">Heal</button>
-						<button class="operation-button damage selected-operation" id='damage-button' data-operation="damage">Damage</button>
-						<button class="mod-button selected-mod" id="default-button" data-mod="default">Default</button>
-						<button class="mod-button" data-mod="vulnerable">Vulnerable</button>
-						<button class="mod-button" data-mod="resistant">Resistant</button>
-						<button class="action" data-action="encounter-active#clearCalculator">Clear</button>
-						<button id="validateButton" class="action" data-target="validate-button" >Validate</button>
-						{# <button id="validateButton" class="action" data-action="encounter-active#applyDamageOrHeal">Validate</button> #}
+					<div class='row'>
+						<div class="col-2"><button class="num-button calc-button" data-num="1" data-type="num">1</button></div>
+						<div class="col-2"><button class="num-button calc-button" data-num="2" data-type="num">2</button></div>
+						<div class="col-2"><button class="num-button calc-button" data-num="3" data-type="num">3</button></div>
+						{# <button class="operation-button heal" id='heal-button' data-operation="heal">Heal</button> #}
+						<div class="col-3">
+							<button class="operation-button calc-button heal" id='heal-button' data-type="operation" data-operation="heal">H</button>
+							{# <button class="operation-button damage selected-operation" id='damage-button' data-operation="damage">Damage</button> #}
+						</div>
+						<div class="col-3"><button class="operation-button calc-button damage selected-operation" id='damage-button' data-type="operation" data-operation="damage">D</button></div>
 					</div>
-					<button class="close" data-action="encounter-active#closeCalculator">×</button>
+
+					<div class='row'>
+						<div class="col-2"><button class="num-button calc-button" data-num="4" data-type="num">4</button></div>
+						<div class="col-2"><button class="num-button calc-button" data-num="5" data-type="num">5</button></div>
+						<div class="col-2"><button class="num-button calc-button" data-num="6" data-type="num">6</button></div>
+						<div class="col-3">
+									<button class="mod-button calc-button" data-type="mod" data-mod="vulnerable">V</button>
+						</div>
+						<div class="col-3">
+									{# <button class="mod-button" data-mod="resistant">Resistant</button> #}
+							<button class="mod-button calc-button" data-type="mod" data-mod="resistant">R</button>
+						</div>
+					</div>							
+						
+					<div class='row'>
+						<div class="col-2"><button class="num-button calc-button" data-num="7" data-type="num">7</button></div>
+						<div class="col-2"><button class="num-button calc-button" data-num="8" data-type="num">8</button></div>
+						<div class="col-2"><button class="num-button calc-button" data-num="9" data-type="num">9</button></div>
+						<div class="col-6"><button class="mod-button calc-button selected-mod" id="default-button" data-type="mod" data-mod="default">Default (tochange)</button></div>
+					</div>
+
+					<div class='row'>
+						<div class='col-4'><button class="num-button calc-button" data-num="0">0</button></div>
+						<div class="col-8"><button id="validateButton" class="action calc-button" data-type="mod" data-target="validate-button" >Validate</button></div>
+					</div>
+							<!-- Add buttons for all numbers and basic operations -->
+							
+						</div>
+						<button class="close" data-action="encounter-active#closeCalculator">×</button>
+					</div>
 				</div>
 			</div>
 
