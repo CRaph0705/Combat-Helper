@@ -12,7 +12,12 @@ export default class extends Controller {
         this.initializeIndices();
         this.displayIndices();
         this.initializeEventListeners();
+        this.initializeTurboFrame();
         this.updateCarousel();
+
+        console.log("toto");
+        console.log('this.unitIndexInitiativeSorted[0]', this.unitIndexInitiativeSorted[0]);
+
     }
 
 
@@ -49,10 +54,20 @@ export default class extends Controller {
         this.encounterData = unitsData || {};
     }
 
+
     initializeIndices() {
         for (const unitName in this.encounterData.monsters) {
             const unitData = this.encounterData.monsters[unitName];
-            const unitWithKey = { ...unitData, name: unitName, isDead: unitData.hp <= 0 };
+
+
+
+            const unitWithKey = {
+                ...unitData,
+                name: unitName,
+                isDead: false,
+            };
+
+            unitData.hp <= 0 ? unitWithKey.isDead = true : unitWithKey.isDead = false;
 
             this.monsterIndex.push(unitWithKey);
             this.unitIndexAlphaSorted.push(unitWithKey);
@@ -61,17 +76,28 @@ export default class extends Controller {
 
         for (const unitName in this.encounterData.players) {
             const unitData = this.encounterData.players[unitName];
-            const unitWithKey = { ...unitData, name: unitName, isDead: false, isKO: false };
-
+            const unitWithKey = {
+                ...unitData,
+                name: unitName,
+                isDead: false,
+                isKO: false
+            };
             this.playerIndex.push(unitWithKey);
             this.unitIndexAlphaSorted.push(unitWithKey);
             this.unitIndexInitiativeSorted.push(unitWithKey);
         }
 
-        this.unitIndexAlphaSorted.sort((a, b) => a.name.localeCompare(b.name));
-        this.unitIndexInitiativeSorted.sort((a, b) => b.initiative - a.initiative);
-        this.monsterIndex.sort((a, b) => a.name.localeCompare(b.name));
-        this.playerIndex.sort((a, b) => a.name.localeCompare(b.name));
+        // Tri par ordre alphabétique
+        this.unitIndexAlphaSorted.sort((a, b) => (a.name > b.name) ? 1 : -1);
+
+        // Tri par initiative
+        this.unitIndexInitiativeSorted.sort((a, b) => (a.initiative > b.initiative) ? -1 : 1);
+
+        // Tri par ordre alphabétique des monstres
+        this.monsterIndex.sort((a, b) => (a.name > b.name) ? 1 : -1);
+
+        // Tri par ordre alphabétique des joueurs
+        this.playerIndex.sort((a, b) => (a.name > b.name) ? 1 : -1);
     }
 
     displayIndices() {
@@ -156,11 +182,18 @@ export default class extends Controller {
         });
     }
 
-    updateTurboFrame(targetUnitDiv, turboId, turboSrc) {
+    updateTurboFrame(targetUnitDiv) {
+        // console.log('updateTurboFrame');
         const turboFrame = document.querySelector("turbo-frame");
         if (!turboFrame) {
             return;
         }
+        
+        const targerUnitIsMonster = targetUnitDiv.dataset.isMonster;
+        console.log('targerUnitIsMonster', targerUnitIsMonster);
+        const turboId = targerUnitIsMonster === 'true' ? 'monster-details-content' : 'player-details-content';
+        console.log('turboId', turboId);
+        const turboSrc = targetUnitDiv.dataset.src;
 
         document.querySelectorAll(".unit").forEach(u => u.classList.remove("unit-selected"));
         targetUnitDiv.classList.add("unit-selected");
@@ -168,6 +201,28 @@ export default class extends Controller {
         turboFrame.id = turboId;
         turboFrame.src = turboSrc;
     }
+
+    initializeTurboFrame() {
+
+        const turboFrame = document.querySelector("turbo-frame");
+        if (!turboFrame) {
+            return;
+        }
+
+        let defaultTargetUnit = null;
+
+        const units = document.querySelectorAll(".unit");
+        defaultTargetUnit = units[0];
+        this.updateTurboFrame(defaultTargetUnit);
+
+        units.forEach((unit) => {
+            unit.addEventListener("click", (event) => {
+                this.updateTurboFrame(event.currentTarget);
+            });
+        });
+
+    }
+
 
     initializeEventListeners() {
         const nextButton = document.getElementById('next-button');
@@ -233,24 +288,63 @@ export default class extends Controller {
     }
 
     next() {
+        console.log('next');
+
+        if (!this.unitIndexInitiativeSorted) {
+            console.error('unitIndexInitiativeSorted is undefined');
+            return;
+        }
+    
         const units = this.unitIndexInitiativeSorted;
+    
         do {
             this.currentUnitIndex = (this.currentUnitIndex + 1) % units.length;
             if (this.currentUnitIndex === 0) this.turn++;
-            this.currentUnit = units[this.currentUnitIndex];
-        } while (this.currentUnit.isDead || this.currentUnit.isKO);
+            this.updateTurnCounter();
+        } while (units[this.currentUnitIndex].isDead);
+
         this.updateCarousel();
+        //on affiche le bouton previous
+        const prevButton = document.getElementById('prev-button');
+        if (prevButton.classList.contains('hidden')){
+            prevButton.classList.remove('hidden');
+        }
     }
 
     previous() {
+        console.log('previous');
+
+        if (!this.unitIndexInitiativeSorted) {
+            console.error('unitIndexInitiativeSorted is undefined');
+            return;
+        }
+
         const units = this.unitIndexInitiativeSorted;
+        if (this.turn === 1 && this.currentUnitIndex === 0) {
+            console.log('Tour 1, première unité, pas de retour en arrière possible');
+            return;
+        }
+
+
         do {
             this.currentUnitIndex = (this.currentUnitIndex - 1 + units.length) % units.length;
-            this.currentUnit = units[this.currentUnitIndex];
-        } while (this.currentUnit.isDead || this.currentUnit.isKO);
+            if (this.currentUnitIndex === units.length - 1) this.turn--;
+            this.updateTurnCounter();
+        } while (units[this.currentUnitIndex].isDead);
+
+
         this.updateCarousel();
+
+        if (this.turn === 1 && this.currentUnitIndex === 0) {
+            //on masque le bouton previous
+            const prevButton = document.getElementById('prev-button');
+            prevButton.classList.add('hidden');
+        }
     }
 
+    updateTurnCounter() {
+        document.getElementById('turn-number').textContent = this.turn;
+    }
 
     updateUnitData(unitId, updatedUnitData) {
         const unitToUpdate = this.monsterIndex.find(unit => unit.id === unitId) ||
@@ -349,7 +443,10 @@ export default class extends Controller {
     applyHealOrDamage() {
         console.log('Applying heal or damage');
         const hpAmount = parseInt(this.calculationDisplayTarget.value);
-        const damageResult = hpAmount * this.selectedMultiplier;
+
+        // damage result doit être un entier arrondi au supérieur
+        const damageResult = Math.ceil(hpAmount * this.selectedMultiplier);
+        
         const healResult = hpAmount;
 
         console.log(`Operation: ${this.selectedOperation}`);
@@ -422,5 +519,13 @@ export default class extends Controller {
         this.refreshPlayerIndexView();
         this.refreshIndexView();
         this.refreshTrackerView();
+    }
+
+    stopEncounter() {
+        if(!confirm('Attention, toute progression sera perdue. Souhaitez-vous quitter la page ?')) {
+            return;
+        }
+        localStorage.removeItem('encounterData');
+        window.location.href = '/';
     }
 }

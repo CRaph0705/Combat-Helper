@@ -29,7 +29,7 @@ use App\Converter\MonsterDataConverter;
 
 
 #[AsCommand(
-    name: 'CreateOrUpdateMonstersCommand',
+    name: 'createorupdate:monsters:command',
     description: 'Add a short description for your command',
 )]
 class CreateOrUpdateMonstersCommand extends Command
