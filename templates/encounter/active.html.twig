@@ -42,7 +42,7 @@
 		</section>
 
 
-		<section class="bottom-section index-container unit-index-container d-flex">
+		<section class="bottom-section">
 
 			<div id="damageCalculator" class="calculator-container">
 				<div class="calculator">
@@ -58,10 +58,16 @@
 						<div class="col-2"><button class="num-button calc-button" data-num="3" data-type="num">3</button></div>
 						{# <button class="operation-button heal" id='heal-button' data-operation="heal">Heal</button> #}
 						<div class="col-3">
-							<button class="operation-button calc-button heal" id='heal-button' data-type="operation" data-operation="heal">H</button>
+							<button class="operation-button calc-button heal" id='heal-button' data-type="operation" data-operation="heal">
+								<img src="{{ asset('icons/heart.png') }}" alt="heal" class="calc-logo">
+							</button>
 							{# <button class="operation-button damage selected-operation" id='damage-button' data-operation="damage">Damage</button> #}
 						</div>
-						<div class="col-3"><button class="operation-button calc-button damage selected-operation" id='damage-button' data-type="operation" data-operation="damage">D</button></div>
+						<div class="col-3">
+							<button class="operation-button calc-button damage selected-operation" id='damage-button' data-type="operation" data-operation="damage">
+								<img src="{{ asset('icons/swords.png') }}" alt="damage logo" class="calc-logo">
+							</button>
+						</div>
 					</div>
 
 					<div class='row'>
@@ -69,11 +75,15 @@
 						<div class="col-2"><button class="num-button calc-button" data-num="5" data-type="num">5</button></div>
 						<div class="col-2"><button class="num-button calc-button" data-num="6" data-type="num">6</button></div>
 						<div class="col-3">
-									<button class="mod-button calc-button" data-type="mod" data-mod="vulnerable">V</button>
+									<button class="mod-button calc-button" data-type="mod" data-mod="vulnerable">
+										<img src="{{ asset('icons/broken-shield.png') }}" alt="vulnerability logo" class="calc-logo">
+									</button>
 						</div>
 						<div class="col-3">
 									{# <button class="mod-button" data-mod="resistant">Resistant</button> #}
-							<button class="mod-button calc-button" data-type="mod" data-mod="resistant">R</button>
+							<button class="mod-button calc-button" data-type="mod" data-mod="resistant">
+								<img src="{{ asset('icons/shield.png') }}" alt="damage resistance logo" class="calc-logo">
+							</button>
 						</div>
 					</div>							
 						
@@ -97,22 +107,24 @@
 			</div>
 
 			{# scss to change #}
-			<div id="indices-container">
-				<div id="index-selection">
-					<button id="monster-index-button" class="toggle-button toggle-index-button active" data-target="monster-index">Monsters</button>
-					<button id="player-index-button" class="toggle-button toggle-index-button" data-target="player-index">Players</button>
-					<button id="global-index-button" class="toggle-button toggle-index-button" data-target="global-index">All</button>
+			<div class="index-container unit-index-container d-flex"> 
+				<div id="indices-container">
+					<div id="index-selection">
+						<button id="monster-index-button" class="toggle-button toggle-index-button active" data-target="monster-index">Monsters</button>
+						<button id="player-index-button" class="toggle-button toggle-index-button" data-target="player-index">Players</button>
+						<button id="global-index-button" class="toggle-button toggle-index-button" data-target="global-index">All</button>
+					</div>
+					<div id="index-display">
+						<div class="index view scrollable" id="monster-index">monster index</div>
+						<div class="index view hidden scrollable" id="player-index">player index</div>
+						<div class="index view hidden scrollable" id="global-index">global index</div>
+					</div>
 				</div>
-				<div id="index-display">
-					<div class="index view scrollable" id="monster-index">monster index</div>
-					<div class="index view hidden scrollable" id="player-index">player index</div>
-					<div class="index view hidden scrollable" id="global-index">global index</div>
-				</div>
-			</div>
-			<div id="turbo-container">
-				<div class="unit-details scrollable">
-					<turbo-frame id="" src="" loading="eager"></turbo-frame>
-					{# loading options : "lazy" || "eager" #}
+				<div id="turbo-container">
+					<div class="unit-details scrollable">
+						<turbo-frame id="" src="" loading="eager"></turbo-frame>
+						{# loading options : "lazy" || "eager" #}
+					</div>
 				</div>
 			</div>
 		</section>

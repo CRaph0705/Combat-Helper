@@ -15,8 +15,7 @@ export default class extends Controller {
         this.initializeTurboFrame();
         this.updateCarousel();
 
-        console.log("toto");
-        console.log('this.unitIndexInitiativeSorted[0]', this.unitIndexInitiativeSorted[0]);
+        // console.log('this.unitIndexInitiativeSorted[0]', this.unitIndexInitiativeSorted[0]);
 
     }
 
@@ -38,6 +37,7 @@ export default class extends Controller {
         this.currentUnitIndex = 0;
 
         this.selectedOperation = 'damage';
+        this.selectedModifier = 'default';
         this.selectedMultiplier = 1;
         this.calculatorUnit = null;
 
@@ -190,9 +190,9 @@ export default class extends Controller {
         }
         
         const targerUnitIsMonster = targetUnitDiv.dataset.isMonster;
-        console.log('targerUnitIsMonster', targerUnitIsMonster);
+        // console.log('targerUnitIsMonster', targerUnitIsMonster);
         const turboId = targerUnitIsMonster === 'true' ? 'monster-details-content' : 'player-details-content';
-        console.log('turboId', turboId);
+        // console.log('turboId', turboId);
         const turboSrc = targetUnitDiv.dataset.src;
 
         document.querySelectorAll(".unit").forEach(u => u.classList.remove("unit-selected"));
@@ -259,6 +259,7 @@ export default class extends Controller {
             button.addEventListener('click', event => this.handleButtonClick(event, 'mod'));
         });
 
+   
         const operatorButtons = document.querySelectorAll('.operation-button');
         operatorButtons.forEach(button => {
             button.addEventListener('click', event => this.handleButtonClick(event, 'operation'));
@@ -288,7 +289,7 @@ export default class extends Controller {
     }
 
     next() {
-        console.log('next');
+        // console.log('next');
 
         if (!this.unitIndexInitiativeSorted) {
             console.error('unitIndexInitiativeSorted is undefined');
@@ -312,7 +313,7 @@ export default class extends Controller {
     }
 
     previous() {
-        console.log('previous');
+        // console.log('previous');
 
         if (!this.unitIndexInitiativeSorted) {
             console.error('unitIndexInitiativeSorted is undefined');
@@ -393,49 +394,60 @@ export default class extends Controller {
 
     handleButtonClick(event, buttonType) {
         // console.log(event.target.innerText);
-        console.log(buttonType);
+
+        const button = event.target.closest('button');
+        console.log('button', button);
+
+        console.log('buttonType', buttonType);
+        console.log('event.target', event.target);
+        if (!button) {
+            return;
+        }
+
         if (buttonType === 'num') {
-            console.log('Appending number', event.target.innerText);
-            this.appendNumber(event.target.innerText);
+            this.appendNumber(button.innerText);
         } else if (buttonType === 'mod') {
-            console.log('Applying modifier', event.target.dataset);
-            this.applyModifier(event.target.dataset.mod);
-            //add selected class to the button and remove it from the others
+            this.applyModifier(button.dataset.mod);
             const modbuttons = document.querySelectorAll('.mod-button');
             modbuttons.forEach(button => {
                 button.classList.remove('selected-mod');
             });
-            event.target.classList.add('selected-mod');
+            button.classList.add('selected-mod');
         } else if (buttonType === 'operation') {
-            console.log('Setting operation', event.target.dataset.operation);
-            this.setOperation(event.target.dataset.operation);
-            //add selected class to the button and remove it from the others
+            this.setOperation(button.dataset.operation);
             const operationButtons = document.querySelectorAll('.operation-button');
             operationButtons.forEach(button => {
                 button.classList.remove('selected-operation');
             });
-            event.target.classList.add('selected-operation');
+            button.classList.add('selected-operation');
 
+
+            //si opération heal est sélectionné on désactive les boutons de modificateurs
             const modButtons = document.querySelectorAll('.mod-button');
-            modButtons.forEach(button => {
-                button.disabled = event.target.dataset.operation === 'heal';
+            modButtons.forEach(modButton => {
+                modButton.disabled = button.dataset.operation === 'heal';
             });
         }
     }
+
+         //si opération heal est sélectionné on désactive les boutons de modificateurs
+        //  this.selectedOperation = 'heal'? modButtons.forEach(button => button.disabled = true) : modButtons.forEach(button => button.disabled = false);
+
 
     appendNumber(number) {
         this.calculationDisplayTarget.value += number;
     }
 
     applyModifier(modifier) {
-        if (modifier === 'default') {
-            this.selectedMultiplier = 1;
-        } else if (modifier === 'vulnerable') {
+       
+        if (modifier === 'vulnerable') {
             this.selectedMultiplier = 2;
         } else if (modifier === 'resistant') {
             this.selectedMultiplier = 0.5;
+        } else {
+            this.selectedMultiplier = 1;
         }
-        console.log('Selected multiplier:', this.selectedMultiplier);
+        // console.log('Selected multiplier:', this.selectedMultiplier);
 
     }
 
@@ -444,7 +456,7 @@ export default class extends Controller {
     }
 
     applyHealOrDamage() {
-        console.log('Applying heal or damage');
+        // console.log('Applying heal or damage');
         const hpAmount = parseInt(this.calculationDisplayTarget.value);
 
         // damage result doit être un entier arrondi au supérieur
@@ -452,9 +464,9 @@ export default class extends Controller {
 
         const healResult = hpAmount;
 
-        console.log(`Operation: ${this.selectedOperation}`);
-        console.log(`Amount: ${hpAmount}`);
-        console.log('this.selectedMultiplier', this.selectedMultiplier);
+        // console.log(`Operation: ${this.selectedOperation}`);
+        // console.log(`Amount: ${hpAmount}`);
+        // console.log('this.selectedMultiplier', this.selectedMultiplier);
         if (this.selectedOperation === 'damage') {
             this.calculatorUnit.hp -= damageResult;
             if (this.calculatorUnit.hp <= 0) {
@@ -502,16 +514,6 @@ export default class extends Controller {
         //on remet le bouton damage en selected
         const damageButton = document.querySelector('.operation-button[data-operation="damage"]');
         damageButton.classList.add('selected-operation');
-
-        // const damageButton = document.querySelector('.operation-button[data-operation="damage"]');
-        // if (damageButton) {
-        //     document.querySelectorAll('.operation-button').forEach(button => {
-        //         button.classList.remove('selected-operation');
-        //     });
-        //     damageButton.classList.add('selected-operation');
-        // } else {
-        //     console.log('damageButton not found');
-        // }
     }
 
     
