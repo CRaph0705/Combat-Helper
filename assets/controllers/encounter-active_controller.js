@@ -12,7 +12,32 @@ export default class extends Controller {
         this.initializeIndices();
         this.displayIndices();
         this.initializeEventListeners();
+        this.initializeTurboFrame();
         this.updateCarousel();
+
+        const draggableElement = document.querySelector('.draggable');
+        draggableElement.addEventListener('mousedown', function(event) 
+        {
+            let initialX = event.clientX;
+            let initialY = event.clientY;function moveElement(event) 
+            {
+                let currentX = event.clientX;
+                let currentY = event.clientY;
+                let deltaX = currentX - initialX;
+                let deltaY = currentY - initialY;
+                draggableElement.style.left = draggableElement.offsetLeft + deltaX + 'px';
+                draggableElement.style.top = draggableElement.offsetTop + deltaY + 'px';
+                initialX = currentX;
+                initialY = currentY;
+            }
+            function stopElement(event) 
+            {
+                document.removeEventListener('mousemove', moveElement);
+                document.removeEventListener('mouseup', stopElement);
+            }
+            document.addEventListener('mousemove', moveElement);
+            document.addEventListener('mouseup', stopElement);
+        });
     }
 
 
@@ -33,6 +58,7 @@ export default class extends Controller {
         this.currentUnitIndex = 0;
 
         this.selectedOperation = 'damage';
+        this.selectedModifier = 'default';
         this.selectedMultiplier = 1;
         this.calculatorUnit = null;
 
@@ -49,10 +75,20 @@ export default class extends Controller {
         this.encounterData = unitsData || {};
     }
 
+
     initializeIndices() {
         for (const unitName in this.encounterData.monsters) {
             const unitData = this.encounterData.monsters[unitName];
-            const unitWithKey = { ...unitData, name: unitName, isDead: unitData.hp <= 0 };
+
+
+
+            const unitWithKey = {
+                ...unitData,
+                name: unitName,
+                isDead: false,
+            };
+
+            unitData.hp <= 0 ? unitWithKey.isDead = true : unitWithKey.isDead = false;
 
             this.monsterIndex.push(unitWithKey);
             this.unitIndexAlphaSorted.push(unitWithKey);
@@ -61,17 +97,28 @@ export default class extends Controller {
 
         for (const unitName in this.encounterData.players) {
             const unitData = this.encounterData.players[unitName];
-            const unitWithKey = { ...unitData, name: unitName, isDead: false, isKO: false };
-
+            const unitWithKey = {
+                ...unitData,
+                name: unitName,
+                isDead: false,
+                isKO: false
+            };
             this.playerIndex.push(unitWithKey);
             this.unitIndexAlphaSorted.push(unitWithKey);
             this.unitIndexInitiativeSorted.push(unitWithKey);
         }
 
-        this.unitIndexAlphaSorted.sort((a, b) => a.name.localeCompare(b.name));
-        this.unitIndexInitiativeSorted.sort((a, b) => b.initiative - a.initiative);
-        this.monsterIndex.sort((a, b) => a.name.localeCompare(b.name));
-        this.playerIndex.sort((a, b) => a.name.localeCompare(b.name));
+        // Tri par ordre alphabétique
+        this.unitIndexAlphaSorted.sort((a, b) => (a.name > b.name) ? 1 : -1);
+
+        // Tri par initiative
+        this.unitIndexInitiativeSorted.sort((a, b) => (a.initiative > b.initiative) ? -1 : 1);
+
+        // Tri par ordre alphabétique des monstres
+        this.monsterIndex.sort((a, b) => (a.name > b.name) ? 1 : -1);
+
+        // Tri par ordre alphabétique des joueurs
+        this.playerIndex.sort((a, b) => (a.name > b.name) ? 1 : -1);
     }
 
     displayIndices() {
@@ -156,11 +203,15 @@ export default class extends Controller {
         });
     }
 
-    updateTurboFrame(targetUnitDiv, turboId, turboSrc) {
+    updateTurboFrame(targetUnitDiv) {
         const turboFrame = document.querySelector("turbo-frame");
         if (!turboFrame) {
             return;
         }
+        
+        const targerUnitIsMonster = targetUnitDiv.dataset.isMonster;
+        const turboId = targerUnitIsMonster === 'true' ? 'monster-details-content' : 'player-details-content';
+        const turboSrc = targetUnitDiv.dataset.src;
 
         document.querySelectorAll(".unit").forEach(u => u.classList.remove("unit-selected"));
         targetUnitDiv.classList.add("unit-selected");
@@ -168,6 +219,28 @@ export default class extends Controller {
         turboFrame.id = turboId;
         turboFrame.src = turboSrc;
     }
+
+    initializeTurboFrame() {
+
+        const turboFrame = document.querySelector("turbo-frame");
+        if (!turboFrame) {
+            return;
+        }
+
+        let defaultTargetUnit = null;
+
+        const units = document.querySelectorAll(".unit");
+        defaultTargetUnit = units[0];
+        this.updateTurboFrame(defaultTargetUnit);
+
+        units.forEach((unit) => {
+            unit.addEventListener("click", (event) => {
+                this.updateTurboFrame(event.currentTarget);
+            });
+        });
+
+    }
+
 
     initializeEventListeners() {
         const nextButton = document.getElementById('next-button');
@@ -186,7 +259,7 @@ export default class extends Controller {
 
         const damageCalculator = document.getElementById('damageCalculator');
         document.addEventListener('click', event => {
-            if (!event.target.closest('#damageCalculator')) {
+            if (!event.target.closest('#damageCalculator') && this.isCalculatorOpen == true) {
                 this.closeCalculator();
             }
         });
@@ -194,7 +267,7 @@ export default class extends Controller {
         const calculatorContainer = document.getElementById('damageCalculator');
         calculatorContainer.addEventListener('click', event => event.stopPropagation());
 
-        const numButtons = document.querySelectorAll('.calc-button');
+        const numButtons = document.querySelectorAll('.num-button');
         numButtons.forEach(button => {
             button.addEventListener('click', event => this.handleButtonClick(event, 'num'));
         });
@@ -204,6 +277,7 @@ export default class extends Controller {
             button.addEventListener('click', event => this.handleButtonClick(event, 'mod'));
         });
 
+   
         const operatorButtons = document.querySelectorAll('.operation-button');
         operatorButtons.forEach(button => {
             button.addEventListener('click', event => this.handleButtonClick(event, 'operation'));
@@ -233,24 +307,59 @@ export default class extends Controller {
     }
 
     next() {
+
+        if (!this.unitIndexInitiativeSorted) {
+            console.error('unitIndexInitiativeSorted is undefined');
+            return;
+        }
+    
         const units = this.unitIndexInitiativeSorted;
+    
         do {
             this.currentUnitIndex = (this.currentUnitIndex + 1) % units.length;
             if (this.currentUnitIndex === 0) this.turn++;
-            this.currentUnit = units[this.currentUnitIndex];
-        } while (this.currentUnit.isDead || this.currentUnit.isKO);
+            this.updateTurnCounter();
+        } while (units[this.currentUnitIndex].isDead);
+
         this.updateCarousel();
+        const prevButton = document.getElementById('prev-button');
+        if (prevButton.classList.contains('hidden')){
+            prevButton.classList.remove('hidden');
+        }
     }
 
     previous() {
+
+        if (!this.unitIndexInitiativeSorted) {
+            console.error('unitIndexInitiativeSorted is undefined');
+            return;
+        }
+
         const units = this.unitIndexInitiativeSorted;
+        if (this.turn === 1 && this.currentUnitIndex === 0) {
+            return;
+        }
+
+
         do {
             this.currentUnitIndex = (this.currentUnitIndex - 1 + units.length) % units.length;
-            this.currentUnit = units[this.currentUnitIndex];
-        } while (this.currentUnit.isDead || this.currentUnit.isKO);
+            if (this.currentUnitIndex === units.length - 1) this.turn--;
+            this.updateTurnCounter();
+        } while (units[this.currentUnitIndex].isDead);
+
+
         this.updateCarousel();
+
+        if (this.turn === 1 && this.currentUnitIndex === 0) {
+            //on masque le bouton previous
+            const prevButton = document.getElementById('prev-button');
+            prevButton.classList.add('hidden');
+        }
     }
 
+    updateTurnCounter() {
+        document.getElementById('turn-number').textContent = this.turn;
+    }
 
     updateUnitData(unitId, updatedUnitData) {
         const unitToUpdate = this.monsterIndex.find(unit => unit.id === unitId) ||
@@ -283,63 +392,109 @@ export default class extends Controller {
 
         const damageCalculator = document.getElementById('damageCalculator');
         const unitDiv = document.querySelector(`.unit[data-id="${unitData.id}"]`);
-        const unitRect = unitDiv.getBoundingClientRect();
 
         damageCalculator.style.display = 'block';
-        damageCalculator.style.left = `${unitRect.left + window.scrollX}px`;
-        damageCalculator.style.top = `${unitRect.bottom + window.scrollY}px`;
+
+        const modButtons = document.querySelectorAll('.mod-button');
+        modButtons.forEach(modButton => {
+            modButton.disabled = this.selectedOperation === 'heal';
+        });
     }
 
     closeCalculator() {
         this.isCalculatorOpen = false;
         this.calculatorUnit = null;
         this.clearCalculator();
+        this.selectedModifier = 'default';
+        this.selectedMultiplier = 1;
+        this.selectedOperation = 'damage';
         document.getElementById('damageCalculator').style.display = 'none';
+
+
     }
 
     handleButtonClick(event, buttonType) {
-        // console.log(event.target.innerText);
+
+        const button = event.target.closest('button');
+        if (!button) {
+            return;
+        }
+
         if (buttonType === 'num') {
-            this.appendNumber(event.target.innerText);
+            this.appendNumber(button.innerText);
+
         } else if (buttonType === 'mod') {
-            // console.log('Applying modifier', event.target.dataset);
-            this.applyModifier(event.target.dataset.mod);
-            //add selected class to the button and remove it from the others
+
+
+
+            if (this.selectedModifier === button.dataset.mod) {
+                this.removeModifier(button.dataset.mod);
+                button.classList.remove('selected-mod');
+                return;
+            }
+            this.applyModifier(button.dataset.mod);
             const modbuttons = document.querySelectorAll('.mod-button');
             modbuttons.forEach(button => {
                 button.classList.remove('selected-mod');
             });
-            event.target.classList.add('selected-mod');
+            button.classList.add('selected-mod');
+
         } else if (buttonType === 'operation') {
-            this.setOperation(event.target.dataset.operation);
-            //add selected class to the button and remove it from the others
+            this.setOperation(button.dataset.operation);
             const operationButtons = document.querySelectorAll('.operation-button');
             operationButtons.forEach(button => {
                 button.classList.remove('selected-operation');
             });
-            event.target.classList.add('selected-operation');
+            button.classList.add('selected-operation');
 
+
+            //si opération heal est sélectionné on désactive les boutons de modificateurs
             const modButtons = document.querySelectorAll('.mod-button');
-            modButtons.forEach(button => {
-                button.disabled = event.target.dataset.operation === 'heal';
+            modButtons.forEach(modButton => {
+                modButton.disabled = button.dataset.operation === 'heal';
             });
         }
     }
+
+         //si opération heal est sélectionné on désactive les boutons de modificateurs
+        //  this.selectedOperation = 'heal'? modButtons.forEach(button => button.disabled = true) : modButtons.forEach(button => button.disabled = false);
+
 
     appendNumber(number) {
         this.calculationDisplayTarget.value += number;
     }
 
+
+
+    checkModifier(modifier) {
+        return this.selectedModifier === modifier;
+    }
+
+
+
     applyModifier(modifier) {
-        if (modifier === 'default') {
-            this.selectedMultiplier = 1;
-        } else if (modifier === 'vulnerable') {
+       
+        if (modifier === 'vulnerable') {
             this.selectedMultiplier = 2;
+            this.selectedModifier = 'vulnerable';
         } else if (modifier === 'resistant') {
             this.selectedMultiplier = 0.5;
+            this.selectedModifier = 'resistant';
+        } else {
+            this.selectedMultiplier = 1;
+            this.selectedModifier = 'default';
         }
-        console.log('Selected multiplier:', this.selectedMultiplier);
 
+    }
+
+    removeModifier(modifier) {
+        if (modifier === 'default') {
+            return;
+        }
+        if (this.selectedModifier === modifier) {
+            this.selectedModifier = 'default';
+            this.selectedMultiplier = 1;
+        }
     }
 
     setOperation(operation) {
@@ -347,14 +502,19 @@ export default class extends Controller {
     }
 
     applyHealOrDamage() {
-        console.log('Applying heal or damage');
         const hpAmount = parseInt(this.calculationDisplayTarget.value);
-        const damageResult = hpAmount * this.selectedMultiplier;
+
+        if (isNaN(hpAmount))
+        {
+            this.closeCalculator();
+            return;
+        }
+        // damage result doit être un entier arrondi au supérieur
+        const damageResult = Math.ceil(hpAmount * this.selectedMultiplier);
+
         const healResult = hpAmount;
 
-        console.log(`Operation: ${this.selectedOperation}`);
-        console.log(`Amount: ${hpAmount}`);
-        console.log('this.selectedMultiplier', this.selectedMultiplier);
+
         if (this.selectedOperation === 'damage') {
             this.calculatorUnit.hp -= damageResult;
             if (this.calculatorUnit.hp <= 0) {
@@ -386,9 +546,13 @@ export default class extends Controller {
         this.calculationDisplayTarget.value = '';
         this.selectedOperation = 'damage';
         this.selectedMultiplier = 1;
-        //on remet le bouton default en selected
-        const defaultButton = document.querySelector('.mod-button[data-mod="default"]');
-        defaultButton.classList.add('selected-mod');
+        //on retire les modificateurs de dégâts
+        this.selectedModifier = 'default';
+        
+        document.querySelectorAll('.mod-button').forEach(button => {
+            button.classList.remove('selected-mod');
+        });
+
         //on remet le bouton damage en selected
         const damageButton = document.querySelector('.operation-button[data-operation="damage"]');
         damageButton.classList.add('selected-operation');
@@ -422,5 +586,13 @@ export default class extends Controller {
         this.refreshPlayerIndexView();
         this.refreshIndexView();
         this.refreshTrackerView();
+    }
+
+    stopEncounter() {
+        if(!confirm('Attention, toute progression sera perdue. Souhaitez-vous quitter la page ?')) {
+            return;
+        }
+        localStorage.removeItem('encounterData');
+        window.location.href = '/';
     }
 }
