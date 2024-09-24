@@ -334,7 +334,6 @@ export default class extends Controller {
 
         const units = this.unitIndexInitiativeSorted;
         if (this.turn === 1 && this.currentUnitIndex === 0) {
-            console.log('Tour 1, première unité, pas de retour en arrière possible');
             return;
         }
 
@@ -390,7 +389,6 @@ export default class extends Controller {
 
         const damageCalculator = document.getElementById('damageCalculator');
         const unitDiv = document.querySelector(`.unit[data-id="${unitData.id}"]`);
-        // const unitRect = unitDiv.getBoundingClientRect();
 
         damageCalculator.style.display = 'block';
 
@@ -398,13 +396,6 @@ export default class extends Controller {
         modButtons.forEach(modButton => {
             modButton.disabled = this.selectedOperation === 'heal';
         });
-        // damageCalculator.style.left = `${unitRect.left + window.scrollX}px`;
-        // damageCalculator.style.top = `${unitRect.bottom + window.scrollY}px`;
-
-        console.log('this.selectedOperation', this.selectedOperation);
-        console.log('this.selectedMultiplier', this.selectedMultiplier);
-        console.log('this.selectedModifier', this.selectedModifier);
-
     }
 
     closeCalculator() {
@@ -431,17 +422,13 @@ export default class extends Controller {
 
         } else if (buttonType === 'mod') {
 
-            console.log('button.dataset.mod', button.dataset.mod);
-            console.log('this.selectedModifier', this.selectedModifier);
 
 
             if (this.selectedModifier === button.dataset.mod) {
-                console.log('Removing modifier');
                 this.removeModifier(button.dataset.mod);
                 button.classList.remove('selected-mod');
                 return;
             }
-            console.log('Applying modifier');
             this.applyModifier(button.dataset.mod);
             const modbuttons = document.querySelectorAll('.mod-button');
             modbuttons.forEach(button => {
@@ -494,21 +481,17 @@ export default class extends Controller {
             this.selectedMultiplier = 1;
             this.selectedModifier = 'default';
         }
-        console.log('Selected multiplier:', this.selectedMultiplier);
 
     }
 
     removeModifier(modifier) {
-        console.log('Removing modifier:', modifier);
         if (modifier === 'default') {
-            console.log('return');
             return;
         }
         if (this.selectedModifier === modifier) {
             this.selectedModifier = 'default';
             this.selectedMultiplier = 1;
         }
-        console.log('Selected multiplier:', this.selectedMultiplier);
     }
 
     setOperation(operation) {
