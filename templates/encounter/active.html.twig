@@ -43,14 +43,11 @@
 
 
 		<section class="bottom-section">
-
-			<div id="damageCalculator" class="calculator-container">
+			<div id="damageCalculator" class="calculator-container draggable">
 				<div class="calculator">
-					<div class='row'>	
-						<div class="col-12 display">
-							<input type="text" id="calculationDisplay" data-encounter-active-target="calculationDisplay"  readonly>
-							<button class="action" data-action="encounter-active#clearCalculator">Clear</button>
-						</div>
+					<div class='row display'>	
+						<input type="text" id="calculationDisplay" data-encounter-active-target="calculationDisplay" class="col-9" readonly>
+						<button class="action col-3 reset-button" data-action="encounter-active#clearCalculator">clear</button>
 					</div>
 					<div class='row'>
 						<div class="col-2"><button class="num-button calc-button" data-num="1" data-type="num">1</button></div>
@@ -74,36 +71,29 @@
 						<div class="col-2"><button class="num-button calc-button" data-num="4" data-type="num">4</button></div>
 						<div class="col-2"><button class="num-button calc-button" data-num="5" data-type="num">5</button></div>
 						<div class="col-2"><button class="num-button calc-button" data-num="6" data-type="num">6</button></div>
-						<div class="col-3">
-									<button class="mod-button calc-button" data-type="mod" data-mod="vulnerable">
-										<img src="{{ asset('icons/broken-shield.png') }}" alt="vulnerability logo" class="calc-logo">
-									</button>
-						</div>
-						<div class="col-3">
-									{# <button class="mod-button" data-mod="resistant">Resistant</button> #}
-							<button class="mod-button calc-button" data-type="mod" data-mod="resistant">
-								<img src="{{ asset('icons/shield.png') }}" alt="damage resistance logo" class="calc-logo">
+						<div class="col-6">
+							<button class="mod-button calc-button" data-type="mod" data-mod="vulnerable">
+								<img src="{{ asset('icons/broken-shield.png') }}" alt="vulnerability logo" class="calc-logo">
 							</button>
 						</div>
 					</div>							
-						
+				
 					<div class='row'>
 						<div class="col-2"><button class="num-button calc-button" data-num="7" data-type="num">7</button></div>
 						<div class="col-2"><button class="num-button calc-button" data-num="8" data-type="num">8</button></div>
 						<div class="col-2"><button class="num-button calc-button" data-num="9" data-type="num">9</button></div>
-						<div class="col-6"><button class="mod-button calc-button selected-mod" id="default-button" data-type="mod" data-mod="default">Default (tochange)</button></div>
+						<div class="col-6">
+							<button class="mod-button calc-button" data-type="mod" data-mod="resistant">
+								<img src="{{ asset('icons/shield.png') }}" alt="damage resistance logo" class="calc-logo">
+							</button>
+						</div>
 					</div>
-
 					<div class='row'>
 						<div class='col-4'><button class="num-button calc-button" data-num="0">0</button></div>
 						<div class="col-8"><button id="validateButton" class="action calc-button" data-type="mod" data-target="validate-button" >Validate</button></div>
-					</div>
-							<!-- Add buttons for all numbers and basic operations -->
-							
-						</div>
-						<button class="close" data-action="encounter-active#closeCalculator">×</button>
-					</div>
+					</div>	
 				</div>
+				<button class="close" data-action="encounter-active#closeCalculator">×</button>
 			</div>
 
 			{# scss to change #}

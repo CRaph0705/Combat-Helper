@@ -17,6 +17,26 @@ export default class extends Controller {
 
         // console.log('this.unitIndexInitiativeSorted[0]', this.unitIndexInitiativeSorted[0]);
 
+        const draggableElement = document.querySelector('.draggable');
+        draggableElement.addEventListener('mousedown', function(event) 
+        {
+            let initialX = event.clientX;
+            let initialY = event.clientY;function moveElement(event) 
+            {
+                let currentX = event.clientX;
+                let currentY = event.clientY;let deltaX = currentX - initialX;
+                let deltaY = currentY - initialY;draggableElement.style.left = draggableElement.offsetLeft + deltaX + 'px';
+                draggableElement.style.top = draggableElement.offsetTop + deltaY + 'px';initialX = currentX;
+                initialY = currentY;
+            }
+            function stopElement(event) 
+            {
+                document.removeEventListener('mousemove', moveElement);
+                document.removeEventListener('mouseup', stopElement);
+            }
+            document.addEventListener('mousemove', moveElement);
+            document.addEventListener('mouseup', stopElement);
+        });
     }
 
 
@@ -378,41 +398,65 @@ export default class extends Controller {
 
         const damageCalculator = document.getElementById('damageCalculator');
         const unitDiv = document.querySelector(`.unit[data-id="${unitData.id}"]`);
-        const unitRect = unitDiv.getBoundingClientRect();
+        // const unitRect = unitDiv.getBoundingClientRect();
 
         damageCalculator.style.display = 'block';
+
+        const modButtons = document.querySelectorAll('.mod-button');
+        modButtons.forEach(modButton => {
+            modButton.disabled = this.selectedOperation === 'heal';
+        });
         // damageCalculator.style.left = `${unitRect.left + window.scrollX}px`;
         // damageCalculator.style.top = `${unitRect.bottom + window.scrollY}px`;
+
+        console.log('this.selectedOperation', this.selectedOperation);
+        console.log('this.selectedMultiplier', this.selectedMultiplier);
+        console.log('this.selectedModifier', this.selectedModifier);
+
     }
 
     closeCalculator() {
         this.isCalculatorOpen = false;
         this.calculatorUnit = null;
         this.clearCalculator();
+        this.selectedModifier = 'default';
+        this.selectedMultiplier = 1;
+        this.selectedOperation = 'damage';
         document.getElementById('damageCalculator').style.display = 'none';
+
+
     }
 
     handleButtonClick(event, buttonType) {
-        // console.log(event.target.innerText);
 
         const button = event.target.closest('button');
-        console.log('button', button);
-
-        console.log('buttonType', buttonType);
-        console.log('event.target', event.target);
         if (!button) {
             return;
         }
 
         if (buttonType === 'num') {
             this.appendNumber(button.innerText);
+
         } else if (buttonType === 'mod') {
+
+            console.log('button.dataset.mod', button.dataset.mod);
+            console.log('this.selectedModifier', this.selectedModifier);
+
+
+            if (this.selectedModifier === button.dataset.mod) {
+                console.log('Removing modifier');
+                this.removeModifier(button.dataset.mod);
+                button.classList.remove('selected-mod');
+                return;
+            }
+            console.log('Applying modifier');
             this.applyModifier(button.dataset.mod);
             const modbuttons = document.querySelectorAll('.mod-button');
             modbuttons.forEach(button => {
                 button.classList.remove('selected-mod');
             });
             button.classList.add('selected-mod');
+
         } else if (buttonType === 'operation') {
             this.setOperation(button.dataset.operation);
             const operationButtons = document.querySelectorAll('.operation-button');
@@ -438,17 +482,41 @@ export default class extends Controller {
         this.calculationDisplayTarget.value += number;
     }
 
+
+
+    checkModifier(modifier) {
+        return this.selectedModifier === modifier;
+    }
+
+
+
     applyModifier(modifier) {
        
         if (modifier === 'vulnerable') {
             this.selectedMultiplier = 2;
+            this.selectedModifier = 'vulnerable';
         } else if (modifier === 'resistant') {
             this.selectedMultiplier = 0.5;
+            this.selectedModifier = 'resistant';
         } else {
             this.selectedMultiplier = 1;
+            this.selectedModifier = 'default';
         }
-        // console.log('Selected multiplier:', this.selectedMultiplier);
+        console.log('Selected multiplier:', this.selectedMultiplier);
 
+    }
+
+    removeModifier(modifier) {
+        console.log('Removing modifier:', modifier);
+        if (modifier === 'default') {
+            console.log('return');
+            return;
+        }
+        if (this.selectedModifier === modifier) {
+            this.selectedModifier = 'default';
+            this.selectedMultiplier = 1;
+        }
+        console.log('Selected multiplier:', this.selectedMultiplier);
     }
 
     setOperation(operation) {
@@ -499,17 +567,12 @@ export default class extends Controller {
         this.calculationDisplayTarget.value = '';
         this.selectedOperation = 'damage';
         this.selectedMultiplier = 1;
-        //on remet le bouton default en selected
-        // const defaultButton = document.querySelector('.mod-button.calc-button[data-mod="default"]');
-        const defaultButton = document.querySelector('.mod-button[data-mod="default"]');
-        if (defaultButton) {
-            document.querySelectorAll('.mod-button').forEach(button => {
-                button.classList.remove('selected-mod');
-            });
-            defaultButton.classList.add('selected-mod');
-        } else {
-            console.log('defaultButton not found');
-        }
+        //on retire les modificateurs de dégâts
+        this.selectedModifier = 'default';
+        
+        document.querySelectorAll('.mod-button').forEach(button => {
+            button.classList.remove('selected-mod');
+        });
 
         //on remet le bouton damage en selected
         const damageButton = document.querySelector('.operation-button[data-operation="damage"]');
