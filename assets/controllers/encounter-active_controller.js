@@ -15,8 +15,6 @@ export default class extends Controller {
         this.initializeTurboFrame();
         this.updateCarousel();
 
-        // console.log('this.unitIndexInitiativeSorted[0]', this.unitIndexInitiativeSorted[0]);
-
         const draggableElement = document.querySelector('.draggable');
         draggableElement.addEventListener('mousedown', function(event) 
         {
@@ -203,16 +201,13 @@ export default class extends Controller {
     }
 
     updateTurboFrame(targetUnitDiv) {
-        // console.log('updateTurboFrame');
         const turboFrame = document.querySelector("turbo-frame");
         if (!turboFrame) {
             return;
         }
         
         const targerUnitIsMonster = targetUnitDiv.dataset.isMonster;
-        // console.log('targerUnitIsMonster', targerUnitIsMonster);
         const turboId = targerUnitIsMonster === 'true' ? 'monster-details-content' : 'player-details-content';
-        // console.log('turboId', turboId);
         const turboSrc = targetUnitDiv.dataset.src;
 
         document.querySelectorAll(".unit").forEach(u => u.classList.remove("unit-selected"));
@@ -261,7 +256,7 @@ export default class extends Controller {
 
         const damageCalculator = document.getElementById('damageCalculator');
         document.addEventListener('click', event => {
-            if (!event.target.closest('#damageCalculator')) {
+            if (!event.target.closest('#damageCalculator') && this.isCalculatorOpen == true) {
                 this.closeCalculator();
             }
         });
@@ -309,7 +304,6 @@ export default class extends Controller {
     }
 
     next() {
-        // console.log('next');
 
         if (!this.unitIndexInitiativeSorted) {
             console.error('unitIndexInitiativeSorted is undefined');
@@ -325,7 +319,6 @@ export default class extends Controller {
         } while (units[this.currentUnitIndex].isDead);
 
         this.updateCarousel();
-        //on affiche le bouton previous
         const prevButton = document.getElementById('prev-button');
         if (prevButton.classList.contains('hidden')){
             prevButton.classList.remove('hidden');
@@ -333,7 +326,6 @@ export default class extends Controller {
     }
 
     previous() {
-        // console.log('previous');
 
         if (!this.unitIndexInitiativeSorted) {
             console.error('unitIndexInitiativeSorted is undefined');
@@ -524,17 +516,19 @@ export default class extends Controller {
     }
 
     applyHealOrDamage() {
-        // console.log('Applying heal or damage');
         const hpAmount = parseInt(this.calculationDisplayTarget.value);
 
+        if (isNaN(hpAmount))
+        {
+            this.closeCalculator();
+            return;
+        }
         // damage result doit être un entier arrondi au supérieur
         const damageResult = Math.ceil(hpAmount * this.selectedMultiplier);
 
         const healResult = hpAmount;
 
-        // console.log(`Operation: ${this.selectedOperation}`);
-        // console.log(`Amount: ${hpAmount}`);
-        // console.log('this.selectedMultiplier', this.selectedMultiplier);
+
         if (this.selectedOperation === 'damage') {
             this.calculatorUnit.hp -= damageResult;
             if (this.calculatorUnit.hp <= 0) {
@@ -553,7 +547,6 @@ export default class extends Controller {
     }
 
     clearCalculator() {
-        console.log('clear');
         //remove selected class from all mod buttons
         const modbuttons = document.querySelectorAll('.mod-button');
         modbuttons.forEach(button => {
