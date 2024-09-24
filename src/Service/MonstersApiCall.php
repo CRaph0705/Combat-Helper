@@ -3,7 +3,6 @@
 namespace App\Service;
 
 use Symfony\Contracts\HttpClient\HttpClientInterface;
-
 class MonstersApiCall
 {
     public const API_URL = 'https://www.dnd5eapi.co';
