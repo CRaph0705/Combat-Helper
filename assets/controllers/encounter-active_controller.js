@@ -22,9 +22,12 @@ export default class extends Controller {
             let initialY = event.clientY;function moveElement(event) 
             {
                 let currentX = event.clientX;
-                let currentY = event.clientY;let deltaX = currentX - initialX;
-                let deltaY = currentY - initialY;draggableElement.style.left = draggableElement.offsetLeft + deltaX + 'px';
-                draggableElement.style.top = draggableElement.offsetTop + deltaY + 'px';initialX = currentX;
+                let currentY = event.clientY;
+                let deltaX = currentX - initialX;
+                let deltaY = currentY - initialY;
+                draggableElement.style.left = draggableElement.offsetLeft + deltaX + 'px';
+                draggableElement.style.top = draggableElement.offsetTop + deltaY + 'px';
+                initialX = currentX;
                 initialY = currentY;
             }
             function stopElement(event) 
