@@ -34,3 +34,6 @@ build : ## Build the project
 
 watch : ## Watch the project
 	npm run watch
+
+import : ## Import all monsters from API service
+	symfony console createorupdate:monsters:command
