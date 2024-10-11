@@ -12,62 +12,66 @@ class PlayerCharacterFixtures extends Fixture
     {
         $valriia = new PlayerCharacter();
         $valriia->setName('Valriia');
-        $valriia->setHp(34);
+        $valriia->setHp(55);
         $valriia->setAC(20);
-        $valriia->setLevel(3);
+        $valriia->setLevel(5);
         $valriia->setStats(
-            16, // strength
+            18, // strength
             16, // dexterity
             16, // constitution
             13, // intelligence
             13, // wisdom
             17  // charisma
         );
+        $valriia->setSpeed("9");
         $manager->persist($valriia);
 
         $zeke = new PlayerCharacter();
         $zeke->setName('Zeke');
-        $zeke->setHp(18);
-        $zeke->setAC(15);
-        $zeke->setLevel(3);
+        $zeke->setHp(33);
+        $zeke->setAC(16);
+        $zeke->setLevel(5);
         $zeke->setStats(
             11, // strength
-            17, // dexterity
+            18, // dexterity
             13, // constitution
-            12, // intelligence
+            13, // intelligence
             13, // wisdom
             14  // charisma
         );
+        $zeke->setSpeed("7,5");
         $manager->persist($zeke);
 
         $ornagar = new PlayerCharacter();
         $ornagar->setName('Ornagar');
-        $ornagar->setHp(16);
-        $ornagar->setAC(15);
-        $ornagar->setLevel(3);
+        $ornagar->setHp(32);
+        $ornagar->setAC(16);
+        $ornagar->setLevel(5);
         $ornagar->setStats(
             13, // strength
-            16, // dexterity
+            18, // dexterity
             13, // constitution
             10, // intelligence
             15, // wisdom
             11  // charisma
         );
+        $ornagar->setSpeed("9");
         $manager->persist($ornagar);
 
         $rhan = new PlayerCharacter();
         $rhan->setName('Rhanne');
-        $rhan->setHp(22);
-        $rhan->setAC(11);
-        $rhan->setLevel(3);
+        $rhan->setHp(37);
+        $rhan->setAC(17);
+        $rhan->setLevel(5);
         $rhan->setStats(
             14, // strength
-            11, // dexterity
-            13, // constitution
+            12, // dexterity
+            14, // constitution
             12, // intelligence
             14, // wisdom
             13  // charisma
         );
+        $rhan->setSpeed("9");
         $manager->persist($rhan);
 
         $fray = new PlayerCharacter();
@@ -83,6 +87,7 @@ class PlayerCharacterFixtures extends Fixture
             17, // wisdom
             18  // charisma
         );
+        $fray->setSpeed("9");
         $manager->persist($fray);
 
         $mortecouille = new PlayerCharacter();
@@ -98,40 +103,24 @@ class PlayerCharacterFixtures extends Fixture
             15, // wisdom
             16  // charisma
         );
+        $mortecouille->setSpeed("9");
         $manager->persist($mortecouille);
 
         $khalvi = new PlayerCharacter();
         $khalvi->setName('Khalvi');
-        $khalvi->setHp(37);
-        $khalvi->setAC(14);
-        $khalvi->setLevel(3);
+        $khalvi->setHp(60);
+        $khalvi->setAC(13);
+        $khalvi->setLevel(5);
         $khalvi->setStats(
             18, // strength
-            10, // dexterity
+            12, // dexterity
             14, // constitution
             11, // intelligence
             12, // wisdom
             9  // charisma
         );
+        $khalvi->setSpeed("12");
         $manager->persist($khalvi);
-
-
-        $jeanLuc = new PlayerCharacter();
-        $jeanLuc->setName('Jean-Luc');
-        $jeanLuc->setHp(18);
-        $jeanLuc->setAC(13);
-        $jeanLuc->setLevel(1);
-        $jeanLuc->setStats(
-            11, // strength
-            11, // dexterity
-            12, // constitution
-            5, // intelligence
-            8, // wisdom
-            2  // charisma
-        );
-        $manager->persist($jeanLuc);
-
-
 
         $manager->flush();
     }
