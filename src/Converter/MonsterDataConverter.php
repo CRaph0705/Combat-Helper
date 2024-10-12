@@ -254,7 +254,7 @@ class MonsterDataConverter
     private function convertSpecialAbilitiesInHtml($specialAbilities) {
         $html = '';
         foreach ($specialAbilities as $specialAbility) {
-            $html .= '<h5>' . $specialAbility['name'] . '</h4>';
+            $html .= '<h5>' . $specialAbility['name'] . '</h5>';
             $html .= '<p>' . $specialAbility['desc'] . '</p>';
         }
         return $html;
@@ -263,7 +263,7 @@ class MonsterDataConverter
     private function convertActionsInHtml($actions) {
         $html = '';
         foreach ($actions as $action) {
-            $html .= '<h5>' . $action['name'] . '</h4>';
+            $html .= '<h5>' . $action['name'] . '</h5>';
             $html .= '<p>' . $action['desc'] . '</p>';
             // if (isset($action['usage'])) {
             //     $html .= '<p>(' . $action['usage']['times'] . $action ['usage']['type'] . ')</p>';
@@ -277,7 +277,7 @@ class MonsterDataConverter
     private function convertLegendaryActionsInHtml($legendaryActions) {
         $html = '';
         foreach ($legendaryActions as $legendaryAction) {
-            $html .= '<h5>' . $legendaryAction['name'] . '</h4>';
+            $html .= '<h5>' . $legendaryAction['name'] . '</h5>';
             $html .= '<p>' . $legendaryAction['desc'] . '</p>';
             // if (isset($legendaryAction['usage'])) {
             //     $html .= '<p>(' . $legendaryAction['usage']['times'] . $legendaryAction ['usage']['type'] . ')</p>';
