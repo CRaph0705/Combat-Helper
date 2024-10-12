@@ -15,7 +15,7 @@
 				{% for player_character in player_characters %}
 					<div class="ripped-paper mb-2">
 						<div class="player player-parchment" data-id="{{ player_character.id }}" data-src="{{ path('app_player_character_show',{'id': player_character.id}) }}">
-							<a href="{{ path('app_player_character_edit', {'id': player_character.id}) }}" class="edit-link"><img class="logo" src="{{ asset('icons/gear.png') }}" alt="edit logo"></a>
+							<div class="text-end"><a href="{{ path('app_player_character_edit', {'id': player_character.id}) }}" class="edit-link"><img class="logo" src="{{ asset('icons/gear.png') }}" alt="edit logo"></a></div>
 							<h2 class="mb-2 d-flex justify-content-center">{{ player_character.name }}</h2>
 							<div class="d-flex justify-content-between mx-5">
 								<div class="d-flex flex-column">
