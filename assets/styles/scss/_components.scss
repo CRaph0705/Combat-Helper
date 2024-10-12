@@ -186,3 +186,16 @@
 #active-unit-tracker {
     width: 100%;
 }
+
+.logo {
+    height: 16px;
+    width: 16px;
+}
+
+.edit-link {
+    // position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px;
+    z-index: 1;
+}
