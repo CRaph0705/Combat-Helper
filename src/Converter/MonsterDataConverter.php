@@ -223,7 +223,10 @@ class MonsterDataConverter
         $languagesCollection = array_map(fn($language) => $this->translateLanguage($language), $languageArray);
         $languagesCollection = array_filter($languagesCollection); // Supprime les valeurs null
         
-        
+    
+        // TODO : ICI -> on doit ajouter à custom language si un langage n'est pas dans la bdd
+
+
         // on va retourner un tableau $languages et un float $telepathy
 
 
