@@ -71,9 +71,17 @@
                 {% if monster.tremorsense %}, perception des vibrations {{ monster.tremorsense }}m{% endif %}
             </div>
             <div>
-                {% if monster.languages is not empty %}
+                {% if (monster.languages is not empty) or (monster.customLanguage is not empty) %}
                     <p><strong>Langues :</strong>
-                        {{ monster.languages|map(attribute => attribute.name)|join(', ') }}.
+                    {% if monster.languages is not empty %}
+                        {{ monster.languages|map(attribute => attribute.name)|join(', ') }}
+                        {% if monster.customLanguage is not empty %}
+                            ,{{ monster.customLanguage }}
+                        {% endif %}
+                    {% else %}
+                        {{ monster.customLanguage }}
+                    {% endif %}
+                    .
                     </p>
                 {% else %}
                     <p><strong>Langues :</strong> -</p>
